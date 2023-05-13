@@ -9,8 +9,6 @@ type Props = {
 };
 
 function Bus({ busChannels, busIndex }: Props) {
-  const currentMixString = localStorage.getItem("currentMix");
-  const currentMix = currentMixString && JSON.parse(currentMixString);
   const [state, send] = MixerMachineContext.useActor();
 
   return (
