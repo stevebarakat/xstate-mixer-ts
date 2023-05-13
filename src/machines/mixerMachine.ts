@@ -9,20 +9,30 @@ import {
 import { dBToPercent, scale } from "../utils/scale";
 import { getSong } from "../utils/getSong";
 import { roxanne } from "../songs";
+import type { TrackSettings } from "../types/global";
 
 const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
-const initialVolumes = currentTracks.map((currentTrack) => currentTrack.volume);
-const initialBusVolumes = currentMix.busVolumes.map((volume) => volume);
-const initialPans = currentTracks.map((currentTrack) => currentTrack.pan);
-const initialMutes = currentTracks.map((currentTrack) => currentTrack.mute);
-const initialSolos = currentTracks.map((currentTrack) => currentTrack.solo);
+const initialVolumes = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.volume
+);
+const initialBusVolumes = currentMix.busVolumes.map((volume: number) => volume);
+const initialPans = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.pan
+);
+const initialMutes = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.mute
+);
+const initialSolos = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.solo
+);
 
 export const mixerMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EA2AIwAWAHQBOYeIBMggBwB2AKwAaEAE9EAWgViAzIP7DK-aUoC+5tWky5CAdQCSAOQAiVWkhBMW7Ljz4EYSUlUTlxOWE9ZTVNBC1ouVFBM0trDGwcADEsjx4fNg5uL0DpPWlRJUo9cRMzWO1E5NSrEBtMgGEACQBBZwBxAgB9ADUAeQAZAFUAWQI8rwK-YtBA8P5k-gVxfkVVDW1BJUFRKX5KcWiLVvbcbr7BoZmel1HJ2fmafOZC-xLEORKMSUQSCBTyGIHeJ6c6iMw1OrXdK2HD3AbDABCUyIb2mcwWDB+ywC2mEKVOZOMpn2cT05UqCOpaTaGVwJFIQyxREEQyyAA1BATvESiiTodtRHphAp+EpqQ14mVKAzakybqycOzOdiefzpEKlqL-tD+BsqfUocETkZEczbqjeuihgAFPoGkV-VYAygKU5KAwW2lyDYKKVXO0a0hjfr9CbDIiTMbu3xGr0IQEbfjiGQQmnaaTK4RmBRyFJIlkoqMxuNPKakT6eQkpz28AF6ULCSJXBURSolssRlFox6EEYEPAYnEzRx85O-Fat8VJeVQwTiE7B8F7QedR0jghjic452EVwECY9ACac+Jxq0xj0FP9ZYVwg2NWCAfL9uHw1H48nIYzw6K8b1TRd71BJ8vwVHR9EMc1v1ZUQABtGAAQwgVBOCgHAJjGHoz3cL5Fg9BdAmMZVpGo2UVziLQUiSGVxGfFpkWwUR6BQ9D1Gw3DXWxBtvmbcjECkE5ZD2WDTAkQQQTlNiKw4rieL40RsPQgBjdgADcwBwKtYyE0iRLFCVTD0Sg3ykqFpF2ZJOyiZQdywTjuN4nDRC03T9MMuMwJbQJ5HEUQfRohS8wQOykhELtnPVWxRFgVhGHoehIBwZ0L2vEim3nMVDBC8oi1zaSKnXeS1XY1zktS9KIHUzhvNQPSDOjIyAtEoJpWSOR20uSE4mkXQ-QUaoBwSjjarSyAvO0lrfPa-zcuFUzjSBDYIjkaRS0DRAdo3CInOuVpOEYCA4B4W5hPyu9DElZjWMirRhpCqp+0U25UIwrCcJu2802MUJg3KXbnrXCpKB9MGXLc1S-pM260wMUQLKs3ZBsQUFfWzST4uquGPKgRrmr0-7wKCy5kjXEREQVOkTnDSbXJUom5p88nAsQWpkkufru1sygOxzbdmaSlKZogTmupqEL5H5zGEBSfQoY+pDEum+qSfmsnEYBxcQhOapjgi+m3zCdHRYJzXZtJsBpbFN9ga2UrbKguRVZhyxzCAA */
     id: "mixer",
     initial: "loading",
+    tsTypes: {} as import("./mixerMachine.typegen").Typegen0,
     context: {
       start: song?.start,
       end: song?.end,
@@ -116,11 +126,11 @@ export const mixerMachine = createMachine(
       pause: () => t.pause(),
       play: () => (actx.state === "suspended" ? initializeAudio : t.start()),
 
-      fastForward: pure((context) => {
+      fastForward: assign((context) => {
         t.seconds = t.seconds < context.end - 10 ? t.seconds + 10 : context.end;
       }),
 
-      rewind: pure((context) => {
+      rewind: assign((context) => {
         t.seconds =
           t.seconds > 10 + context.start ? t.seconds - 10 : context.start;
       }),
