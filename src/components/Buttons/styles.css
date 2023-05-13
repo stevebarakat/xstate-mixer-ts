@@ -1,0 +1,33 @@
+.button {
+  position: relative;
+  display: flex;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: black;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+.button:hover {
+  border-color: var(--primary-color-8);
+}
+.button:focus,
+.button:focus-visible {
+  outline: 4px auto var(--primary-color);
+}
+.button svg,
+.button:focus-visible svg {
+  stroke: var(--primary-color-8);
+  fill: var(--primary-color-8);
+}
+.button:hover svg {
+  stroke: var(--primary-color-8);
+}
+
+.fx-panel button {
+  position: absolute;
+  top: 0;
+  right: 0;
+}

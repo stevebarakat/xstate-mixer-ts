@@ -1,0 +1,223 @@
+:root {
+  --white: rgba(255, 255, 255, 0.87);
+  --primary-color: hsl(330 100% 70%);
+  --primary-color-1: hsl(330 100% 70%/0.1);
+  --primary-color-2: hsl(330 100% 70%/0.2);
+  --primary-color-3: hsl(330 100% 70%/0.3);
+  --primary-color-4: hsl(330 100% 70%/0.4);
+  --primary-color-5: hsl(330 100% 70%/0.5);
+  --primary-color-6: hsl(330 100% 70%/0.6);
+  --primary-color-7: hsl(330 100% 70%/0.7);
+  --primary-color-8: hsl(330 100% 70%/0.8);
+  --primary-color-9: hsl(330 100% 70%/0.9);
+}
+
+* {
+  accent-color: var(--primary-color);
+}
+
+#root {
+  display: grid;
+  min-height: 80vh;
+  place-content: center;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.mixer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.channels {
+  display: flex;
+}
+
+.channels > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+}
+
+.channel {
+  display: flex;
+  flex-direction: column;
+  background: #000;
+  padding: 20px;
+  align-items: center;
+  max-width: 120px;
+  border-radius: 12px;
+  height: 100%;
+}
+
+.channels > div:nth-last-of-type(2),
+.channels > div:nth-last-of-type(3),
+.channels > div:last-of-type {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--primary-color);
+  border-radius: 12px;
+  margin-left: 8px;
+  padding: 0;
+}
+
+.channels > div:nth-last-of-type(2),
+.channels > div:nth-last-of-type(3) {
+  border: 1px dashed var(--primary-color);
+}
+
+.channels > div:last-of-type input[type="range"] {
+  height: 100%;
+}
+
+.channels > div:nth-last-of-type(2),
+.channels > div:nth-last-of-type(3) {
+  background: black;
+}
+
+.range-x {
+  width: 100%;
+  padding: 8px 0;
+}
+
+.range-y {
+  rotate: 270deg;
+  display: flex;
+  flex-direction: column;
+  height: 150px;
+}
+
+.window {
+  border: 1px solid hsl(120, 0%, 52%);
+  padding: 8px;
+  border-radius: 8px;
+  width: 8ch;
+}
+
+.bus-btn,
+.chan-strip-btn {
+  width: 100%;
+  height: fit-content;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.bus-btn {
+  gap: 4px;
+  margin-bottom: 4px;
+}
+
+.power-button label,
+.bus-btn label,
+.chan-strip-btn label {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: black;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  color: var(--primary-color);
+  padding: 4px 8px;
+  font-weight: 900;
+}
+
+.bus-btn label {
+  padding: 12px;
+  width: 50%;
+}
+
+.power-button input[type="checkbox"],
+.bus-btn input[type="checkbox"],
+.chan-strip-btn input[type="checkbox"] {
+  position: absolute;
+  appearance: none;
+}
+
+.power-button input[type="checkbox"]:checked + label,
+.bus-btn input[type="checkbox"]:checked + label,
+.chan-strip-btn input[type="checkbox"]:checked + label {
+  background: var(--primary-color);
+  color: black;
+  transition: all 0.2s;
+}
+
+.power-button input[type="checkbox"]:hover + label,
+.bus-btn input[type="checkbox"]:hover + label,
+.chan-strip-btn input[type="checkbox"]:hover + label {
+  border: 1px solid var(--primary-color);
+  transition: all 0.2s;
+}
+
+#fx-select,
+.fx-select {
+  width: 90%;
+  padding: 4px 0;
+  background: none;
+  border: none;
+  margin-bottom: 4px;
+  color: var(--primary-color);
+  max-width: 120px;
+}
+
+.fx-select {
+  width: 100%;
+  padding: 0;
+  border-radius: 8px;
+  background: black;
+}
+
+.fx-panel {
+  text-align: left;
+  background: black;
+  padding: 12px 36px 36px;
+  z-index: 99;
+  border-radius: 12px;
+}
+
+.ghost,
+.clock {
+  display: grid;
+  place-items: center;
+  height: 60px;
+  padding: 0.8rem;
+  border-radius: 8px;
+  width: 180px;
+  font-size: 2.25rem;
+  font-family: "Digital";
+  border: 1px solid transparent;
+}
+
+.ghost {
+  position: absolute;
+  color: var(--primary-color-2);
+  z-index: 1;
+}
+
+.clock {
+  background: black;
+  position: relative;
+  color: var(--primary-color-9);
+  z-index: 2;
+}
+
+@font-face {
+  font-family: "Digital";
+  src: url("../assets/fonts/digital-7.woff") format("woff");
+}
+
+select[id="song-select"] {
+  padding: 12px;
+  width: fit-content;
+  margin: 24px auto;
+  border: none;
+  border-radius: 8px;
+}
