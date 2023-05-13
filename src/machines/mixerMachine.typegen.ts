@@ -38,6 +38,14 @@ export interface Typegen0 {
   eventsCausingDelays: {};
   eventsCausingGuards: {};
   eventsCausingServices: {};
-  matchesStates: "loading" | "playing" | "stopped";
+  matchesStates:
+    | "loading"
+    | "playing"
+    | "playing.active"
+    | "playing.inactive"
+    | "stopped"
+    | "stopped.active"
+    | "stopped.inactive"
+    | { playing?: "active" | "inactive"; stopped?: "active" | "inactive" };
   tags: never;
 }

@@ -64,7 +64,6 @@ export const mixerMachine = createMachine(
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
       SET_BUS_FX: { actions: "setBusFx" },
-      SAVE_BUS_PANELS_OPEN: { actions: "saveBusPanelsOpen" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
@@ -81,11 +80,49 @@ export const mixerMachine = createMachine(
       loading: { on: { LOADED: "stopped" } },
       playing: {
         entry: "play",
+        initial: "active",
+        states: {
+          inactive: {
+            on: {
+              SAVE_BUS_PANELS_OPEN: {
+                target: "inactive",
+                actions: "saveBusPanelsOpen",
+              },
+            },
+          },
+          active: {
+            on: {
+              SAVE_BUS_PANELS_OPEN: {
+                target: "active",
+                actions: "saveBusPanelsOpen",
+              },
+            },
+          },
+        },
         on: {
           PAUSE: { target: "stopped", actions: "pause" },
         },
       },
       stopped: {
+        initial: "inactive",
+        states: {
+          inactive: {
+            on: {
+              SAVE_BUS_PANELS_OPEN: {
+                target: "active",
+                actions: "saveBusPanelsOpen",
+              },
+            },
+          },
+          active: {
+            on: {
+              SAVE_BUS_PANELS_OPEN: {
+                target: "inactive",
+                actions: "saveBusPanelsOpen",
+              },
+            },
+          },
+        },
         on: {
           PLAY: { target: "playing" },
         },
