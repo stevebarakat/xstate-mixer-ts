@@ -1,5 +1,5 @@
 import { MixerMachineContext } from "../App";
-import { array as fx } from "../utils";
+import BusFxMenu from "./BuxFxMenu";
 import ChannelButton from "./Buttons/ChannelButton";
 import type { Channel } from "tone";
 
@@ -31,29 +31,7 @@ function Bus({ busChannels, busIndex, disabled }: Props) {
         FX
       </ChannelButton>
 
-      {fx(2).map((_, fxIndex) => {
-        return (
-          <select
-            key={fxIndex}
-            id={`bus${busIndex}fx${fxIndex}`}
-            onChange={(e: React.FormEvent<HTMLSelectElement>): void => {
-              send({
-                type: "SET_BUS_FX",
-                value: e.currentTarget.value,
-                busIndex,
-                fxIndex,
-              });
-            }}
-            value={
-              state.context.currentBusFx[`bus${busIndex + 1}fx${fxIndex + 1}`]
-            }
-          >
-            <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
-            <option value={`reverb${busIndex + 1}`}>Reverb</option>
-            <option value={`delay${busIndex + 1}`}>Delay</option>
-          </select>
-        );
-      })}
+      <BusFxMenu busIndex={busIndex} />
       <div className="channel">
         <div className="window">{`${state.context.busVolumes[busIndex].toFixed(
           0

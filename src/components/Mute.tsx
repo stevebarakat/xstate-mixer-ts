@@ -15,6 +15,7 @@ function Mute({ trackIndex, channel }: Props) {
       <input
         id={`trackMute${trackIndex}`}
         type="checkbox"
+        className="check"
         onChange={(e) => {
           send({
             type: "TOGGLE_MUTE",
