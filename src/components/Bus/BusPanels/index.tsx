@@ -20,10 +20,10 @@ type Props = {
 
 function BusPanels({ busFx, currentBusFx, disabled }: Props) {
   return (
-    <div>
+    <>
       <BusPanel1 disabled={disabled} fx={busFx} currentBusFx={currentBusFx} />
       <BusPanel2 disabled={disabled} fx={busFx} currentBusFx={currentBusFx} />
-    </div>
+    </>
   );
 }
 

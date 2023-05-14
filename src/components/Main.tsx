@@ -1,6 +1,6 @@
 import { MixerMachineContext } from "../App";
 
-function MainVolume() {
+function Main() {
   const [state, send] = MixerMachineContext.useActor();
 
   return (
@@ -29,4 +29,4 @@ function MainVolume() {
   );
 }
 
-export default MainVolume;
+export default Main;

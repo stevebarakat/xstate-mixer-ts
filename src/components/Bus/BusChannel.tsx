@@ -1,6 +1,6 @@
-import { MixerMachineContext } from "../App";
-import BusFxMenu from "./BuxFxMenu";
-import ChannelButton from "./Buttons/ChannelButton";
+import { MixerMachineContext } from "../../App";
+import BusFxMenu from "./BusFxMenu";
+import ChannelButton from "../Buttons/ChannelButton";
 import type { Channel } from "tone";
 
 type Props = {
@@ -9,7 +9,7 @@ type Props = {
   disabled: { panel1: boolean; panel2: boolean };
 };
 
-function Bus({ busChannels, busIndex, disabled }: Props) {
+function BusChannel({ busChannels, busIndex, disabled }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
   return (
@@ -59,4 +59,4 @@ function Bus({ busChannels, busIndex, disabled }: Props) {
   );
 }
 
-export default Bus;
+export default BusChannel;

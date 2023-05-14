@@ -3,11 +3,11 @@ import { Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import useBusFx from "../hooks/useBusFx";
 import Transport from "./Transport";
-import BusPanels from "./BusPanels";
+import BusPanels from "./Bus/BusPanels";
 import Loader from "./Loader";
 import ChannelStrip from "./ChannelStrip";
-import MainVolume from "./MainVolume";
-import Bus from "./Bus";
+import Main from "./Main";
+import BusChannel from "./Bus/BusChannel";
 import { MixerMachineContext } from "../App";
 import type { Song } from "../types/global";
 
@@ -56,14 +56,14 @@ export const Mixer = ({ song }: Props) => {
           ))}
         </div>
         {busChannels.current.map((_, i) => (
-          <Bus
+          <BusChannel
             key={i}
             busChannels={busChannels}
             busIndex={i}
             disabled={disabled}
           />
         ))}
-        <MainVolume />
+        <Main />
       </div>
       <Transport song={song} />
     </div>

@@ -1,12 +1,13 @@
+import type { Destination } from "tone/build/esm/core/context/Destination";
+import type { Gain, Channel } from "tone";
 import { MixerMachineContext } from "../App";
-import type { Channel } from "tone";
 
 type Props = {
   trackIndex: number;
-  channel: Channel;
+  channel: Gain | Channel | Destination;
 };
 
-function TrackVolume({ channel, trackIndex }: Props) {
+function Fader({ trackIndex, channel }: Props) {
   const [state, send] = MixerMachineContext.useActor();
   const volume = parseFloat(state.context.volume[trackIndex]);
 
@@ -34,4 +35,4 @@ function TrackVolume({ channel, trackIndex }: Props) {
   );
 }
 
-export default TrackVolume;
+export default Fader;

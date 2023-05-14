@@ -53,6 +53,7 @@
   max-width: 120px;
   border-radius: 12px;
   height: 100%;
+  overflow: hidden;
 }
 
 .channels > div:nth-last-of-type(2),
@@ -78,6 +79,10 @@
 .channels > div:nth-last-of-type(2),
 .channels > div:nth-last-of-type(3) {
   background: black;
+}
+
+.track-label {
+  user-select: none;
 }
 
 .range-x {

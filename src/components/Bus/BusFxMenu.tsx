@@ -1,11 +1,11 @@
-import { MixerMachineContext } from "../App";
-import { array as fx } from "../utils";
+import { MixerMachineContext } from "../../App";
+import { array as fx } from "../../utils";
 
 type Props = {
   busIndex: number;
 };
 
-function BuxFxMenu({ busIndex }: Props) {
+function BusFxMenu({ busIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
   return (
@@ -35,4 +35,4 @@ function BuxFxMenu({ busIndex }: Props) {
   );
 }
 
-export default BuxFxMenu;
+export default BusFxMenu;
