@@ -3,7 +3,12 @@ import BusPanel1 from "./BusPanel1";
 import BusPanel2 from "./BusPanel2";
 
 type Props = {
-  fx: any;
+  fx: React.MutableRefObject<{
+    reverb1: Reverb;
+    reverb2: Reverb;
+    delay1: FeedbackDelay;
+    delay2: FeedbackDelay;
+  }>;
   busFx: {
     reverb1: Reverb;
     reverb2: Reverb;

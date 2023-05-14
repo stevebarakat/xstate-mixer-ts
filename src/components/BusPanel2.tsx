@@ -14,7 +14,12 @@ type Props = {
     delay1: FeedbackDelay;
     delay2: FeedbackDelay;
   };
-  fx: any;
+  fx: React.MutableRefObject<{
+    reverb1: Reverb;
+    reverb2: Reverb;
+    delay1: FeedbackDelay;
+    delay2: FeedbackDelay;
+  }>;
 };
 
 function BusPanel2({ busFx, fx, disabled }: Props) {
