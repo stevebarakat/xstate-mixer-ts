@@ -17,7 +17,7 @@ function Bus({ busChannels, busIndex }: Props) {
         id={`bus-panel-${busIndex}`}
         onClick={() => {
           send({
-            type: "SAVE_BUS_PANELS_OPEN",
+            type: "TOGGLE_BUS_PANEL",
             busIndex,
           });
         }}

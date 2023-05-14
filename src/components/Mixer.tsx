@@ -112,7 +112,7 @@ export const Mixer = ({ song }: Props) => {
             id="bus-panel-1"
             onClick={() => {
               send({
-                type: "SAVE_BUS_PANELS_OPEN",
+                type: "TOGGLE_BUS_PANEL",
                 busIndex: 0,
               });
             }}
@@ -156,7 +156,7 @@ export const Mixer = ({ song }: Props) => {
             id="bus-panel-1"
             onClick={() => {
               send({
-                type: "SAVE_BUS_PANELS_OPEN",
+                type: "TOGGLE_BUS_PANEL",
                 busIndex: 1,
               });
             }}
