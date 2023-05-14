@@ -16,13 +16,6 @@ import { shallowEqual } from "@xstate/react";
 import type { Song } from "../types/global";
 import type { ReactNode } from "react";
 
-const defaults = {
-  x: 0,
-  y: 0,
-  width: 320,
-  height: "auto",
-};
-
 type Props = {
   song: Song;
 };
@@ -34,20 +27,27 @@ export const Mixer = ({ song }: Props) => {
   const bpOpen1 = MixerMachineContext.useSelector(
     (state) => state.context.busPanelsOpen[1]
   );
+
   const bpPos0 = MixerMachineContext.useSelector(
     (state) => state.context.busPanelsPosition[0]
   );
   const bpPos1 = MixerMachineContext.useSelector(
     (state) => state.context.busPanelsPosition[1]
   );
+
+  const bpSize0 = MixerMachineContext.useSelector(
+    (state) => state.context.busPanelsSize[0]
+  );
+  const bpSize1 = MixerMachineContext.useSelector(
+    (state) => state.context.busPanelsSize[1]
+  );
+
   const { send } = MixerMachineContext.useActorRef();
   const busFx = MixerMachineContext.useSelector((state) => {
     const { busFx } = state.context;
     return busFx;
   }, shallowEqual);
-  useEffect(() => {
-    console.log("changed", busFx);
-  }, [busFx]);
+
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
@@ -123,14 +123,14 @@ export const Mixer = ({ song }: Props) => {
               position: { x: d.x, y: d.y },
             });
           }}
-          // size={{ width: this.state.width, height: this.state.height }}
-          // onResizeStop={(e, direction, ref, delta, position) => {
-          //   this.setState({
-          //     width: ref.style.width,
-          //     height: ref.style.height,
-          //     ...position,
-          //   });
-          // }}
+          size={bpSize0}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            send({
+              type: "SAVE_BUS_PANELS_SIZE",
+              busIndex: 0,
+              size: { width: ref.style.width, height: ref.style.height },
+            });
+          }}
           cancel="input"
         >
           <CloseButton
@@ -186,14 +186,14 @@ export const Mixer = ({ song }: Props) => {
               position: { x: d.x, y: d.y },
             });
           }}
-          // size={{ width: this.state.width, height: this.state.height }}
-          // onResizeStop={(e, direction, ref, delta, position) => {
-          //   this.setState({
-          //     width: ref.style.width,
-          //     height: ref.style.height,
-          //     ...position,
-          //   });
-          // }}
+          size={bpSize1}
+          onResizeStop={(e, direction, ref, delta, position) => {
+            send({
+              type: "SAVE_BUS_PANELS_SIZE",
+              busIndex: 1,
+              size: { width: ref.style.width, height: ref.style.height },
+            });
+          }}
           cancel="input"
         >
           <CloseButton

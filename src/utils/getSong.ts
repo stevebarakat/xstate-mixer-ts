@@ -25,6 +25,7 @@ export function getSong(defaultSong: Song) {
       },
       busPanelsOpen: [false, false],
       busPanelsPosition: { x: 0, y: 0 },
+      busPanelsSize: { width: "325px", height: "auto" },
       busFxData: {
         reverbsBypass: [false, false, false, false],
         reverbsMix: [

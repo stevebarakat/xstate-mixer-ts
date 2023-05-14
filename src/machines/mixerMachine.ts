@@ -46,6 +46,7 @@ export const mixerMachine = createMachine(
       busFx: currentMix.busFx,
       busPanelsOpen: currentMix.busPanelsOpen,
       busPanelsPosition: currentMix.busPanelsPosition,
+      busPanelsSize: currentMix.busPanelsSize,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
@@ -76,7 +77,8 @@ export const mixerMachine = createMachine(
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
-      SAVE_BUS_PANELS_POSITION: { actions: "saveeBusPanelsPosition" },
+      SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
+      SAVE_BUS_PANELS_SIZE: { actions: "saveBusPanelsSize" },
     },
     states: {
       loading: { on: { LOADED: "stopped" } },
@@ -154,7 +156,8 @@ export const mixerMachine = createMachine(
         | { type: "LOADED" }
         | { type: "PAUSE" }
         | { type: "PLAY" }
-        | { type: "SAVE_BUS_PANELS_POSITION" },
+        | { type: "SAVE_BUS_PANELS_POSITION" }
+        | { type: "SAVE_BUS_PANELS_SIZE" },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -380,7 +383,7 @@ export const mixerMachine = createMachine(
         return [assign({ busPanelsOpen: tempBusPanelsOpen })];
       }),
 
-      saveeBusPanelsPosition: pure((context, { busIndex, position }) => {
+      saveBusPanelsPosition: pure((context, { busIndex, position }) => {
         const tempBusPanelsPosition = context.busPanelsPosition;
         tempBusPanelsPosition[busIndex] = position;
         localStorage.setItem(
@@ -391,6 +394,19 @@ export const mixerMachine = createMachine(
           })
         );
         return [assign({ busPanelsPosition: tempBusPanelsPosition })];
+      }),
+
+      saveBusPanelsSize: pure((context, { busIndex, size }) => {
+        const tempBusPanelsSize = context.busPanelsSize;
+        tempBusPanelsSize[busIndex] = size;
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            busPanelsSize: tempBusPanelsSize,
+          })
+        );
+        return [assign({ busPanelsSize: tempBusPanelsSize })];
       }),
     },
   }
