@@ -165,9 +165,9 @@ export const mixerMachine = createMachine(
 
   {
     actions: {
-      reset: () => t.stop(),
+      play: () => (actx.state === "suspended" ? initializeAudio() : t.start()),
       pause: () => t.pause(),
-      play: () => (actx.state === "suspended" ? initializeAudio : t.start()),
+      reset: () => t.stop(),
 
       fastForward: () => {
         t.seconds = t.seconds < song.end - 10 ? t.seconds + 10 : song.end;
