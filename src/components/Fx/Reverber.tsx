@@ -11,10 +11,8 @@ type Props = {
 export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  console.log(
-    "state.context.busFxData.reverbsBypass[busIndex]",
-    state.context.busFxData.reverbsBypass[busIndex]
-  );
+  const disabled = state.context.busFxData.reverbsBypass[busIndex];
+
   return (
     <div>
       <div className="flex gap12">
@@ -43,13 +41,13 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
         <label htmlFor="mix">Mix:</label>
         <input
           type="range"
-          disabled={state.context.busFxData.reverbsBypass[busIndex]}
           className="simple-range"
           name="mix"
           min={0}
           max={1}
           step={0.01}
           value={state.context.busFxData.reverbsMix[busIndex][fxIndex]}
+          disabled={disabled}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_MIX",
@@ -71,6 +69,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           max={1}
           step={0.01}
           value={state.context.busFxData.reverbsPreDelay[busIndex][fxIndex]}
+          disabled={disabled}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_PREDELAY",
@@ -92,6 +91,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           max={20}
           step={0.1}
           value={state.context.busFxData.reverbsDecay[busIndex][fxIndex]}
+          disabled={disabled}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_DECAY",

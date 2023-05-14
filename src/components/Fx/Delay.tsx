@@ -11,6 +11,8 @@ type Props = {
 export default function Delay({ delay, busIndex, fxIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
+  const disabled = state.context.busFxData.delaysBypass[busIndex];
+
   return (
     <div>
       <div className="flex gap12">
@@ -43,6 +45,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
+          disabled={disabled}
           value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
           onChange={(e) => {
             send({
@@ -64,6 +67,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
+          disabled={disabled}
           value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
           onChange={(e) => {
             send({
@@ -85,6 +89,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
+          disabled={disabled}
           value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
           onChange={(e) => {
             send({

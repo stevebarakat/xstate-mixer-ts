@@ -4,7 +4,7 @@ import { xIcon } from "../../assets/icons/xIcon";
 function CloseButton({ ...props }) {
   return (
     <button
-      className="button"
+      className="button disabled"
       style={{
         margin: "8px",
         padding: "4px",

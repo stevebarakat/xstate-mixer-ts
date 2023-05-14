@@ -107,8 +107,6 @@ export const Mixer = ({ song }: Props) => {
     });
   }, [currentMix.busFx]);
 
-  console.log("busFxData.reverbsBypass[0]", busFxData.reverbsBypass[0]);
-
   const disabled = {
     panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
     panel2: busFx.bus2fx1 === "nofx" && busFx.bus2fx2 === "nofx",
