@@ -14,7 +14,6 @@ import { Rnd } from "react-rnd";
 import { MixerMachineContext } from "../App";
 import { shallowEqual } from "@xstate/react";
 import type { Song } from "../types/global";
-import type { ReactNode } from "react";
 
 type Props = {
   song: Song;
@@ -126,7 +125,7 @@ export const Mixer = ({ song }: Props) => {
         <Rnd
           className="fx-panel"
           position={bpPos0}
-          onDragStop={(e, d) => {
+          onDragStop={(_, d) => {
             send({
               type: "SAVE_BUS_PANELS_POSITION",
               busIndex: 0,
@@ -135,7 +134,7 @@ export const Mixer = ({ song }: Props) => {
           }}
           size={bpSize0}
           minWidth="200px"
-          onResizeStop={(e, direction, ref, delta, position) => {
+          onResizeStop={(_, __, ref) => {
             send({
               type: "SAVE_BUS_PANELS_SIZE",
               busIndex: 0,
@@ -187,7 +186,7 @@ export const Mixer = ({ song }: Props) => {
         <Rnd
           className="fx-panel"
           position={bpPos1}
-          onDragStop={(e, d) => {
+          onDragStop={(_, d) => {
             send({
               type: "SAVE_BUS_PANELS_POSITION",
               busIndex: 1,
@@ -196,7 +195,7 @@ export const Mixer = ({ song }: Props) => {
           }}
           size={bpSize1}
           minWidth="200px"
-          onResizeStop={(e, direction, ref, delta, position) => {
+          onResizeStop={(_, __, ref) => {
             send({
               type: "SAVE_BUS_PANELS_SIZE",
               busIndex: 1,
