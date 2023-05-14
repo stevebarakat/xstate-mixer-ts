@@ -165,17 +165,24 @@ export const mixerMachine = createMachine(
 
   {
     actions: {
-      play: () => (actx.state === "suspended" ? initializeAudio() : t.start()),
+      play: () => {
+        if (actx.state === "suspended") {
+          initializeAudio();
+          t.start();
+        } else {
+          t.start();
+        }
+      },
       pause: () => t.pause(),
-      reset: () => t.stop(),
-
-      fastForward: () => {
-        t.seconds = t.seconds < song.end - 10 ? t.seconds + 10 : song.end;
+      reset: () => {
+        t.stop();
+        t.seconds = song.start ?? 0;
       },
-
-      rewind: () => {
-        t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start;
-      },
+      fastForward: () =>
+        (t.seconds =
+          t.seconds < song.end - 10 ? t.seconds + 10 : (t.seconds = song.end)),
+      rewind: () =>
+        (t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start),
 
       changeMainVolume: pure((_, { value }) => {
         const scaled = dBToPercent(scale(value));
