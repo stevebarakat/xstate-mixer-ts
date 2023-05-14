@@ -12,8 +12,8 @@ function Sends({ trackIndex, channels }: Props) {
       <input
         id={`bus1${trackIndex}`}
         type="checkbox"
-        onChange={(e) => {
-          if (e.target.checked) {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+          if (e.currentTarget.checked) {
             channels[trackIndex].send("reverb1");
             channels[trackIndex].send("delay1");
           } else {
@@ -26,8 +26,8 @@ function Sends({ trackIndex, channels }: Props) {
       <input
         id={`bus2${trackIndex}`}
         type="checkbox"
-        onChange={(e) => {
-          if (e.target.checked) {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+          if (e.currentTarget.checked) {
             channels[trackIndex].send("reverb2");
             channels[trackIndex].send("delay2");
           } else {

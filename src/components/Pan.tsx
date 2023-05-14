@@ -20,7 +20,7 @@ function Pan({ trackIndex, channel }: Props) {
         max={1}
         step={0.01}
         value={pan}
-        onChange={(e) => {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
           send({
             type: "CHANGE_PAN",
             value: parseFloat(e.target.value),

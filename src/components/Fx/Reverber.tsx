@@ -23,10 +23,10 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
             type="checkbox"
             className="power-btn"
             value={state.context.busFxData.reverbsBypass[busIndex]}
-            onChange={(e) => {
+            onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_REVERB",
-                checked: e.target.checked,
+                checked: e.currentTarget.checked,
                 reverb,
                 busIndex,
                 fxIndex,
@@ -48,10 +48,10 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           step={0.01}
           value={state.context.busFxData.reverbsMix[busIndex][fxIndex]}
           disabled={disabled}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_REVERBS_MIX",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,
               fxIndex,
@@ -70,10 +70,10 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           step={0.01}
           value={state.context.busFxData.reverbsPreDelay[busIndex][fxIndex]}
           disabled={disabled}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_REVERBS_PREDELAY",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,
               fxIndex,
@@ -92,10 +92,10 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           step={0.1}
           value={state.context.busFxData.reverbsDecay[busIndex][fxIndex]}
           disabled={disabled}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_REVERBS_DECAY",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,
               fxIndex,

@@ -22,10 +22,10 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
             id={`bus${busIndex}delayBypass`}
             type="checkbox"
             value={state.context.busFxData.delaysBypass[busIndex]}
-            onChange={(e) => {
+            onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_DELAY",
-                checked: e.target.checked,
+                checked: e.currentTarget.checked,
                 delay,
                 busIndex,
                 fxIndex,
@@ -47,10 +47,10 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           step={0.01}
           disabled={disabled}
           value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_DELAYS_MIX",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,
               fxIndex,
@@ -69,10 +69,10 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           step={0.01}
           disabled={disabled}
           value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_DELAYS_TIME",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,
               fxIndex,
@@ -91,10 +91,10 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           step={0.01}
           disabled={disabled}
           value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_DELAYS_FEEDBACK",
-              target: e.target,
+              value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,
               fxIndex,

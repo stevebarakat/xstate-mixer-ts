@@ -22,7 +22,7 @@ function Fader({ trackIndex, channel }: Props) {
         max={12}
         step={0.1}
         value={volume}
-        onChange={(e) => {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
           send({
             type: "CHANGE_VOLUME",
             value: parseFloat(e.target.value),

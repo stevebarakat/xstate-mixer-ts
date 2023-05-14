@@ -16,10 +16,10 @@ function Mute({ trackIndex, channel }: Props) {
         id={`trackMute${trackIndex}`}
         type="checkbox"
         className="check"
-        onChange={(e) => {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
           send({
             type: "TOGGLE_MUTE",
-            checked: e.target.checked,
+            checked: e.currentTarget.checked,
             trackIndex,
             channel,
           });

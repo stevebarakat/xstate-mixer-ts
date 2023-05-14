@@ -3,6 +3,13 @@ import { MixerMachineContext } from "../App";
 function Main() {
   const [state, send] = MixerMachineContext.useActor();
 
+  function changeMainVolume(e: React.FormEvent<HTMLInputElement>): void {
+    send({
+      type: "CHANGE_MAIN_VOLUME",
+      value: parseFloat(e.currentTarget.value),
+    });
+  }
+
   return (
     <div className="channel">
       <div className="window">
@@ -16,12 +23,7 @@ function Main() {
           max={12}
           step={0.1}
           value={state.context.mainVolume}
-          onChange={(e) => {
-            send({
-              type: "CHANGE_MAIN_VOLUME",
-              value: parseFloat(e.target.value),
-            });
-          }}
+          onChange={changeMainVolume}
         />
       </div>
       <label htmlFor="main">Main</label>

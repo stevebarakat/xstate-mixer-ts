@@ -23,7 +23,7 @@ function BusChannel({ busChannels, busIndex, disabled }: Props) {
           });
         }}
       >
-        {disabled[`panel${busIndex + 1}`]
+        {disabled[`panel${busIndex + 1}` as keyof typeof disabled]
           ? "No"
           : state.context.busPanelsOpen[busIndex]
           ? "Close"
@@ -44,10 +44,10 @@ function BusChannel({ busChannels, busIndex, disabled }: Props) {
           max={12}
           step={0.1}
           value={state.context.busVolumes[busIndex]}
-          onChange={(e) => {
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_BUS_VOLUME",
-              value: parseFloat(e.target.value),
+              value: parseFloat(e.currentTarget.value),
               channel: busChannels.current[busIndex],
               busIndex,
             });
