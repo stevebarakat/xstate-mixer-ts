@@ -169,14 +169,13 @@ export const mixerMachine = createMachine(
       pause: () => t.pause(),
       play: () => (actx.state === "suspended" ? initializeAudio : t.start()),
 
-      fastForward: assign((context) => {
-        t.seconds = t.seconds < context.end - 10 ? t.seconds + 10 : context.end;
-      }),
+      fastForward: () => {
+        t.seconds = t.seconds < song.end - 10 ? t.seconds + 10 : song.end;
+      },
 
-      rewind: assign((context) => {
-        t.seconds =
-          t.seconds > 10 + context.start ? t.seconds - 10 : context.start;
-      }),
+      rewind: () => {
+        t.seconds = t.seconds > 10 + song.start ? t.seconds - 10 : song.start;
+      },
 
       changeMainVolume: pure((_, { value }) => {
         const scaled = dBToPercent(scale(value));
