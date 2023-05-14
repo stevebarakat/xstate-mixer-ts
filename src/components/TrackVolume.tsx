@@ -4,9 +4,10 @@ import type { Channel } from "tone";
 type Props = {
   trackIndex: number;
   channel: Channel;
+  trackName: string;
 };
 
-function TrackVolume({ channel, trackIndex }: Props) {
+function TrackVolume({ channel, trackIndex, trackName }: Props) {
   const [state, send] = MixerMachineContext.useActor();
   const volume = parseFloat(state.context.volume[trackIndex]);
 
@@ -30,6 +31,7 @@ function TrackVolume({ channel, trackIndex }: Props) {
           });
         }}
       />
+      <label htmlFor={`trackVol${trackIndex}`}>{trackName}</label>
     </>
   );
 }

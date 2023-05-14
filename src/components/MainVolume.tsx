@@ -24,7 +24,7 @@ function MainVolume() {
           }}
         />
       </div>
-      <span>Main</span>
+      <label htmlFor="main">Main</label>
     </div>
   );
 }

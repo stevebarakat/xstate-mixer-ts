@@ -75,7 +75,7 @@ function Bus({ busChannels, busIndex, disabled }: Props) {
             });
           }}
         />
-        <span>{`Bus ${busIndex + 1}`}</span>
+        <label htmlFor={`busVol${busIndex}`}>{`Bus ${busIndex + 1}`}</label>
       </div>
     </div>
   );

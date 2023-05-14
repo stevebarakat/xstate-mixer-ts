@@ -4,7 +4,7 @@ import { array } from "../utils";
 import { shallowEqual } from "@xstate/react";
 import { MixerMachineContext } from "../App";
 
-function useBusFx({ fx }: any) {
+function useBusFx({ busFx }: any) {
   const busChannels = useRef([new Channel(), new Channel()]);
   const currentBusFx = MixerMachineContext.useSelector((state) => {
     const { currentBusFx } = state.context;
@@ -29,29 +29,29 @@ function useBusFx({ fx }: any) {
           break;
         case "reverb1":
           busChannels.current[0].disconnect();
-          busChannels.current[0] = new Channel().connect(fx.current.reverb1);
+          busChannels.current[0] = new Channel().connect(busFx.current.reverb1);
           busChannels.current[0].receive("reverb1");
           break;
         case "reverb2":
           busChannels.current[1].disconnect();
-          busChannels.current[1] = new Channel().connect(fx.current.reverb2);
+          busChannels.current[1] = new Channel().connect(busFx.current.reverb2);
           busChannels.current[1].receive("reverb2");
           break;
         case "delay1":
           busChannels.current[0].disconnect();
-          busChannels.current[0] = new Channel().connect(fx.current.delay1);
+          busChannels.current[0] = new Channel().connect(busFx.current.delay1);
           busChannels.current[0].receive("delay1");
           break;
         case "delay2":
           busChannels.current[1].disconnect();
-          busChannels.current[1] = new Channel().connect(fx.current.delay2);
+          busChannels.current[1] = new Channel().connect(busFx.current.delay2);
           busChannels.current[1].receive("delay2");
           break;
         default:
           break;
       }
     });
-  }, [currentBusFx, fx]);
+  }, [currentBusFx, busFx]);
 
   return [busChannels, currentBusFx, disabled];
 }

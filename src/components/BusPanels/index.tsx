@@ -3,7 +3,7 @@ import BusPanel1 from "./BusPanel1";
 import BusPanel2 from "./BusPanel2";
 
 type Props = {
-  fx: React.MutableRefObject<{
+  busFx: React.MutableRefObject<{
     reverb1: Reverb;
     reverb2: Reverb;
     delay1: FeedbackDelay;
@@ -18,11 +18,11 @@ type Props = {
   disabled: { panel1: boolean; panel2: boolean };
 };
 
-function BusPanels({ fx, currentBusFx, disabled }: Props) {
+function BusPanels({ busFx, currentBusFx, disabled }: Props) {
   return (
     <div>
-      <BusPanel1 disabled={disabled} fx={fx} currentBusFx={currentBusFx} />
-      <BusPanel2 disabled={disabled} fx={fx} currentBusFx={currentBusFx} />
+      <BusPanel1 disabled={disabled} fx={busFx} currentBusFx={currentBusFx} />
+      <BusPanel2 disabled={disabled} fx={busFx} currentBusFx={currentBusFx} />
     </div>
   );
 }

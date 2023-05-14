@@ -52,8 +52,11 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           <Mute trackIndex={trackIndex} channel={channel} />
         </div>
         <Pan trackIndex={trackIndex} channel={channel} />
-        <TrackVolume trackIndex={trackIndex} channel={channel} />
-        <span>{track.name}</span>
+        <TrackVolume
+          trackIndex={trackIndex}
+          channel={channel}
+          trackName={track.name}
+        />
       </div>
     </div>
   );

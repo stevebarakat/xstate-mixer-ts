@@ -22,14 +22,14 @@ export const Mixer = ({ song }: Props) => {
   const tracks = song.tracks;
   const [channels] = useChannelStrip({ tracks });
 
-  const fx = useRef({
+  const busFx = useRef({
     reverb1: new Reverb().toDestination(),
     delay1: new FeedbackDelay().toDestination(),
     reverb2: new Reverb().toDestination(),
     delay2: new FeedbackDelay().toDestination(),
   });
 
-  const [busChannels, currentBusFx, disabled] = useBusFx({ fx });
+  const [busChannels, currentBusFx, disabled] = useBusFx({ busFx });
 
   return isLoading ? (
     <Loader song={song} />
@@ -38,7 +38,11 @@ export const Mixer = ({ song }: Props) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      <BusPanels fx={fx} currentBusFx={currentBusFx} disabled={disabled} />
+      <BusPanels
+        busFx={busFx}
+        currentBusFx={currentBusFx}
+        disabled={disabled}
+      />
 
       <div className="channels">
         <div>
