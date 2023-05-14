@@ -28,11 +28,17 @@ type Props = {
 };
 
 export const Mixer = ({ song }: Props) => {
-  const b0 = MixerMachineContext.useSelector(
+  const bpOpen0 = MixerMachineContext.useSelector(
     (state) => state.context.busPanelsOpen[0]
   );
-  const b1 = MixerMachineContext.useSelector(
+  const bpOpen1 = MixerMachineContext.useSelector(
     (state) => state.context.busPanelsOpen[1]
+  );
+  const bpPos0 = MixerMachineContext.useSelector(
+    (state) => state.context.busPanelsPosition[0]
+  );
+  const bpPos1 = MixerMachineContext.useSelector(
+    (state) => state.context.busPanelsPosition[1]
   );
   const { send } = MixerMachineContext.useActorRef();
   const busFx = MixerMachineContext.useSelector((state) => {
@@ -106,8 +112,27 @@ export const Mixer = ({ song }: Props) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {b0 && (
-        <Rnd className="fx-panel" default={defaults} cancel="input">
+      {bpOpen0 && (
+        <Rnd
+          className="fx-panel"
+          position={bpPos0}
+          onDragStop={(e, d) => {
+            send({
+              type: "SAVE_BUS_PANELS_POSITION",
+              busIndex: 0,
+              position: { x: d.x, y: d.y },
+            });
+          }}
+          // size={{ width: this.state.width, height: this.state.height }}
+          // onResizeStop={(e, direction, ref, delta, position) => {
+          //   this.setState({
+          //     width: ref.style.width,
+          //     height: ref.style.height,
+          //     ...position,
+          //   });
+          // }}
+          cancel="input"
+        >
           <CloseButton
             id="bus-panel-1"
             onClick={() => {
@@ -150,8 +175,27 @@ export const Mixer = ({ song }: Props) => {
           })}
         </Rnd>
       )}
-      {b1 && (
-        <Rnd className="fx-panel" default={defaults} cancel="input">
+      {bpOpen1 && (
+        <Rnd
+          className="fx-panel"
+          position={bpPos1}
+          onDragStop={(e, d) => {
+            send({
+              type: "SAVE_BUS_PANELS_POSITION",
+              busIndex: 1,
+              position: { x: d.x, y: d.y },
+            });
+          }}
+          // size={{ width: this.state.width, height: this.state.height }}
+          // onResizeStop={(e, direction, ref, delta, position) => {
+          //   this.setState({
+          //     width: ref.style.width,
+          //     height: ref.style.height,
+          //     ...position,
+          //   });
+          // }}
+          cancel="input"
+        >
           <CloseButton
             id="bus-panel-1"
             onClick={() => {

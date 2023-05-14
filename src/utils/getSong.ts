@@ -24,6 +24,7 @@ export function getSong(defaultSong: Song) {
         bus2fx2: "nofx",
       },
       busPanelsOpen: [false, false],
+      busPanelsPosition: { x: 0, y: 0 },
       busFxData: {
         reverbsBypass: [false, false, false, false],
         reverbsMix: [

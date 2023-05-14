@@ -45,6 +45,7 @@ export const mixerMachine = createMachine(
       mute: initialMutes,
       busFx: currentMix.busFx,
       busPanelsOpen: currentMix.busPanelsOpen,
+      busPanelsPosition: currentMix.busPanelsPosition,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
@@ -75,6 +76,7 @@ export const mixerMachine = createMachine(
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
+      SAVE_BUS_PANELS_POSITION: { actions: "saveeBusPanelsPosition" },
     },
     states: {
       loading: { on: { LOADED: "stopped" } },
@@ -151,7 +153,8 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_DELAYS_FEEDBACK" }
         | { type: "LOADED" }
         | { type: "PAUSE" }
-        | { type: "PLAY" },
+        | { type: "PLAY" }
+        | { type: "SAVE_BUS_PANELS_POSITION" },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -268,19 +271,6 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      toggleBusPanel: pure((context, { busIndex }) => {
-        const tempBusPanelsOpen = context.busPanelsOpen;
-        tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
-        localStorage.setItem(
-          "currentMix",
-          JSON.stringify({
-            ...currentMix,
-            busPanelsOpen: tempBusPanelsOpen,
-          })
-        );
-        return [assign({ busPanelsOpen: tempBusPanelsOpen })];
-      }),
-
       bypassReverb: pure((context, { checked, reverb, busIndex }) => {
         const tempReverbsBypass = context.busFxData.reverbsBypass;
         tempReverbsBypass[busIndex] = checked;
@@ -376,6 +366,32 @@ export const mixerMachine = createMachine(
           return [assign({ delaysFeedback: tempDelaysFeedback })];
         }
       ),
+
+      toggleBusPanel: pure((context, { busIndex }) => {
+        const tempBusPanelsOpen = context.busPanelsOpen;
+        tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            busPanelsOpen: tempBusPanelsOpen,
+          })
+        );
+        return [assign({ busPanelsOpen: tempBusPanelsOpen })];
+      }),
+
+      saveeBusPanelsPosition: pure((context, { busIndex, position }) => {
+        const tempBusPanelsPosition = context.busPanelsPosition;
+        tempBusPanelsPosition[busIndex] = position;
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            busPanelsPosition: tempBusPanelsPosition,
+          })
+        );
+        return [assign({ busPanelsPosition: tempBusPanelsPosition })];
+      }),
     },
   }
 );
