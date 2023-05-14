@@ -5,6 +5,7 @@ import useBusFx from "../hooks/useBusFx";
 import Transport from "./Transport";
 import BusPanels from "./Bus/BusPanels";
 import Loader from "./Loader";
+import SongInfo from "./SongInfo";
 import ChannelStrip from "./ChannelStrip";
 import Main from "./Main";
 import BusChannel from "./Bus/BusChannel";
@@ -35,15 +36,12 @@ export const Mixer = ({ song }: Props) => {
     <Loader song={song} />
   ) : (
     <div className="mixer">
-      <div>
-        {song.artist} - {song.title}
-      </div>
+      <SongInfo song={song} />
       <BusPanels
         busFx={busFx}
         currentBusFx={currentBusFx}
         disabled={disabled}
       />
-
       <div className="channels">
         <div>
           {tracks.map((track, i) => (
@@ -55,7 +53,7 @@ export const Mixer = ({ song }: Props) => {
             />
           ))}
         </div>
-        {busChannels.current.map((_, i) => (
+        {busChannels.current.map((_: void, i: number) => (
           <BusChannel
             key={i}
             busChannels={busChannels}

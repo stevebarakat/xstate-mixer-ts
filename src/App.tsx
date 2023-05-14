@@ -4,7 +4,6 @@ import { justDance, roxanne, aDayInTheLife, blueMonday } from "./songs";
 import { createActorContext } from "@xstate/react";
 import { mixerMachine } from "./machines/mixerMachine";
 
-// export const song = roxanne;
 export const MixerMachineContext = createActorContext(mixerMachine);
 
 function App() {
@@ -14,10 +13,10 @@ function App() {
     return JSON.parse(currentSong);
   });
 
-  function onChange(e) {
+  function onChange(e: React.FormEvent<HTMLSelectElement>): void {
     let currentTracks = [];
     let currentMix = {};
-    switch (e.target.value) {
+    switch (e.currentTarget.value) {
       case "roxanne":
         localStorage.setItem("song", JSON.stringify(roxanne));
         currentMix = {
