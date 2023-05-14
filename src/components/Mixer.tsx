@@ -29,7 +29,7 @@ export const Mixer = ({ song }: Props) => {
     delay2: new FeedbackDelay().toDestination(),
   });
 
-  const [busChannels, busFx, disabled] = useBusFx({ fx });
+  const [busChannels, currentBusFx, disabled] = useBusFx({ fx });
 
   return isLoading ? (
     <Loader song={song} />
@@ -38,7 +38,7 @@ export const Mixer = ({ song }: Props) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      <BusPanels fx={fx} busFx={busFx} disabled={disabled} />
+      <BusPanels fx={fx} currentBusFx={currentBusFx} disabled={disabled} />
 
       <div className="channels">
         <div>
@@ -47,7 +47,6 @@ export const Mixer = ({ song }: Props) => {
               key={track.path}
               track={track}
               trackIndex={i}
-              channel={channels.current[i]}
               channels={channels.current}
             />
           ))}

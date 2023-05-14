@@ -43,7 +43,7 @@ export const mixerMachine = createMachine(
       pan: initialPans,
       solo: initialSolos,
       mute: initialMutes,
-      busFx: currentMix.busFx,
+      currentBusFx: currentMix.currentBusFx,
       busPanelsOpen: currentMix.busPanelsOpen,
       busPanelsPosition: currentMix.busPanelsPosition,
       busPanelsSize: currentMix.busPanelsSize,
@@ -257,16 +257,16 @@ export const mixerMachine = createMachine(
       }),
 
       setBusFx: assign((context, { value, busIndex, fxIndex }) => {
-        context.busFx = {
-          ...context.busFx,
+        context.currentBusFx = {
+          ...context.currentBusFx,
           [`bus${busIndex + 1}fx${fxIndex + 1}`]: value,
         };
         localStorage.setItem(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busFx: {
-              ...context.busFx,
+            currentBusFx: {
+              ...context.currentBusFx,
               [`bus${busIndex + 1}fx${fxIndex + 1}`]: value,
             },
           })

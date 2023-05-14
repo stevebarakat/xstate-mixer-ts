@@ -9,7 +9,7 @@ type Props = {
     delay1: FeedbackDelay;
     delay2: FeedbackDelay;
   }>;
-  busFx: {
+  currentBusFx: {
     reverb1: Reverb;
     reverb2: Reverb;
     delay1: FeedbackDelay;
@@ -18,11 +18,11 @@ type Props = {
   disabled: { panel1: boolean; panel2: boolean };
 };
 
-function BusPanels({ fx, busFx, disabled }: Props) {
+function BusPanels({ fx, currentBusFx, disabled }: Props) {
   return (
     <div>
-      <BusPanel1 disabled={disabled} fx={fx} busFx={busFx} />
-      <BusPanel2 disabled={disabled} fx={fx} busFx={busFx} />
+      <BusPanel1 disabled={disabled} fx={fx} currentBusFx={currentBusFx} />
+      <BusPanel2 disabled={disabled} fx={fx} currentBusFx={currentBusFx} />
     </div>
   );
 }

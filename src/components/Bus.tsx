@@ -44,7 +44,9 @@ function Bus({ busChannels, busIndex, disabled }: Props) {
                 fxIndex,
               });
             }}
-            value={state.context.busFx[`bus${busIndex + 1}fx${fxIndex + 1}`]}
+            value={
+              state.context.currentBusFx[`bus${busIndex + 1}fx${fxIndex + 1}`]
+            }
           >
             <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
             <option value={`reverb${busIndex + 1}`}>Reverb</option>

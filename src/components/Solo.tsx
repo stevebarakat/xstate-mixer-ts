@@ -15,10 +15,10 @@ function Solo({ trackIndex, channel }: Props) {
       <input
         id={`trackSolo${trackIndex}`}
         type="checkbox"
-        onChange={(e) => {
+        onChange={(e: React.FormEvent<HTMLInputElement>): void => {
           send({
             type: "TOGGLE_SOLO",
-            checked: e.target.checked,
+            checked: e.currentTarget.checked,
             trackIndex,
             channel,
           });

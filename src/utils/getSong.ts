@@ -17,7 +17,7 @@ export function getSong(defaultSong: Song) {
     currentMix = {
       mainVolume: -32,
       busVolumes: [-32, -32],
-      busFx: {
+      currentBusFx: {
         bus1fx1: "nofx",
         bus1fx2: "nofx",
         bus2fx1: "nofx",

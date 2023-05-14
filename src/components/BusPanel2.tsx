@@ -8,7 +8,7 @@ import type { FeedbackDelay, Reverb } from "tone";
 
 type Props = {
   disabled: { panel1: boolean; panel2: boolean };
-  busFx: {
+  currentBusFx: {
     reverb1: Reverb;
     reverb2: Reverb;
     delay1: FeedbackDelay;
@@ -22,7 +22,7 @@ type Props = {
   }>;
 };
 
-function BusPanel2({ busFx, fx, disabled }: Props) {
+function BusPanel2({ currentBusFx, fx, disabled }: Props) {
   const { send } = MixerMachineContext.useActorRef();
 
   const bpOpen1 = MixerMachineContext.useSelector(
@@ -74,7 +74,7 @@ function BusPanel2({ busFx, fx, disabled }: Props) {
           </CloseButton>
 
           {array(2).map((_, i) => {
-            switch (busFx[`bus2fx${i + 1}`]) {
+            switch (currentBusFx[`bus2fx${i + 1}`]) {
               case "reverb2":
                 return (
                   <Reverber

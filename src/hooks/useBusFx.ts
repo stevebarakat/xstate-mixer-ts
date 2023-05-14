@@ -6,19 +6,19 @@ import { MixerMachineContext } from "../App";
 
 function useBusFx({ fx }: any) {
   const busChannels = useRef([new Channel(), new Channel()]);
-  const busFx = MixerMachineContext.useSelector((state) => {
-    const { busFx } = state.context;
-    return busFx;
+  const currentBusFx = MixerMachineContext.useSelector((state) => {
+    const { currentBusFx } = state.context;
+    return currentBusFx;
   }, shallowEqual);
 
   const disabled = {
-    panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
-    panel2: busFx.bus2fx1 === "nofx" && busFx.bus2fx2 === "nofx",
+    panel1: currentBusFx.bus1fx1 === "nofx" && currentBusFx.bus1fx2 === "nofx",
+    panel2: currentBusFx.bus2fx1 === "nofx" && currentBusFx.bus2fx2 === "nofx",
   };
 
   useEffect(() => {
     array(2).forEach((_, i) => {
-      switch (busFx[`bus${i + 1}fx${i + 1}`]) {
+      switch (currentBusFx[`bus${i + 1}fx${i + 1}`]) {
         case "nofx1":
           busChannels.current[0].disconnect();
           busChannels.current[0] = new Channel();
@@ -51,9 +51,9 @@ function useBusFx({ fx }: any) {
           break;
       }
     });
-  }, [busFx, fx]);
+  }, [currentBusFx, fx]);
 
-  return [busChannels, busFx, disabled];
+  return [busChannels, currentBusFx, disabled];
 }
 
 export default useBusFx;

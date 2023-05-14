@@ -9,11 +9,11 @@ import type { Channel } from "tone";
 type Props = {
   track: Track;
   trackIndex: number;
-  channel: Channel;
   channels: Channel[];
 };
 
-function ChannelStrip({ track, trackIndex, channel, channels }: Props) {
+function ChannelStrip({ track, trackIndex, channels }: Props) {
+  const channel = channels[trackIndex];
   return (
     <div>
       <div className="bus-btn">
