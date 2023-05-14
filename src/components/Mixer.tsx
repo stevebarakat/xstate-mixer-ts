@@ -48,6 +48,11 @@ export const Mixer = ({ song }: Props) => {
     return busFx;
   }, shallowEqual);
 
+  const busFxData = MixerMachineContext.useSelector((state) => {
+    const { busFxData } = state.context;
+    return busFxData;
+  }, shallowEqual);
+
   const isLoading = MixerMachineContext.useSelector(
     (state) => state.value === "loading"
   );
@@ -68,46 +73,42 @@ export const Mixer = ({ song }: Props) => {
 
   useEffect(() => {
     array(2).forEach((_, i) => {
-      array(2).forEach((_, j) => {
-        switch (currentMix.busFx[`bus${i + 1}fx${j + 1}`]) {
-          case "nofx1":
-            busChannels.current[0].disconnect();
-            busChannels.current[0] = new Channel();
-            break;
-          case "nofx2":
-            busChannels.current[1].disconnect();
-            busChannels.current[1] = new Channel();
-            break;
-          case "reverb1":
-            busChannels.current[0].disconnect();
-            busChannels.current[0] = new Channel().connect(fx.current.reverb1);
-            busChannels.current[0].receive("reverb1");
-            break;
-          case "reverb2":
-            busChannels.current[1].disconnect();
-            busChannels.current[1] = new Channel().connect(fx.current.reverb2);
-            busChannels.current[1].receive("reverb2");
-            break;
-          case "delay1":
-            busChannels.current[0].disconnect();
-            busChannels.current[0] = new Channel().connect(fx.current.delay1);
-            busChannels.current[0].receive("delay1");
-            break;
-          case "delay2":
-            busChannels.current[1].disconnect();
-            busChannels.current[1] = new Channel().connect(fx.current.delay2);
-            busChannels.current[1].receive("delay2");
-            break;
-          default:
-            break;
-        }
-      });
+      switch (currentMix.busFx[`bus${i + 1}fx${i + 1}`]) {
+        case "nofx1":
+          busChannels.current[0].disconnect();
+          busChannels.current[0] = new Channel();
+          break;
+        case "nofx2":
+          busChannels.current[1].disconnect();
+          busChannels.current[1] = new Channel();
+          break;
+        case "reverb1":
+          busChannels.current[0].disconnect();
+          busChannels.current[0] = new Channel().connect(fx.current.reverb1);
+          busChannels.current[0].receive("reverb1");
+          break;
+        case "reverb2":
+          busChannels.current[1].disconnect();
+          busChannels.current[1] = new Channel().connect(fx.current.reverb2);
+          busChannels.current[1].receive("reverb2");
+          break;
+        case "delay1":
+          busChannels.current[0].disconnect();
+          busChannels.current[0] = new Channel().connect(fx.current.delay1);
+          busChannels.current[0].receive("delay1");
+          break;
+        case "delay2":
+          busChannels.current[1].disconnect();
+          busChannels.current[1] = new Channel().connect(fx.current.delay2);
+          busChannels.current[1].receive("delay2");
+          break;
+        default:
+          break;
+      }
     });
   }, [currentMix.busFx]);
 
-  console.log("busFx", busFx);
-
-  console.log(busFx.bus2fx1 === "nofx");
+  console.log("busFxData.reverbsBypass[0]", busFxData.reverbsBypass[0]);
 
   const disabled = {
     panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
@@ -156,10 +157,9 @@ export const Mixer = ({ song }: Props) => {
           </CloseButton>
 
           {array(2).map((_, i) => {
-            let currentFx: ReactNode | null = null;
             switch (busFx[`bus1fx${i + 1}`]) {
               case "reverb1":
-                currentFx = (
+                return (
                   <Reverber
                     key={`bus1reverb${i}`}
                     reverb={fx.current.reverb1}
@@ -167,9 +167,8 @@ export const Mixer = ({ song }: Props) => {
                     fxIndex={0}
                   />
                 );
-                break;
               case "delay1":
-                currentFx = (
+                return (
                   <Delay
                     key={`bus1delay${i}`}
                     delay={fx.current.delay1}
@@ -177,11 +176,10 @@ export const Mixer = ({ song }: Props) => {
                     fxIndex={0}
                   />
                 );
-                break;
               default:
                 break;
             }
-            return currentFx;
+            return null;
           })}
         </Rnd>
       )}
@@ -220,32 +218,29 @@ export const Mixer = ({ song }: Props) => {
           </CloseButton>
 
           {array(2).map((_, i) => {
-            let currentFx: ReactNode | null = null;
             switch (busFx[`bus2fx${i + 1}`]) {
               case "reverb2":
-                currentFx = (
+                return (
                   <Reverber
                     key={`bus2reverb${i}`}
                     reverb={fx.current.reverb2}
-                    busIndex={1}
-                    fxIndex={1}
+                    busIndex={0}
+                    fxIndex={0}
                   />
                 );
-                break;
               case "delay2":
-                currentFx = (
+                return (
                   <Delay
                     key={`bus2delay${i}`}
                     delay={fx.current.delay2}
-                    busIndex={1}
-                    fxIndex={1}
+                    busIndex={0}
+                    fxIndex={0}
                   />
                 );
-                break;
               default:
                 break;
             }
-            return currentFx;
+            return null;
           })}
         </Rnd>
       )}

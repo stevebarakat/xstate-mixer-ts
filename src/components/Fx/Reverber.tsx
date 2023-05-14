@@ -23,6 +23,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           <input
             id={`bus${busIndex}reverbBypass`}
             type="checkbox"
+            className="power-btn"
             value={state.context.busFxData.reverbsBypass[busIndex]}
             onChange={(e) => {
               send({
@@ -42,6 +43,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
         <label htmlFor="mix">Mix:</label>
         <input
           type="range"
+          disabled={state.context.busFxData.reverbsBypass[busIndex]}
           className="simple-range"
           name="mix"
           min={0}

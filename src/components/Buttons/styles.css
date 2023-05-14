@@ -22,6 +22,9 @@
   stroke: var(--primary-color-8);
   fill: var(--primary-color-8);
 }
+.disabled svg {
+  stroke: hsl(0, 0%, 46%);
+}
 .button:hover svg {
   stroke: var(--primary-color-8);
 }

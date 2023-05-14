@@ -142,7 +142,6 @@
   appearance: none;
 }
 
-.power-button input[type="checkbox"]:checked + label,
 .bus-btn input[type="checkbox"]:checked + label,
 .chan-strip-btn input[type="checkbox"]:checked + label {
   background: var(--primary-color);
@@ -150,12 +149,21 @@
   transition: all 0.2s;
 }
 
-.power-button input[type="checkbox"]:hover + label,
+.power-button input[type="checkbox"]:checked + label {
+  color: hsl(0, 0%, 46%);
+  transition: all 0.2s;
+}
+
 .bus-btn input[type="checkbox"]:hover + label,
 .chan-strip-btn input[type="checkbox"]:hover + label {
   border: 1px solid var(--primary-color);
   transition: all 0.2s;
 }
+
+/* .power-button input[type="checkbox"]:hover + label {
+  border: none;
+  transition: all 0.2s;
+} */
 
 #fx-select,
 .fx-select {
