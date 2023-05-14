@@ -72,29 +72,32 @@ function BusPanels({ fx, busFx, disabled }: Props) {
           </CloseButton>
 
           {array(2).map((_, i) => {
+            let currentFx: ReactNode | null = null;
             switch (busFx[`bus1fx${i + 1}`]) {
               case "reverb1":
-                return (
+                currentFx = (
                   <Reverber
                     key={`bus1reverb${i}`}
-                    reverb={fx.reverb1}
+                    reverb={fx.current.reverb1}
                     busIndex={0}
                     fxIndex={0}
                   />
                 );
+                break;
               case "delay1":
-                return (
+                currentFx = (
                   <Delay
                     key={`bus1delay${i}`}
-                    delay={fx.delay1}
+                    delay={fx.current.delay1}
                     busIndex={0}
                     fxIndex={0}
                   />
                 );
+                break;
               default:
                 break;
             }
-            return null;
+            return currentFx;
           })}
         </Rnd>
       ) : (

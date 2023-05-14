@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { array } from "../utils";
 import { Channel, Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
@@ -37,17 +37,10 @@ export const Mixer = ({ song }: Props) => {
     return busFx;
   }, shallowEqual);
 
-  const [disabled, setDisabled] = useState({
+  const disabled = {
     panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
     panel2: busFx.bus2fx1 === "nofx" && busFx.bus2fx2 === "nofx",
-  });
-
-  useEffect(() => {
-    setDisabled({
-      panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
-      panel2: busFx.bus2fx1 === "nofx" && busFx.bus2fx2 === "nofx",
-    });
-  }, [busFx]);
+  };
 
   useEffect(() => {
     array(2).forEach((_, i) => {
