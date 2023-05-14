@@ -19,6 +19,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           <input
             id={`bus${busIndex}delayBypass`}
             type="checkbox"
+            value={state.context.busFxData.delaysBypass[busIndex]}
             onChange={(e) => {
               send({
                 type: "BYPASS_DELAY",

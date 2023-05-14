@@ -11,6 +11,10 @@ type Props = {
 export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
+  console.log(
+    "state.context.busFxData.reverbsBypass[busIndex]",
+    state.context.busFxData.reverbsBypass[busIndex]
+  );
   return (
     <div>
       <div className="flex gap12">
@@ -19,6 +23,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           <input
             id={`bus${busIndex}reverbBypass`}
             type="checkbox"
+            value={state.context.busFxData.reverbsBypass[busIndex]}
             onChange={(e) => {
               send({
                 type: "BYPASS_REVERB",
@@ -42,6 +47,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
+          value={state.context.busFxData.reverbsMix[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_MIX",
@@ -62,6 +68,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
+          value={state.context.busFxData.reverbsPreDelay[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_PREDELAY",
@@ -82,6 +89,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           min={0.1}
           max={20}
           step={0.1}
+          value={state.context.busFxData.reverbsDecay[busIndex][fxIndex]}
           onChange={(e) => {
             send({
               type: "CHANGE_REVERBS_DECAY",

@@ -6,9 +6,10 @@ import type { Channel } from "tone";
 type Props = {
   busChannels: React.MutableRefObject<Channel[]>;
   busIndex: number;
+  disabled: { panel1: boolean; panel2: boolean };
 };
 
-function Bus({ busChannels, busIndex }: Props) {
+function Bus({ busChannels, busIndex, disabled }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
   return (
@@ -22,7 +23,11 @@ function Bus({ busChannels, busIndex }: Props) {
           });
         }}
       >
-        {state.context.busPanelsOpen[busIndex] ? "Close" : "Open"}
+        {disabled[`panel${busIndex + 1}`]
+          ? "No"
+          : state.context.busPanelsOpen[busIndex]
+          ? "Close"
+          : "Open"}
         FX
       </ChannelButton>
 
@@ -31,10 +36,10 @@ function Bus({ busChannels, busIndex }: Props) {
           <select
             key={fxIndex}
             id={`bus${busIndex}fx${fxIndex}`}
-            onChange={(e) => {
+            onChange={(e: React.FormEvent<HTMLSelectElement>): void => {
               send({
                 type: "SET_BUS_FX",
-                value: e.target.value,
+                value: e.currentTarget.value,
                 busIndex,
                 fxIndex,
               });

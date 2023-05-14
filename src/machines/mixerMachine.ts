@@ -108,7 +108,7 @@ export const mixerMachine = createMachine(
         },
       },
       stopped: {
-        initial: "inactive",
+        initial: "active",
         states: {
           inactive: {
             on: {

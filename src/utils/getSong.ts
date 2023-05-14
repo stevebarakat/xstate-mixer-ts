@@ -23,11 +23,11 @@ export function getSong(defaultSong: Song) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
-      busPanelsOpen: [false, false],
+      busPanelsOpen: [true, true],
       busPanelsPosition: { x: 0, y: 0 },
       busPanelsSize: { width: "325px", height: "auto" },
       busFxData: {
-        reverbsBypass: [false, false, false, false],
+        reverbsBypass: [false, false],
         reverbsMix: [
           [0.5, 0.5],
           [0.5, 0.5],
@@ -40,7 +40,7 @@ export function getSong(defaultSong: Song) {
           [0.5, 0.5],
           [0.5, 0.5],
         ],
-        delaysBypass: [false, false, false, false],
+        delaysBypass: [false, false],
         delaysMix: [
           [0.5, 0.5],
           [0.5, 0.5],

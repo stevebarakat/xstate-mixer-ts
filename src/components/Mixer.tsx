@@ -105,6 +105,15 @@ export const Mixer = ({ song }: Props) => {
     });
   }, [currentMix.busFx]);
 
+  console.log("busFx", busFx);
+
+  console.log(busFx.bus2fx1 === "nofx");
+
+  const disabled = {
+    panel1: busFx.bus1fx1 === "nofx" && busFx.bus1fx2 === "nofx",
+    panel2: busFx.bus2fx1 === "nofx" && busFx.bus2fx2 === "nofx",
+  };
+
   return isLoading ? (
     <Loader song={song} />
   ) : (
@@ -112,7 +121,7 @@ export const Mixer = ({ song }: Props) => {
       <div>
         {song.artist} - {song.title}
       </div>
-      {bpOpen0 && (
+      {bpOpen0 && !disabled.panel1 && (
         <Rnd
           className="fx-panel"
           position={bpPos0}
@@ -176,7 +185,7 @@ export const Mixer = ({ song }: Props) => {
           })}
         </Rnd>
       )}
-      {bpOpen1 && (
+      {bpOpen1 && !disabled.panel2 && (
         <Rnd
           className="fx-panel"
           position={bpPos1}
@@ -253,7 +262,12 @@ export const Mixer = ({ song }: Props) => {
           ))}
         </div>
         {busChannels.current.map((_, i) => (
-          <Bus key={i} busChannels={busChannels} busIndex={i} />
+          <Bus
+            key={i}
+            busChannels={busChannels}
+            busIndex={i}
+            disabled={disabled}
+          />
         ))}
         <MainVolume />
       </div>
