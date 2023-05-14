@@ -124,6 +124,7 @@ export const Mixer = ({ song }: Props) => {
             });
           }}
           size={bpSize0}
+          minWidth="200px"
           onResizeStop={(e, direction, ref, delta, position) => {
             send({
               type: "SAVE_BUS_PANELS_SIZE",
@@ -187,6 +188,7 @@ export const Mixer = ({ song }: Props) => {
             });
           }}
           size={bpSize1}
+          minWidth="200px"
           onResizeStop={(e, direction, ref, delta, position) => {
             send({
               type: "SAVE_BUS_PANELS_SIZE",
