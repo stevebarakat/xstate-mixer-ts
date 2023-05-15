@@ -37,7 +37,6 @@ export type MixSettings = {
   masterVolume: number;
   bussesVolume: number;
   busFxChoices: string[][];
-  trackFxChoices: [];
   delaysMix: number;
   delaysTime: number;
   delaysFeedback: number;
@@ -68,6 +67,7 @@ export type TrackSettings = {
   mute: boolean;
   pan: number;
   activeBusses: boolean;
+  trackFxChoices: string[];
   eqHi: number;
   eqMid: number;
   eqLow: number;

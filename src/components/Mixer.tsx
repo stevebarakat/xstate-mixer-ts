@@ -43,16 +43,14 @@ export const Mixer = ({ song }: Props) => {
         disabled={disabled}
       />
       <div className="channels">
-        <div>
-          {tracks.map((track, i) => (
-            <ChannelStrip
-              key={track.path}
-              track={track}
-              trackIndex={i}
-              channels={channels.current}
-            />
-          ))}
-        </div>
+        {tracks.map((track, i) => (
+          <ChannelStrip
+            key={track.path}
+            track={track}
+            trackIndex={i}
+            channels={channels.current}
+          />
+        ))}
         {busChannels.current.map((_: void, i: number) => (
           <BusChannel
             key={i}

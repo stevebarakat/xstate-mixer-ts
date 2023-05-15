@@ -26,6 +26,9 @@ const initialMutes = currentTracks.map(
 const initialSolos = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.solo
 );
+const initialTrackFx = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackFx
+);
 
 export const mixerMachine = createMachine(
   {
@@ -43,6 +46,7 @@ export const mixerMachine = createMachine(
       pan: initialPans,
       solo: initialSolos,
       mute: initialMutes,
+      currentTrackFx: initialTrackFx,
       currentBusFx: currentMix.currentBusFx,
       busPanelsOpen: currentMix.busPanelsOpen,
       busPanelsPosition: currentMix.busPanelsPosition,
@@ -65,6 +69,7 @@ export const mixerMachine = createMachine(
       CHANGE_VOLUME: { actions: "changeVolume" },
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
+      SET_TRACK_FX: { actions: "setTrackFx" },
       SET_BUS_FX: { actions: "setBusFx" },
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
@@ -83,8 +88,8 @@ export const mixerMachine = createMachine(
     states: {
       loading: { on: { LOADED: "stopped" } },
       playing: {
-        entry: "play",
         initial: "active",
+        entry: "play",
         states: {
           inactive: {
             on: {
@@ -141,6 +146,7 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_MAIN_VOLUME" }
         | { type: "CHANGE_BUS_VOLUME" }
         | { type: "SET_BUS_FX" }
+        | { type: "SET_TRACK_FX" }
         | { type: "TOGGLE_BUS_PANEL" }
         | { type: "CHANGE_PAN" }
         | { type: "TOGGLE_SOLO" }
@@ -275,6 +281,23 @@ export const mixerMachine = createMachine(
             currentBusFx: {
               ...context.currentBusFx,
               [`bus${busIndex + 1}fx${fxIndex + 1}`]: value,
+            },
+          })
+        );
+      }),
+
+      setTrackFx: assign((context, { value, trackIndex, fxIndex }) => {
+        context.currentTrackFx = {
+          ...context.currentTrackFx,
+          [`track${trackIndex + 1}fx${fxIndex + 1}`]: value,
+        };
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentTracks,
+            currentTrackFx: {
+              ...context.currentTrackFx,
+              [`track${trackIndex + 1}fx${fxIndex + 1}`]: value,
             },
           })
         );

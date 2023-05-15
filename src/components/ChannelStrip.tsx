@@ -3,6 +3,7 @@ import SoloMute from "./SoloMute";
 import Sends from "./Sends";
 import Fader from "./Fader";
 import TrackLabel from "./TrackLabel";
+import TrackFxMenu from "./TrackFxMenu";
 import type { Track } from "../types/global";
 import type { Channel } from "tone";
 
@@ -16,6 +17,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
   return (
     <div className="channel">
+      <TrackFxMenu trackIndex={trackIndex} />
       <Sends trackIndex={trackIndex} channels={channels} />
       <Pan trackIndex={trackIndex} channel={channel} />
       <Fader trackIndex={trackIndex} channel={channel} />

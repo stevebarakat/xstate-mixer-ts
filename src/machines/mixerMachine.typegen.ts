@@ -33,6 +33,7 @@ export interface Typegen0 {
     saveBusPanelsPosition: "SAVE_BUS_PANELS_POSITION";
     saveBusPanelsSize: "SAVE_BUS_PANELS_SIZE";
     setBusFx: "SET_BUS_FX";
+    setTrackFx: "SET_TRACK_FX";
     toggleBusPanel: "TOGGLE_BUS_PANEL";
     toggleMute: "TOGGLE_MUTE";
     toggleSolo: "TOGGLE_SOLO";
