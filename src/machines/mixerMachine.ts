@@ -270,10 +270,9 @@ export const mixerMachine = createMachine(
       }),
 
       setTrackFx: pure((context, { value, trackIndex, fxIndex }) => {
-        console.log("context.currentTrackFx", context.currentTrackFx);
         const tempTrackFx = context.currentTrackFx;
         tempTrackFx[trackIndex][fxIndex] = value;
-        // currentTracks.fx[trackIndex][fxIndex] = value;
+        currentTracks.fx[trackIndex][fxIndex] = value;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
