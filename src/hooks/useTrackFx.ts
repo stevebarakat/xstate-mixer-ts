@@ -23,15 +23,15 @@ function useTrackFx(channel: Channel, trackIndex: number) {
 
         case "reverb":
           reverb.current = new Reverb().toDestination();
-          if (!reverb.current) return;
-          channel.disconnect();
+          // if (!reverb.current) return;
+          // channel.disconnect();
           channel.connect(reverb.current);
           break;
 
         case "delay":
           delay.current = new FeedbackDelay().toDestination();
-          if (!delay.current) return;
-          channel.disconnect();
+          // if (!delay.current) return;
+          // channel.disconnect();
           channel.connect(delay.current);
           break;
 

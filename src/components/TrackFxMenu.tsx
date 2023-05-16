@@ -22,11 +22,7 @@ function TrackFxMenu({ trackIndex }: Props) {
               fxIndex,
             });
           }}
-          value={
-            state.context.currentTrackFx[
-              `track${trackIndex + 1}fx${fxIndex + 1}`
-            ]
-          }
+          value={state.context.currentTrackFx[trackIndex][fxIndex]}
         >
           <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
           <option value={"reverb"}>Reverb</option>
