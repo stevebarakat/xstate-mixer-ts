@@ -4,50 +4,42 @@ import { array } from "../utils";
 import { shallowEqual } from "@xstate/react";
 import { MixerMachineContext } from "../App";
 
-function useTrackFx(channel: Channel) {
+function useTrackFx(channel: Channel, trackIndex: number) {
   const currentTrackFx = MixerMachineContext.useSelector((state) => {
     const { currentTrackFx } = state.context;
     return currentTrackFx;
   }, shallowEqual);
 
-  const reverb1 = useRef(new Reverb().toDestination());
-  const reverb2 = useRef(new Reverb().toDestination());
-  const delay1 = useRef(new FeedbackDelay().toDestination());
-  const delay2 = useRef(new FeedbackDelay().toDestination());
+  const reverb = useRef<Reverb | null>(null);
+  const delay = useRef<FeedbackDelay | null>(null);
 
   useEffect(() => {
     array(2).forEach((_, i) => {
-      switch (currentTrackFx[`bus${i + 1}fx${i + 1}`]) {
-        case "nofx1":
+      switch (currentTrackFx[trackIndex][i]) {
+        case "nofx":
           channel.disconnect();
           channel.toDestination();
           break;
-        case "nofx2":
+
+        case "reverb":
+          reverb.current = new Reverb().toDestination();
+          if (!reverb.current) return;
           channel.disconnect();
-          channel.toDestination();
+          channel.connect(reverb.current);
           break;
-        case "reverb1":
+
+        case "delay":
+          delay.current = new FeedbackDelay().toDestination();
+          if (!delay.current) return;
           channel.disconnect();
-          channel.connect(reverb1.current);
+          channel.connect(delay.current);
           break;
-        case "reverb2":
-          channel.disconnect();
-          channel.connect(reverb2.current);
-          break;
-        case "delay1":
-          console.log("channel", channel);
-          channel.disconnect();
-          channel.connect(delay1.current);
-          break;
-        case "delay2":
-          channel.disconnect();
-          channel.connect(delay2.current);
-          break;
+
         default:
           break;
       }
     });
-  }, [currentTrackFx, channel]);
+  }, [currentTrackFx, trackIndex, channel]);
 
   return [channel, currentTrackFx];
 }

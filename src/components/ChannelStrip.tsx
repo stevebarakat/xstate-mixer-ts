@@ -15,7 +15,7 @@ type Props = {
 
 function ChannelStrip({ trackName, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
-  const [trackFx, currentTrackFx] = useTrackFx(channel);
+  const [trackFx, currentTrackFx] = useTrackFx(channel, trackIndex);
   return (
     <div className="channel">
       <TrackFxMenu trackIndex={trackIndex} />
