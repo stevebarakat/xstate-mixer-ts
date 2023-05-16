@@ -35,6 +35,7 @@ function useTrackFx(channel: Channel) {
           channel.connect(reverb2.current);
           break;
         case "delay1":
+          console.log("channel", channel);
           channel.disconnect();
           channel.connect(delay1.current);
           break;

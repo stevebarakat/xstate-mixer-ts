@@ -28,9 +28,9 @@ function TrackFxMenu({ trackIndex }: Props) {
             ]
           }
         >
-          <option value={`nofx${trackIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
-          <option value={`reverb${trackIndex + 1}`}>Reverb</option>
-          <option value={`delay${trackIndex + 1}`}>Delay</option>
+          <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
+          <option value={"reverb"}>Reverb</option>
+          <option value={"delay"}>Delay</option>
         </select>
       ))}
     </>
