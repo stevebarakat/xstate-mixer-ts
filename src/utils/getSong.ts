@@ -23,6 +23,7 @@ export function getSong(defaultSong: Song) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
+      currentTrackFx: ["nofx", "nofx"],
       busPanelsOpen: [true, true],
       busPanelsPosition: { x: 0, y: 0 },
       busPanelsSize: { width: "325px", height: "auto" },
@@ -66,6 +67,7 @@ export function getSong(defaultSong: Song) {
       pan: 0,
       mute: false,
       solo: false,
+      fx: ["nofx", "nofx"],
     }));
     localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
   }

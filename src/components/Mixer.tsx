@@ -1,5 +1,3 @@
-import { useRef } from "react";
-import { Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import useBusFx from "../hooks/useBusFx";
 import Transport from "./Transport";
@@ -17,20 +15,13 @@ type Props = {
 };
 
 export const Mixer = ({ song }: Props) => {
-  const isLoading = MixerMachineContext.useSelector(
-    (state) => state.value === "loading"
+  const isLoading = MixerMachineContext.useSelector((state) =>
+    state.matches("loading")
   );
   const tracks = song.tracks;
-  const [channels] = useChannelStrip({ tracks });
+  const channels = useChannelStrip({ tracks });
 
-  const busFx = useRef({
-    reverb1: new Reverb().toDestination(),
-    delay1: new FeedbackDelay().toDestination(),
-    reverb2: new Reverb().toDestination(),
-    delay2: new FeedbackDelay().toDestination(),
-  });
-
-  const [busChannels, currentBusFx, disabled] = useBusFx({ busFx });
+  const [busChannels, busFx, currentBusFx, disabled] = useBusFx();
 
   return isLoading ? (
     <Loader song={song} />
@@ -46,7 +37,7 @@ export const Mixer = ({ song }: Props) => {
         {tracks.map((track, i) => (
           <ChannelStrip
             key={track.path}
-            track={track}
+            trackName={track.name}
             trackIndex={i}
             channels={channels.current}
           />

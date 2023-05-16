@@ -91,4 +91,5 @@ export type TrackSettings = {
   compressorsKnee: number;
   compressorsAttack: number;
   compressorsRelease: number;
+  fx: string[];
 };

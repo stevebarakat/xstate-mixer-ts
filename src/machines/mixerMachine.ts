@@ -27,7 +27,7 @@ const initialSolos = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.solo
 );
 const initialTrackFx = currentTracks.map(
-  (currentTrack: TrackSettings) => currentTrack.trackFx
+  (currentTrack: TrackSettings) => currentTrack.fx
 );
 
 export const mixerMachine = createMachine(
@@ -37,8 +37,8 @@ export const mixerMachine = createMachine(
     initial: "loading",
     tsTypes: {} as import("./mixerMachine.typegen").Typegen0,
     context: {
-      start: song?.start,
-      end: song?.end,
+      start: song.start,
+      end: song.end,
       currentTime: t.seconds,
       mainVolume: currentMix.mainVolume,
       busVolumes: initialBusVolumes,
@@ -269,6 +269,18 @@ export const mixerMachine = createMachine(
         return [assign({ solo: tempSolos }), soloChannel];
       }),
 
+      setTrackFx: pure((context, { value, trackIndex, fxIndex }) => {
+        console.log("context.currentTrackFx", context.currentTrackFx);
+        const tempTrackFx = context.currentTrackFx;
+        tempTrackFx[trackIndex][fxIndex] = value;
+        // currentTracks.fx[trackIndex][fxIndex] = value;
+        localStorage.setItem(
+          "currentTracks",
+          JSON.stringify([...currentTracks])
+        );
+        return [assign({ currentTrackFx: tempTrackFx })];
+      }),
+
       setBusFx: assign((context, { value, busIndex, fxIndex }) => {
         context.currentBusFx = {
           ...context.currentBusFx,
@@ -281,23 +293,6 @@ export const mixerMachine = createMachine(
             currentBusFx: {
               ...context.currentBusFx,
               [`bus${busIndex + 1}fx${fxIndex + 1}`]: value,
-            },
-          })
-        );
-      }),
-
-      setTrackFx: assign((context, { value, trackIndex, fxIndex }) => {
-        context.currentTrackFx = {
-          ...context.currentTrackFx,
-          [`track${trackIndex + 1}fx${fxIndex + 1}`]: value,
-        };
-        localStorage.setItem(
-          "currentMix",
-          JSON.stringify({
-            ...currentTracks,
-            currentTrackFx: {
-              ...context.currentTrackFx,
-              [`track${trackIndex + 1}fx${fxIndex + 1}`]: value,
             },
           })
         );

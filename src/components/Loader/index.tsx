@@ -1,10 +1,13 @@
 import { MixerMachineContext } from "../../App";
 import { loaded } from "tone";
-import "./styles.css";
+import type { Song } from "../../types/global";
+import "./loader.css";
 
-const Spinner = ({ song }) => {
+type Props = {
+  song: Song;
+};
+const Spinner = ({ song }: Props) => {
   const [, send] = MixerMachineContext.useActor();
-
   loaded().then(() => send("LOADED"));
 
   return (

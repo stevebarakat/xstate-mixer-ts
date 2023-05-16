@@ -23,7 +23,9 @@ function TrackFxMenu({ trackIndex }: Props) {
             });
           }}
           value={
-            state.context.currentBusFx[`bus${trackIndex + 1}fx${fxIndex + 1}`]
+            state.context.currentTrackFx[
+              `track${trackIndex + 1}fx${fxIndex + 1}`
+            ]
           }
         >
           <option value={`nofx${trackIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>

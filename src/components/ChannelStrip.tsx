@@ -4,17 +4,18 @@ import Sends from "./Sends";
 import Fader from "./Fader";
 import TrackLabel from "./TrackLabel";
 import TrackFxMenu from "./TrackFxMenu";
-import type { Track } from "../types/global";
+import useTrackFx from "../hooks/useTrackFx";
 import type { Channel } from "tone";
 
 type Props = {
-  track: Track;
+  trackName: string;
   trackIndex: number;
   channels: Channel[];
 };
 
-function ChannelStrip({ track, trackIndex, channels }: Props) {
+function ChannelStrip({ trackName, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
+  const [trackFx, currentTrackFx] = useTrackFx(channel);
   return (
     <div className="channel">
       <TrackFxMenu trackIndex={trackIndex} />
@@ -22,7 +23,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       <Pan trackIndex={trackIndex} channel={channel} />
       <Fader trackIndex={trackIndex} channel={channel} />
       <SoloMute trackIndex={trackIndex} channel={channel} />
-      <TrackLabel trackName={track.name} />
+      <TrackLabel trackName={trackName} />
     </div>
   );
 }

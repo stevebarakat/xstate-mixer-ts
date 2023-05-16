@@ -1,15 +1,22 @@
 import { useEffect, useRef } from "react";
-import { Channel } from "tone";
+import { Reverb, FeedbackDelay, Channel } from "tone";
 import { array } from "../utils";
 import { shallowEqual } from "@xstate/react";
 import { MixerMachineContext } from "../App";
 
-function useBusFx({ busFx }: any) {
+function useBusFx() {
   const busChannels = useRef([new Channel(), new Channel()]);
   const currentBusFx = MixerMachineContext.useSelector((state) => {
     const { currentBusFx } = state.context;
     return currentBusFx;
   }, shallowEqual);
+
+  const busFx = useRef({
+    reverb1: new Reverb().toDestination(),
+    delay1: new FeedbackDelay().toDestination(),
+    reverb2: new Reverb().toDestination(),
+    delay2: new FeedbackDelay().toDestination(),
+  });
 
   // TODO - DISABLED!!
   const disabled = {
@@ -54,7 +61,7 @@ function useBusFx({ busFx }: any) {
     });
   }, [currentBusFx, busFx]);
 
-  return [busChannels, currentBusFx, disabled];
+  return [busChannels, busFx, currentBusFx, disabled];
 }
 
 export default useBusFx;
