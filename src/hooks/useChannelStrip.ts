@@ -11,20 +11,14 @@ function useChannelStrip({ tracks }: Props) {
   const players = useRef<Player[] | []>([]);
 
   useEffect(() => {
-    for (let i = 0; i < tracks.length; i++) {
-      channels.current = channels.current && [
-        ...channels.current,
-        new Channel({ volume: 0 }),
-      ];
-      players.current = players.current && [
-        ...players.current,
-        new Player(tracks[i].path),
-      ];
-    }
+    tracks.forEach((_, i) => {
+      channels.current = [...channels.current, new Channel()];
+      players.current = [...players.current, new Player(tracks[i].path)];
+    });
 
     players.current?.forEach((player, i) => {
       channels.current &&
-        player.chain(channels.current[i], Destination).sync().start("+0.5");
+        player.chain(channels.current[i]).toDestination().sync().start("+0.5");
     });
 
     return () => {

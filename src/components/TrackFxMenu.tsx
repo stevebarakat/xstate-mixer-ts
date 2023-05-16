@@ -23,12 +23,10 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
     fx(2).forEach(() => {
       switch (e.currentTarget.value) {
         case "nofx":
-          channel.disconnect();
-          channel.toDestination();
           break;
 
         case "reverb":
-          reverb.current = new Reverb().toDestination();
+          reverb.current = new Reverb(8).toDestination();
           if (!reverb.current) return;
           channel.disconnect();
           channel.connect(reverb.current);
