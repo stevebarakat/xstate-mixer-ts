@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { Reverb, FeedbackDelay, Channel } from "tone";
 import { array as fx } from "../utils";
-// import { shallowEqual } from "@xstate/react";
+import { shallowEqual } from "@xstate/react";
 import { MixerMachineContext } from "../App";
 
 type Props = {
@@ -11,30 +11,36 @@ type Props = {
 
 function TrackFxMenu({ trackIndex, channel }: Props) {
   const [state, send] = MixerMachineContext.useActor();
-  // const currentTrackFx = MixerMachineContext.useSelector((state) => {
-  //   const { currentTrackFx } = state.context;
-  //   return currentTrackFx;
-  // }, shallowEqual);
+  const currentTrackFx = MixerMachineContext.useSelector((state) => {
+    const { currentTrackFx } = state.context;
+    return currentTrackFx;
+  }, shallowEqual);
 
   const reverb = useRef<Reverb | null>(null);
   const delay = useRef<FeedbackDelay | null>(null);
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>): void {
-    fx(2).forEach(() => {
+    fx(2).forEach((_: void, fxIndex: number) => {
       switch (e.currentTarget.value) {
         case "nofx":
           break;
 
         case "reverb":
           reverb.current = new Reverb(8).toDestination();
-          if (!reverb.current) return;
           channel.disconnect();
           channel.connect(reverb.current);
+
+          send({
+            type: "SET_TRACK_FX",
+            value: parseFloat(e.currentTarget.value),
+            trackIndex,
+            fxIndex,
+          });
+
           break;
 
         case "delay":
           delay.current = new FeedbackDelay().toDestination();
-          if (!delay.current) return;
           channel.disconnect();
           channel.connect(delay.current);
           break;
@@ -44,7 +50,11 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
       }
     });
   }
-
+  console.log("currentTrackFx", currentTrackFx);
+  console.log(
+    "state.context.currentTrackFx[trackIndex][fxIndex]",
+    state.context.currentTrackFx[trackIndex][0]
+  );
   return (
     <>
       {fx(2).map((_, fxIndex) => (
