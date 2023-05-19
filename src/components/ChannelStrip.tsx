@@ -39,13 +39,16 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       case "nofx":
         channel.disconnect();
         channel.connect(Destination);
+        setPanel(null);
         break;
 
       case "reverb":
         channel.disconnect();
         channel.connect(reverb.current).toDestination();
         setPanel(
-          <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
+          <Rnd className="fx-panel" default={defaults} cancel="input">
+            <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
+          </Rnd>
         );
         break;
 
@@ -53,7 +56,11 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.disconnect();
         channel.connect(delay.current).toDestination();
 
-        setPanel(<TrackDelay delay={delay.current} trackIndex={trackIndex} />);
+        setPanel(
+          <Rnd className="fx-panel" default={defaults} cancel="input">
+            <TrackDelay delay={delay.current} trackIndex={trackIndex} />
+          </Rnd>
+        );
         break;
 
       default:
@@ -64,9 +71,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   return (
     <div className="channel">
       <>
-        <Rnd className="fx-panel" default={defaults} cancel="input">
-          {panel}
-        </Rnd>
+        {panel}
         {fx(2).map((_, fxIndex) => (
           <select
             key={fxIndex}
