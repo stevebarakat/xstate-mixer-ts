@@ -2,7 +2,7 @@ import { array } from "./../utils";
 import { Rnd } from "react-rnd";
 import CloseButton from "./Buttons/CloseButton";
 import Reverber from "./TrackFx/Reverber";
-import Delay from "./Fx/Delay";
+import Delay from "./TrackFx/Delay";
 import { MixerMachineContext } from "./../App";
 import type { FeedbackDelay, Reverb } from "tone";
 
@@ -10,10 +10,10 @@ type Props = {
   trackIndex: number;
   disabled: boolean;
   currentTrackFx: string[];
-  fx: React.MutableRefObject<{
+  fx: {
     reverb: Reverb;
     delay: FeedbackDelay;
-  }>;
+  };
 };
 
 const defaults = {
@@ -42,35 +42,29 @@ function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
         </CloseButton>
 
         {array(2).map((_, i) => {
-          let ubu;
-          console.log("currentTrackFx", Array.isArray(currentTrackFx));
           switch (currentTrackFx[trackIndex][i]) {
             // switch ("reverb") {
             case "nofx":
-              ubu = null;
               break;
             case "reverb":
-              ubu = (
+              return (
                 <Reverber
                   key={`track${trackIndex}reverb${i}`}
-                  reverb={fx.current.reverb}
+                  reverb={fx.reverb}
                   trackIndex={trackIndex}
                 />
               );
-              break;
             case "delay":
-              ubu = (
+              return (
                 <Delay
                   key={`track${trackIndex}delay${i}`}
-                  delay={fx.current.delay}
+                  delay={fx.delay}
                   trackIndex={trackIndex}
                 />
               );
-              break;
             default:
               break;
           }
-          return ubu;
         })}
       </Rnd>
     </div>

@@ -68,6 +68,16 @@ export function getSong(defaultSong: Song) {
       mute: false,
       solo: false,
       fx: ["nofx", "nofx"],
+      trackFxData: {
+        reverbsBypass: [false, false, false, false],
+        reverbsMix: [0.5, 0.5, 0.5, 0.5],
+        reverbsPreDelay: [0.5, 0.5, 0.5, 0.5],
+        reverbsDecay: [0.5, 0.5, 0.5, 0.5],
+        delaysBypass: [false, false, false, false],
+        delaysMix: [0.5, 0.5, 0.5, 0.5],
+        delaysTime: [0.5, 0.5, 0.5, 0.5],
+        delaysFeedback: [0.5, 0.5, 0.5, 0.5],
+      },
     }));
     localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
   }

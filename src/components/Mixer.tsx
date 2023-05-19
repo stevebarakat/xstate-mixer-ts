@@ -12,13 +12,21 @@ import Main from "./Main";
 import BusChannel from "./Bus/BusChannel";
 import { MixerMachineContext } from "../App";
 import type { Song } from "../types/global";
+import { shallowEqual } from "@xstate/react";
 
 type Props = {
   song: Song;
 };
 
 export const Mixer = ({ song }: Props) => {
-  const [state, send] = MixerMachineContext.useActor();
+  // const [state, send] = MixerMachineContext.useActor();
+  const currentTrackFx = MixerMachineContext.useSelector((state) => {
+    const { currentTrackFx } = state.context;
+    return currentTrackFx;
+  }, shallowEqual);
+
+  const reverb = useRef<Reverb | null>(null);
+  const delay = useRef<FeedbackDelay | null>(null);
   const isLoading = MixerMachineContext.useSelector((state) =>
     state.matches("loading")
   );
@@ -44,13 +52,8 @@ export const Mixer = ({ song }: Props) => {
       />
       <div className="channels">
         {tracks.map((track, i) => {
-          console.log(
-            "state.context.currentTrackFx",
-            state.context.currentTrackFx[i]
-          );
-          const disabled = state.context.currentTrackFx[i].every(
-            (fx) => fx === "nofx"
-          );
+          console.log(".currentTrackFx[i]", currentTrackFx[i]);
+          const disabled = currentTrackFx[i].every((fx) => fx === "nofx");
 
           return (
             <Fragment key={track.id}>
@@ -58,8 +61,8 @@ export const Mixer = ({ song }: Props) => {
                 <TrackPanel
                   trackIndex={i}
                   disabled={disabled}
-                  currentTrackFx={state.context.currentTrackFx}
-                  fx={fx}
+                  currentTrackFx={currentTrackFx}
+                  fx={fx.current}
                 />
               )}
               <ChannelStrip

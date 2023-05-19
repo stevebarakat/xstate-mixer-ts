@@ -70,6 +70,7 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
     });
   }
 
+  console.log("currentTrackFx[trackIndex]", currentTrackFx[trackIndex]);
   return (
     <>
       {fx(2).map((_, fxIndex) => (

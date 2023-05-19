@@ -29,7 +29,10 @@ const initialSolos = currentTracks.map(
 const initialTrackFx = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.fx
 );
-
+const initialTrackFxData = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackFxData
+);
+console.log("initialTrackFxData", initialTrackFxData);
 export const mixerMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EA2AIwAWAHQBOYeIBMggBwB2AKwAaEAE9EAWgViAzIP7DK-aUoC+5tWky5CAdQCSAOQAiVWkhBMW7Ljz4EYSUlUTlxOWE9ZTVNBC1ouVFBM0trDGwcADEsjx4fNg5uL0DpPWlRJUo9cRMzWO1E5NSrEBtMgGEACQBBZwBxAgB9ADUAeQAZAFUAWQI8rwK-YtBA8P5k-gVxfkVVDW1BJUFRKX5KcWiLVvbcbr7BoZmel1HJ2fmafOZC-xLEORKMSUQSCBTyGIHeJ6c6iMw1OrXdK2HD3AbDABCUyIb2mcwWDB+ywC2mEKVOZOMpn2cT05UqCOpaTaGVwJFIQyxOKyAA0Cd4iUUeHEtNJtpVKAo5Cl9mtdpUxXoospmbdUb10UMAAp9flLIX-BBySWnJQGepQvRyDYKJVXVWsnCkMb9foTYZESZjPWCv6rAFKDb8cQyCE07TSSinMxSmUOlHO13up5TUifTyE3wG-1GvShYSRK4NBARSqxlrIzIYgCaOqIOMIIwIeAxPqzfqhovFVXLsoB8qUiuVSJZKLRj0bzYxOJmjj5X0WvpWvEaUtE1OLgnEJ2t4L28c6GonBCbLZxWsIrgIEx61bbv2XgS0xj0FLNMuLwg2NWC5pHavHYZJzPIYrw6W972JQ1n1BN8-2LHR9EMKkK1HKtax6etQOvCCF0zB9hQjbtJWlC05SSQdbWHA87iPYYrxvasZznSDs07MVxAlXs1HIhUqPtG5HUA7DGJxUhHHxPCBXbZcRQ4rjSL7I0ByHATK1oh56JwpihiyAgCFcDEeg6ABpViOzk4juJXZSKNUlVBNsUQABtGAAQwgVBOCgHAJjGHor3cKT9Q7QJjCjaRIv4QMLRFFIkgUYN31Q25RHoZy3PULyfJ1bF02+GSSSCbc4TDBDTAkQQQRi-9WTSjKsu80QvLcgBjdgADcwBwIgeibTlsW1PprxxMYtQIZxzMfRA9EoMRBzNWoNyhMkkjKObdgc9T6sy7LRDazrut6-quSG5wRqGMaJqmorZG-WaSI-KFZB3ShHpSurYFYRh6HoSAcC1RibsNQxOPKYRZD2cqKm3aqmUc7BRC+n6-ogZrOAO1Aup6vrMUGnVzomUbxsm4Kl0IhAlQ2Y0vyhmzEpOapjhqmike+37IH29qsaO3GBvPYaicukngdAOIXrCN7rMCfh+FfSgymo5lOEYCA4B4W4CoI6DQmNWWUPDeJ5J7RTWdcjzsq1qCc2MXW5ekRSEK3CopdNhGsB2xqoCttiwoqLc6SUS5ITiBQoxDSGtrQj30t2pqWu5rqfdCxAA+SLcRERYs6RONTo89vbMaTxdCsNWpkkuPNg8NyN81Dfd3bZlHIGT6agjBMItjKqEUn0V240b5GObRhPDtboqQkZvMjmW2kv0l2mo9SofUa5seS+1m3os7vcQ8QCXjXe65LCAA */
@@ -61,6 +64,7 @@ export const mixerMachine = createMachine(
         delaysTime: currentMix.busFxData.delaysTime,
         delaysFeedback: currentMix.busFxData.delaysFeedback,
       },
+      trackFxData: initialTrackFxData,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -75,11 +79,14 @@ export const mixerMachine = createMachine(
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
       BYPASS_REVERB: { actions: "bypassReverb" },
+      BYPASS_TRACK_REVERB: { actions: "bypassTrackReverb" },
       CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
+      CHANGE_TRACK_REVERBS_MIX: { actions: "changeTrackReverbsMix" },
       CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
       BYPASS_DELAY: { actions: "bypassDelay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
+      CHANGE_TRACK_DELAYS_MIX: { actions: "changeTrackDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
       SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
@@ -153,7 +160,9 @@ export const mixerMachine = createMachine(
         | { type: "TOGGLE_SOLO" }
         | { type: "TOGGLE_MUTE" }
         | { type: "BYPASS_REVERB" }
+        | { type: "BYPASS_TRACK_REVERB" }
         | { type: "CHANGE_REVERBS_MIX" }
+        | { type: "CHANGE_TRACK_REVERBS_MIX" }
         | { type: "CHANGE_REVERBS_PREDELAY" }
         | { type: "CHANGE_REVERBS_DECAY" }
         | { type: "BYPASS_DELAY" }
@@ -165,6 +174,7 @@ export const mixerMachine = createMachine(
         | { type: "PLAY" }
         | { type: "SAVE_BUS_PANELS_POSITION" }
         | { type: "SAVE_BUS_PANELS_SIZE" }
+        | { type: "CHANGE_TRACK_DELAYS_MIX" }
         | { type: "TOGGLE_TRACK_PANEL" },
     },
     predictableActionArguments: true,
@@ -272,9 +282,9 @@ export const mixerMachine = createMachine(
       }),
 
       setTrackFx: pure((context, { target, trackIndex, fxIndex }) => {
-        const currentTracksString = localStorage.getItem("currentTracks");
-        const currentTracks =
-          currentTracksString && JSON.parse(currentTracksString);
+        // const currentTracksString = localStorage.getItem("currentTracks");
+        // const currentTracks =
+        //   currentTracksString && JSON.parse(currentTracksString);
         const id = target.id.at(-1);
         const tempTrackFx = context.currentTrackFx;
         tempTrackFx[trackIndex][id] = target.value;
@@ -283,7 +293,7 @@ export const mixerMachine = createMachine(
           "currentTracks",
           JSON.stringify([...currentTracks])
         );
-        return [assign({ currentTrackFx: tempTrackFx })];
+        return [assign({ currentTrackFx: tempTrackFx }), currentTracks];
       }),
 
       setBusFx: assign((context, { value, busIndex, fxIndex }) => {
@@ -316,6 +326,21 @@ export const mixerMachine = createMachine(
         return [assign({ reverbsBypass: tempReverbsBypass })];
       }),
 
+      bypassTrackReverb: pure((context, { checked, reverb, trackIndex }) => {
+        console.log("reverb", reverb);
+        const tempReverbsBypass = context.trackFxData[trackIndex].reverbsBypass;
+        tempReverbsBypass[trackIndex] = checked;
+        currentTracks[trackIndex].trackFxData.reverbsBypass[trackIndex] =
+          checked;
+        if (checked) {
+          reverb.disconnect();
+        } else {
+          reverb.connect(Destination);
+        }
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ reverbsBypass: tempReverbsBypass })];
+      }),
+
       changeReverbsMix: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {
           reverb.wet.value = value;
@@ -326,6 +351,19 @@ export const mixerMachine = createMachine(
           return [assign({ reverbsMix: tempReverbsMix })];
         }
       ),
+
+      changeTrackReverbsMix: pure((context, { value, reverb, trackIndex }) => {
+        const currentTracksString = localStorage.getItem("currentTracks");
+        const currentTracks =
+          currentTracksString && JSON.parse(currentTracksString);
+        reverb.wet.value = value;
+        console.log("reverb", reverb.wet.value);
+        const tempReverbsMix = context.trackFxData[trackIndex].reverbsMix;
+        tempReverbsMix[trackIndex] = value;
+        currentTracks[trackIndex].trackFxData.reverbsMix[trackIndex] = value;
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ reverbsMix: tempReverbsMix })];
+      }),
 
       changeReverbsPredelay: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {
@@ -369,6 +407,15 @@ export const mixerMachine = createMachine(
         currentMix.busFxData.delaysMix[busIndex][fxIndex] = value;
         localStorage.setItem("currentMix", JSON.stringify(currentMix));
         return [assign({ delaysMix: tempDelaysMix })];
+      }),
+
+      changeTrackDelaysMix: pure((context, { value, delay, trackIndex }) => {
+        delay.wet.value = value;
+        const tempDelaysMix = context.busFxData.delaysMix;
+        tempDelaysMix[trackIndex] = value;
+        currentMix.busFxData.delaysMix[trackIndex] = value;
+        localStorage.setItem("currentMix", JSON.stringify(currentMix));
+        return [assign({ trackDelaysMix: tempDelaysMix })];
       }),
 
       changeDelaysTime: pure((context, { value, delay, busIndex, fxIndex }) => {

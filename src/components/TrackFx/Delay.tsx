@@ -4,14 +4,13 @@ import type { FeedbackDelay } from "tone";
 
 type Props = {
   delay: FeedbackDelay;
-  busIndex: number;
-  fxIndex: number;
+  trackIndex: number;
 };
 
-export default function Delay({ delay, busIndex, fxIndex }: Props) {
+export default function Delay({ delay, trackIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  const disabled = state.context.busFxData.delaysBypass[busIndex];
+  const disabled = state.context.busFxData.delaysBypass[trackIndex];
 
   return (
     <div>
@@ -19,21 +18,20 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
         <h3>Delay</h3>
         <div className="power-button">
           <input
-            id={`bus${busIndex}delayBypass`}
+            id={`track${trackIndex}delayBypass`}
             type="checkbox"
-            value={state.context.busFxData.delaysBypass[busIndex]}
+            value={state.context.busFxData.delaysBypass[trackIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_DELAY",
                 checked: e.currentTarget.checked,
                 delay,
-                busIndex,
-                fxIndex,
+                trackIndex,
               });
             }}
-            checked={state.context.busFxData.delaysBypass[busIndex][fxIndex]}
+            checked={state.context.busFxData.delaysBypass[trackIndex]}
           />
-          <label htmlFor={`bus${busIndex}delayBypass`}>{powerIcon}</label>
+          <label htmlFor={`bus${trackIndex}delayBypass`}>{powerIcon}</label>
         </div>
       </div>
       <div className="flex-y">
@@ -46,14 +44,13 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysMix[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_DELAYS_MIX",
+              type: "CHANGE_TRACK_DELAYS_MIX",
               value: parseFloat(e.currentTarget.value),
               delay,
-              busIndex,
-              fxIndex,
+              trackIndex,
             });
           }}
         />
@@ -68,14 +65,13 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysTime[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_DELAYS_TIME",
               value: parseFloat(e.currentTarget.value),
               delay,
-              busIndex,
-              fxIndex,
+              trackIndex,
             });
           }}
         />
@@ -90,14 +86,13 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
+          value={state.context.busFxData.delaysFeedback[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_DELAYS_FEEDBACK",
               value: parseFloat(e.currentTarget.value),
               delay,
-              busIndex,
-              fxIndex,
+              trackIndex,
             });
           }}
         />

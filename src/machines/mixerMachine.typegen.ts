@@ -15,6 +15,7 @@ export interface Typegen0 {
   eventsCausingActions: {
     bypassDelay: "BYPASS_DELAY";
     bypassReverb: "BYPASS_REVERB";
+    bypassTrackReverb: "BYPASS_TRACK_REVERB";
     changeBusVolume: "CHANGE_BUS_VOLUME";
     changeDelaysFeedback: "CHANGE_DELAYS_FEEDBACK";
     changeDelaysMix: "CHANGE_DELAYS_MIX";
@@ -24,6 +25,8 @@ export interface Typegen0 {
     changeReverbsDecay: "CHANGE_REVERBS_DECAY";
     changeReverbsMix: "CHANGE_REVERBS_MIX";
     changeReverbsPredelay: "CHANGE_REVERBS_PREDELAY";
+    changeTrackDelaysMix: "CHANGE_TRACK_DELAYS_MIX";
+    changeTrackReverbsMix: "CHANGE_TRACK_REVERBS_MIX";
     changeVolume: "CHANGE_VOLUME";
     fastForward: "FF";
     pause: "PAUSE";
