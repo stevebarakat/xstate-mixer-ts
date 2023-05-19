@@ -43,22 +43,34 @@ export const Mixer = ({ song }: Props) => {
         disabled={disabled}
       />
       <div className="channels">
-        {tracks.map((track, i) => (
-          <>
-            <TrackPanel
-              trackIndex={i}
-              disabled={disabled}
-              currentTrackFx={state.context.currentTrackFx}
-              fx={fx}
-            />
-            <ChannelStrip
-              key={track.path}
-              trackName={track.name}
-              trackIndex={i}
-              channels={channels.current}
-            />
-          </>
-        ))}
+        {tracks.map((track, i) => {
+          console.log(
+            "state.context.currentTrackFx",
+            state.context.currentTrackFx[i]
+          );
+          const disabled = state.context.currentTrackFx[i].every(
+            (fx) => fx === "nofx"
+          );
+
+          return (
+            <>
+              {!disabled && (
+                <TrackPanel
+                  trackIndex={i}
+                  disabled={disabled}
+                  currentTrackFx={state.context.currentTrackFx}
+                  fx={fx}
+                />
+              )}
+              <ChannelStrip
+                key={track.path}
+                trackName={track.name}
+                trackIndex={i}
+                channels={channels.current}
+              />
+            </>
+          );
+        })}
         {busChannels.current.map((_: void, i: number) => (
           <BusChannel
             key={i}
