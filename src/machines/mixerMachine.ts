@@ -494,6 +494,22 @@ export const mixerMachine = createMachine(
         return [assign({ delaysTime: tempDelaysTime })];
       }),
 
+      changeTrackDelaysFeedback: pure(
+        (context, { value, delay, trackIndex }) => {
+          const currentTracksString = localStorage.getItem("currentTracks");
+          const currentTracks =
+            currentTracksString && JSON.parse(currentTracksString);
+          delay.feedback.value = value;
+          const tempDelaysFeedback =
+            context.trackFxData[trackIndex].delaysFeedback;
+          tempDelaysFeedback[trackIndex] = value;
+          currentTracks[trackIndex].trackFxData.delaysFeedback[trackIndex] =
+            value;
+          localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+          return [assign({ delaysFeedback: tempDelaysFeedback })];
+        }
+      ),
+
       toggleBusPanel: pure((context, { busIndex }) => {
         const tempBusPanelsOpen = context.busPanelsOpen;
         tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
