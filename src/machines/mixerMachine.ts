@@ -83,7 +83,9 @@ export const mixerMachine = createMachine(
       CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
       CHANGE_TRACK_REVERBS_MIX: { actions: "changeTrackReverbsMix" },
       CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
+      CHANGE_TRACK_REVERBS_PREDELAY: { actions: "changeTrackReverbsPredelay" },
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
+      CHANGE_TRACK_REVERBS_DECAY: { actions: "changeTrackReverbsDecay" },
       BYPASS_DELAY: { actions: "bypassDelay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_TRACK_DELAYS_MIX: { actions: "changeTrackDelaysMix" },
@@ -164,7 +166,9 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_REVERBS_MIX" }
         | { type: "CHANGE_TRACK_REVERBS_MIX" }
         | { type: "CHANGE_REVERBS_PREDELAY" }
+        | { type: "CHANGE_TRACK_REVERBS_PREDELAY" }
         | { type: "CHANGE_REVERBS_DECAY" }
+        | { type: "CHANGE_TRACK_REVERBS_DECAY" }
         | { type: "BYPASS_DELAY" }
         | { type: "CHANGE_DELAYS_MIX" }
         | { type: "CHANGE_DELAYS_TIME" }
@@ -357,13 +361,46 @@ export const mixerMachine = createMachine(
         const currentTracks =
           currentTracksString && JSON.parse(currentTracksString);
         reverb.wet.value = value;
-        console.log("reverb", reverb.wet.value);
+        console.log("reverb.mix", reverb.wet.value);
         const tempReverbsMix = context.trackFxData[trackIndex].reverbsMix;
         tempReverbsMix[trackIndex] = value;
         currentTracks[trackIndex].trackFxData.reverbsMix[trackIndex] = value;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ reverbsMix: tempReverbsMix })];
       }),
+
+      changeTrackReverbsPredelay: pure(
+        (context, { value, reverb, trackIndex }) => {
+          const currentTracksString = localStorage.getItem("currentTracks");
+          const currentTracks =
+            currentTracksString && JSON.parse(currentTracksString);
+          reverb.preDelay = value;
+          console.log("reverb.preDealy", reverb.preDelay);
+          const tempReverbsPreDelay =
+            context.trackFxData[trackIndex].reverbsPreDelay;
+          tempReverbsPreDelay[trackIndex] = value;
+          currentTracks[trackIndex].trackFxData.reverbsPreDelay[trackIndex] =
+            value;
+          localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+          return [assign({ reverbsPreDelay: tempReverbsPreDelay })];
+        }
+      ),
+
+      changeTrackReverbsDecay: pure(
+        (context, { value, reverb, trackIndex }) => {
+          const currentTracksString = localStorage.getItem("currentTracks");
+          const currentTracks =
+            currentTracksString && JSON.parse(currentTracksString);
+          reverb.decay = value;
+          console.log("reverb.decay", reverb.decay);
+          const tempReverbsDecay = context.trackFxData[trackIndex].reverbsDecay;
+          tempReverbsDecay[trackIndex] = value;
+          currentTracks[trackIndex].trackFxData.reverbsDecay[trackIndex] =
+            value;
+          localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+          return [assign({ reverbsDecay: tempReverbsDecay })];
+        }
+      ),
 
       changeReverbsPredelay: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {

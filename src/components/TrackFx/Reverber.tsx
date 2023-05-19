@@ -64,7 +64,7 @@ export default function Reverber({ reverb, trackIndex }: Props) {
           }}
         />
       </div>
-      {/* <div className="flex-y">
+      <div className="flex-y">
         <label htmlFor="pre-delay">Pre Delay:</label>
         <input
           type="range"
@@ -73,11 +73,11 @@ export default function Reverber({ reverb, trackIndex }: Props) {
           min={0}
           max={1}
           step={0.01}
-          value={trackFxData.reverbsPreDelay[trackIndex]}
+          value={trackFxData[trackIndex].reverbsPreDelay[trackIndex]}
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_PREDELAY",
+              type: "CHANGE_TRACK_REVERBS_PREDELAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
@@ -94,18 +94,18 @@ export default function Reverber({ reverb, trackIndex }: Props) {
           min={0.1}
           max={20}
           step={0.1}
-          value={trackFxData.reverbsDecay[trackIndex]}
+          value={trackFxData[trackIndex].reverbsDecay[trackIndex]}
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_DECAY",
+              type: "CHANGE_TRACK_REVERBS_DECAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
             });
           }}
         />
-      </div> */}
+      </div>
     </div>
   );
 }

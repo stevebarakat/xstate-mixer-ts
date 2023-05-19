@@ -26,7 +26,9 @@ export interface Typegen0 {
     changeReverbsMix: "CHANGE_REVERBS_MIX";
     changeReverbsPredelay: "CHANGE_REVERBS_PREDELAY";
     changeTrackDelaysMix: "CHANGE_TRACK_DELAYS_MIX";
+    changeTrackReverbsDecay: "CHANGE_TRACK_REVERBS_DECAY";
     changeTrackReverbsMix: "CHANGE_TRACK_REVERBS_MIX";
+    changeTrackReverbsPredelay: "CHANGE_TRACK_REVERBS_PREDELAY";
     changeVolume: "CHANGE_VOLUME";
     fastForward: "FF";
     pause: "PAUSE";
