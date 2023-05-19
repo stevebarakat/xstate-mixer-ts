@@ -5,11 +5,12 @@ import Reverber from "./TrackFx/Reverber";
 import Delay from "./TrackFx/Delay";
 import { MixerMachineContext } from "./../App";
 import type { FeedbackDelay, Reverb } from "tone";
+import { shallowEqual } from "@xstate/react";
 
 type Props = {
   trackIndex: number;
   disabled: boolean;
-  currentTrackFx: string[];
+  // currentTrackFx: string[];
   fx: {
     reverb: Reverb;
     delay: FeedbackDelay;
@@ -23,9 +24,12 @@ const defaults = {
   height: "auto",
 };
 
-function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
+function TrackPanel({ trackIndex, fx, disabled }: Props) {
   const { send } = MixerMachineContext.useActorRef();
-
+  const currentTrackFx = MixerMachineContext.useSelector((state) => {
+    const { currentTrackFx } = state.context;
+    return currentTrackFx;
+  }, shallowEqual);
   return (
     <div>
       <Rnd className="fx-panel" default={defaults} cancel="input">

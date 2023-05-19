@@ -20,10 +20,10 @@ type Props = {
 
 export const Mixer = ({ song }: Props) => {
   // const [state, send] = MixerMachineContext.useActor();
-  const currentTrackFx = MixerMachineContext.useSelector((state) => {
-    const { currentTrackFx } = state.context;
-    return currentTrackFx;
-  }, shallowEqual);
+  // const currentTrackFx = MixerMachineContext.useSelector((state) => {
+  //   const { currentTrackFx } = state.context;
+  //   return currentTrackFx;
+  // }, shallowEqual);
 
   const reverb = useRef<Reverb | null>(null);
   const delay = useRef<FeedbackDelay | null>(null);
@@ -52,8 +52,8 @@ export const Mixer = ({ song }: Props) => {
       />
       <div className="channels">
         {tracks.map((track, i) => {
-          console.log(".currentTrackFx[i]", currentTrackFx[i]);
-          const disabled = currentTrackFx[i].every((fx) => fx === "nofx");
+          // console.log(".currentTrackFx[i]", currentTrackFx[i]);
+          // const disabled = currentTrackFx[i].every((fx) => fx === "nofx");
 
           return (
             <Fragment key={track.id}>
@@ -61,7 +61,6 @@ export const Mixer = ({ song }: Props) => {
                 <TrackPanel
                   trackIndex={i}
                   disabled={disabled}
-                  currentTrackFx={currentTrackFx}
                   fx={fx.current}
                 />
               )}

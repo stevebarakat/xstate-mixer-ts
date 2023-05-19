@@ -3,10 +3,15 @@ import type { Song } from "../types/global";
 export function getSong(defaultSong: Song) {
   const defaultSongString = JSON.stringify(defaultSong);
   const songString = localStorage.getItem("song");
+  const parsedSong = songString && JSON.parse(songString);
 
-  const song =
-    (songString && JSON.parse(songString)) ??
+  let song;
+  if (parsedSong) {
+    song = parsedSong;
+  } else {
     localStorage.setItem("song", defaultSongString);
+    song = defaultSong;
+  }
 
   const currentMixString = localStorage.getItem("currentMix");
   let currentMix = currentMixString && JSON.parse(currentMixString);
