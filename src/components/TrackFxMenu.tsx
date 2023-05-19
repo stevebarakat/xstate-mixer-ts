@@ -10,11 +10,12 @@ type Props = {
 };
 
 function TrackFxMenu({ trackIndex, channel }: Props) {
-  const [state, send] = MixerMachineContext.useActor();
-  // const currentTrackFx = MixerMachineContext.useSelector((state) => {
-  //   const { currentTrackFx } = state.context;
-  //   return currentTrackFx;
-  // }, shallowEqual);
+  // const [state, send] = MixerMachineContext.useActor();
+  const { send } = MixerMachineContext.useActorRef();
+  const currentTrackFx = MixerMachineContext.useSelector((state) => {
+    const { currentTrackFx } = state.context;
+    return currentTrackFx;
+  }, shallowEqual);
 
   const reverb = useRef<Reverb | null>(null);
   const delay = useRef<FeedbackDelay | null>(null);
@@ -23,6 +24,9 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
     fx(2).map((_: void, fxIndex: number) => {
       switch (e.currentTarget.value) {
         case "nofx":
+          channel.disconnect();
+          channel.connect(new Channel());
+
           send({
             type: "SET_TRACK_FX",
             target: e.currentTarget,
@@ -73,7 +77,7 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
           key={fxIndex}
           id={`track${trackIndex}fx${fxIndex}`}
           onChange={setTrackFx}
-          value={state.context.currentTrackFx[trackIndex][fxIndex]}
+          value={currentTrackFx[trackIndex][fxIndex]}
         >
           <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
           <option value={"reverb"}>Reverb</option>
