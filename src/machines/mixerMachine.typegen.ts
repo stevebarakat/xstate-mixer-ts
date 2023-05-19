@@ -7,7 +7,7 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {};
   missingImplementations: {
-    actions: never;
+    actions: "changeTrackDelaysFeedback" | "changeTrackDelaysTime";
     delays: never;
     guards: never;
     services: never;
@@ -25,7 +25,9 @@ export interface Typegen0 {
     changeReverbsDecay: "CHANGE_REVERBS_DECAY";
     changeReverbsMix: "CHANGE_REVERBS_MIX";
     changeReverbsPredelay: "CHANGE_REVERBS_PREDELAY";
+    changeTrackDelaysFeedback: "CHANGE_TRACK_DELAYS_FEEDBACK";
     changeTrackDelaysMix: "CHANGE_TRACK_DELAYS_MIX";
+    changeTrackDelaysTime: "CHANGE_TRACK_DELAYS_TIME";
     changeTrackReverbsDecay: "CHANGE_TRACK_REVERBS_DECAY";
     changeTrackReverbsMix: "CHANGE_TRACK_REVERBS_MIX";
     changeTrackReverbsPredelay: "CHANGE_TRACK_REVERBS_PREDELAY";

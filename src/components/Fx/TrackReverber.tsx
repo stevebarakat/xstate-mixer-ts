@@ -10,17 +10,9 @@ type Props = {
 export default function TrackReverber({ reverb, trackIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  console.log(
-    "state.context.trackFxData[trackIndex].reverbsBypass[trackIndex]",
-    state.context.trackFxData[trackIndex].reverbsBypass[trackIndex]
-  );
   const disabled =
     state.context.trackFxData[trackIndex].reverbsBypass[trackIndex];
 
-  console.log(
-    "state.context.trackFxData[trackIndex].reverbsPreDelay[trackIndex]",
-    state.context.trackFxData[trackIndex].reverbsPreDelay[trackIndex]
-  );
   return (
     <div>
       <div className="flex gap12">

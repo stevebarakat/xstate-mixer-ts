@@ -90,7 +90,9 @@ export const mixerMachine = createMachine(
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_TRACK_DELAYS_MIX: { actions: "changeTrackDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
+      CHANGE_TRACK_DELAYS_TIME: { actions: "changeTrackDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
+      CHANGE_TRACK_DELAYS_FEEDBACK: { actions: "changeTrackDelaysFeedback" },
       SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
       SAVE_BUS_PANELS_SIZE: { actions: "saveBusPanelsSize" },
       TOGGLE_TRACK_PANEL: { actions: "toggleTrackPanel" },
@@ -172,7 +174,9 @@ export const mixerMachine = createMachine(
         | { type: "BYPASS_DELAY" }
         | { type: "CHANGE_DELAYS_MIX" }
         | { type: "CHANGE_DELAYS_TIME" }
+        | { type: "CHANGE_TRACK_DELAYS_TIME" }
         | { type: "CHANGE_DELAYS_FEEDBACK" }
+        | { type: "CHANGE_TRACK_DELAYS_FEEDBACK" }
         | { type: "LOADED" }
         | { type: "PAUSE" }
         | { type: "PLAY" }
@@ -446,15 +450,6 @@ export const mixerMachine = createMachine(
         return [assign({ delaysMix: tempDelaysMix })];
       }),
 
-      changeTrackDelaysMix: pure((context, { value, delay, trackIndex }) => {
-        delay.wet.value = value;
-        const tempDelaysMix = context.busFxData.delaysMix;
-        tempDelaysMix[trackIndex] = value;
-        currentMix.busFxData.delaysMix[trackIndex] = value;
-        localStorage.setItem("currentMix", JSON.stringify(currentMix));
-        return [assign({ trackDelaysMix: tempDelaysMix })];
-      }),
-
       changeDelaysTime: pure((context, { value, delay, busIndex, fxIndex }) => {
         delay.delayTime.value = value;
         const tempDelaysTime = context.busFxData.delaysTime;
@@ -474,6 +469,19 @@ export const mixerMachine = createMachine(
           return [assign({ delaysFeedback: tempDelaysFeedback })];
         }
       ),
+
+      changeTrackDelaysMix: pure((context, { value, delay, trackIndex }) => {
+        const currentTracksString = localStorage.getItem("currentTracks");
+        const currentTracks =
+          currentTracksString && JSON.parse(currentTracksString);
+        delay.wet.value = value;
+        console.log("delay.mix", delay.wet.value);
+        const tempDelaysMix = context.trackFxData[trackIndex].delaysMix;
+        tempDelaysMix[trackIndex] = value;
+        currentTracks[trackIndex].trackFxData.delaysMix[trackIndex] = value;
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ delaysMix: tempDelaysMix })];
+      }),
 
       toggleBusPanel: pure((context, { busIndex }) => {
         const tempBusPanelsOpen = context.busPanelsOpen;
