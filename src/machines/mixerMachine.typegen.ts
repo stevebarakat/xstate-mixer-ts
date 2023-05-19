@@ -7,7 +7,7 @@ export interface Typegen0 {
   };
   invokeSrcNameMap: {};
   missingImplementations: {
-    actions: "changeTrackDelaysFeedback" | "changeTrackDelaysTime";
+    actions: "changeTrackDelaysFeedback";
     delays: never;
     guards: never;
     services: never;
