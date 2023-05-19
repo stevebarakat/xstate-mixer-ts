@@ -11,18 +11,25 @@ type Props = {
 
 function TrackFxMenu({ trackIndex, channel }: Props) {
   const [state, send] = MixerMachineContext.useActor();
-  const currentTrackFx = MixerMachineContext.useSelector((state) => {
-    const { currentTrackFx } = state.context;
-    return currentTrackFx;
-  }, shallowEqual);
+  // const currentTrackFx = MixerMachineContext.useSelector((state) => {
+  //   const { currentTrackFx } = state.context;
+  //   return currentTrackFx;
+  // }, shallowEqual);
 
   const reverb = useRef<Reverb | null>(null);
   const delay = useRef<FeedbackDelay | null>(null);
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>): void {
-    fx(2).forEach((_: void, fxIndex: number) => {
+    fx(2).map((_: void, fxIndex: number) => {
       switch (e.currentTarget.value) {
         case "nofx":
+          send({
+            type: "SET_TRACK_FX",
+            target: e.currentTarget,
+            trackIndex,
+            fxIndex,
+          });
+
           break;
 
         case "reverb":
@@ -30,9 +37,11 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
           channel.disconnect();
           channel.connect(reverb.current);
 
+          console.log("e.currentTarget.value", e.currentTarget.value);
+
           send({
             type: "SET_TRACK_FX",
-            value: parseFloat(e.currentTarget.value),
+            target: e.currentTarget,
             trackIndex,
             fxIndex,
           });
@@ -43,6 +52,14 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
           delay.current = new FeedbackDelay().toDestination();
           channel.disconnect();
           channel.connect(delay.current);
+
+          send({
+            type: "SET_TRACK_FX",
+            target: e.currentTarget,
+            trackIndex,
+            fxIndex,
+          });
+
           break;
 
         default:
@@ -50,7 +67,7 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
       }
     });
   }
-  console.log("currentTrackFx", currentTrackFx);
+  // console.log("currentTrackFx", currentTrackFx);
   console.log(
     "state.context.currentTrackFx[trackIndex][fxIndex]",
     state.context.currentTrackFx[trackIndex][0]

@@ -269,13 +269,26 @@ export const mixerMachine = createMachine(
         return [assign({ solo: tempSolos }), soloChannel];
       }),
 
-      setTrackFx: pure((context, { value, trackIndex, fxIndex }) => {
+      setTrackFx: pure((context, { target, trackIndex, fxIndex }) => {
+        const currentTracksString = localStorage.getItem("currentTracks");
+        const currentTracks =
+          currentTracksString && JSON.parse(currentTracksString);
+        // console.log(
+        //   "currentTracks[trackIndex].fx[fxIndex]",
+        //   currentTracks[trackIndex].fx[fxIndex]
+        // );
+        const id = target.id.at(-1);
+        console.log("currentTracks", currentTracks);
         const tempTrackFx = context.currentTrackFx;
-        tempTrackFx[trackIndex][fxIndex] = value;
-        currentTracks.fx[trackIndex][fxIndex] = value;
+        tempTrackFx[trackIndex][id] = target.value;
+        currentTracks[trackIndex].fx[id] = target.value;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
+        );
+        console.log(
+          "currentTracks[trackIndex].fx[fxIndex]",
+          currentTracks[trackIndex].fx[fxIndex]
         );
         return [assign({ currentTrackFx: tempTrackFx })];
       }),
