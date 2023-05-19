@@ -3,10 +3,15 @@ import type { Song } from "../types/global";
 export function getSong(defaultSong: Song) {
   const defaultSongString = JSON.stringify(defaultSong);
   const songString = localStorage.getItem("song");
+  const parsedSong = songString && JSON.parse(songString);
 
-  const song =
-    (songString && JSON.parse(songString)) ??
+  let song;
+  if (parsedSong) {
+    song = parsedSong;
+  } else {
     localStorage.setItem("song", defaultSongString);
+    song = defaultSong;
+  }
 
   const currentMixString = localStorage.getItem("currentMix");
   let currentMix = currentMixString && JSON.parse(currentMixString);
@@ -23,6 +28,7 @@ export function getSong(defaultSong: Song) {
         bus2fx1: "nofx",
         bus2fx2: "nofx",
       },
+      currentTrackFx: ["nofx", "nofx"],
       busPanelsOpen: [true, true],
       busPanelsPosition: { x: 0, y: 0 },
       busPanelsSize: { width: "325px", height: "auto" },
@@ -66,6 +72,17 @@ export function getSong(defaultSong: Song) {
       pan: 0,
       mute: false,
       solo: false,
+      fx: ["nofx", "nofx"],
+      trackFxData: {
+        reverbsBypass: [false, false, false, false],
+        reverbsMix: [0.5, 0.5, 0.5, 0.5],
+        reverbsPreDelay: [0.5, 0.5, 0.5, 0.5],
+        reverbsDecay: [0.5, 0.5, 0.5, 0.5],
+        delaysBypass: [false, false, false, false],
+        delaysMix: [0.5, 0.5, 0.5, 0.5],
+        delaysTime: [0.5, 0.5, 0.5, 0.5],
+        delaysFeedback: [0.5, 0.5, 0.5, 0.5],
+      },
     }));
     localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
   }

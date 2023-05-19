@@ -1,5 +1,6 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Reverb, FeedbackDelay, Destination } from "tone";
+import TrackReverber from "./Fx/TrackReverber";
 import Pan from "./Pan";
 import SoloMute from "./SoloMute";
 import Sends from "./Sends";
@@ -8,6 +9,14 @@ import TrackLabel from "./TrackLabel";
 import type { Track } from "../types/global";
 import type { Channel } from "tone";
 import { array as fx } from "../utils";
+import { Rnd } from "react-rnd";
+
+const defaults = {
+  x: 0,
+  y: 0,
+  width: 320,
+  height: "auto",
+};
 
 type Props = {
   track: Track;
@@ -17,11 +26,16 @@ type Props = {
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
-  const reverb = useRef<Reverb | null>(null);
-  const delay = useRef<FeedbackDelay | null>(null);
+  const reverb = useRef<Reverb>(new Reverb(8).toDestination());
+  const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
+  const [fxChoice, setFxChoice] = useState("nofx");
 
-  function setTrackFx(e: React.FormEvent<HTMLInputElement>): void {
+  const [panel, setPanel] = useState(null);
+
+  function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
     console.log("e.target.value", e.currentTarget.value);
+    setFxChoice(e.currentTarget.value);
+
     switch (e.currentTarget.value) {
       case "nofx":
         channel.disconnect();
@@ -29,22 +43,46 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         break;
       case "reverb":
         channel.disconnect();
-        reverb.current = new Reverb(8).toDestination();
         channel.connect(reverb.current).toDestination();
+
+        setPanel(
+          <Rnd className="fx-panel" default={defaults} cancel="input">
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={0.01}
+              onChange={changeReverbMix}
+            />
+            <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
+          </Rnd>
+        );
         break;
       case "delay":
         channel.disconnect();
-        delay.current = new FeedbackDelay().toDestination();
         channel.connect(delay.current).toDestination();
+
+        setPanel(() => (
+          <Rnd className="fx-panel" default={defaults} cancel="input">
+            {/* <input type="range" /> */}
+            delay
+          </Rnd>
+        ));
         break;
       default:
         break;
     }
   }
 
+  function changeReverbMix(e: React.FormEvent<HTMLInputElement>): void {
+    console.log("e.currentTarget.value", e.currentTarget.value);
+    reverb.current.wet.value = parseFloat(e.currentTarget.value);
+  }
+
   return (
     <div className="channel">
       <>
+        {panel}
         {fx(2).map((_, fxIndex) => (
           <select
             key={fxIndex}
