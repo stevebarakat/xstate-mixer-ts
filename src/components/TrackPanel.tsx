@@ -1,8 +1,8 @@
 import { array } from "./../utils";
 import { Rnd } from "react-rnd";
 import CloseButton from "./Buttons/CloseButton";
-import Reverber from "./TrackFx/Reverber";
-import Delay from "./TrackFx/Delay";
+import TrackReverber from "./Fx/TrackReverber";
+import TrackDelay from "./Fx/TrackDelay";
 import { MixerMachineContext } from "./../App";
 import type { FeedbackDelay, Reverb } from "tone";
 import { shallowEqual } from "@xstate/react";
@@ -50,7 +50,7 @@ function TrackPanel({ trackIndex, fxChoice, reverb, delay }: Props) {
               break;
             case "reverb":
               return (
-                <Reverber
+                <TrackReverber
                   key={`track${trackIndex}reverb${i}`}
                   reverb={reverb}
                   trackIndex={trackIndex}
@@ -58,7 +58,7 @@ function TrackPanel({ trackIndex, fxChoice, reverb, delay }: Props) {
               );
             case "delay":
               return (
-                <Delay
+                <TrackDelay
                   key={`track${trackIndex}delay${i}`}
                   delay={delay}
                   trackIndex={trackIndex}

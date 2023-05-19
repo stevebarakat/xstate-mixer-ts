@@ -17,6 +17,10 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
   const disabled =
     state.context.trackFxData[trackIndex].reverbsBypass[trackIndex];
 
+  console.log(
+    "state.context.trackFxData[trackIndex].reverbsPreDelay[trackIndex]",
+    state.context.trackFxData[trackIndex].reverbsPreDelay[trackIndex]
+  );
   return (
     <div>
       <div className="flex gap12">
@@ -31,7 +35,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
             }
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
-                type: "BYPASS_REVERB",
+                type: "BYPASS_TRACK_REVERB",
                 checked: e.currentTarget.checked,
                 reverb,
                 trackIndex,
@@ -57,7 +61,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_MIX",
+              type: "CHANGE_TRACK_REVERBS_MIX",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
@@ -80,7 +84,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_PREDELAY",
+              type: "CHANGE_TRACK_REVERBS_PREDELAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
@@ -101,7 +105,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_DECAY",
+              type: "CHANGE_TRACK_REVERBS_DECAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,

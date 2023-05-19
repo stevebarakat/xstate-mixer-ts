@@ -28,13 +28,23 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
-  const [fxChoice, setFxChoice] = useState("nofx");
 
-  const [panel, setPanel] = useState(null);
+  const [panel, setPanel] = useState<JSX.Element | null>(null);
+
+  function changeReverbMix(e: React.FormEvent<HTMLInputElement>): void {
+    reverb.current.wet.value = parseFloat(e.currentTarget.value);
+  }
+
+  function changeReverbPreDelay(e: React.FormEvent<HTMLInputElement>): void {
+    reverb.current.preDelay = parseFloat(e.currentTarget.value);
+  }
+
+  function changeReverbDecay(e: React.FormEvent<HTMLInputElement>): void {
+    reverb.current.decay = parseFloat(e.currentTarget.value);
+  }
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
     console.log("e.target.value", e.currentTarget.value);
-    setFxChoice(e.currentTarget.value);
 
     switch (e.currentTarget.value) {
       case "nofx":
@@ -44,45 +54,52 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       case "reverb":
         channel.disconnect();
         channel.connect(reverb.current).toDestination();
-
         setPanel(
-          <Rnd className="fx-panel" default={defaults} cancel="input">
-            <input
-              type="range"
-              min={0}
-              max={1}
-              step={0.01}
-              onChange={changeReverbMix}
-            />
-            <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
-          </Rnd>
+          <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
         );
+        // setPanel(
+        //   <>
+        //     <input
+        //       type="range"
+        //       min={0}
+        //       max={1}
+        //       step={0.01}
+        //       onChange={changeReverbMix}
+        //     />
+        //     <input
+        //       type="range"
+        //       min={0}
+        //       max={1}
+        //       step={0.01}
+        //       onChange={changeReverbPreDelay}
+        //     />
+        //     <input
+        //       type="range"
+        //       min={0.1}
+        //       max={20}
+        //       step={0.1}
+        //       onChange={changeReverbDecay}
+        //     />
+        //   </>
+        // );
         break;
       case "delay":
         channel.disconnect();
         channel.connect(delay.current).toDestination();
 
-        setPanel(() => (
-          <Rnd className="fx-panel" default={defaults} cancel="input">
-            {/* <input type="range" /> */}
-            delay
-          </Rnd>
-        ));
+        setPanel(<input type="range" />);
         break;
       default:
         break;
     }
   }
 
-  function changeReverbMix(e: React.FormEvent<HTMLInputElement>): void {
-    console.log("e.currentTarget.value", e.currentTarget.value);
-    reverb.current.wet.value = parseFloat(e.currentTarget.value);
-  }
-
   return (
     <div className="channel">
       <>
-        {panel}
+        <Rnd className="fx-panel" default={defaults} cancel="input">
+          {panel}
+        </Rnd>
         {fx(2).map((_, fxIndex) => (
           <select
             key={fxIndex}
