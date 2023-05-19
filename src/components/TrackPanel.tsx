@@ -1,24 +1,18 @@
 import { array } from "./../utils";
 import { Rnd } from "react-rnd";
 import CloseButton from "./Buttons/CloseButton";
-import Reverber from "./Fx/Reverber";
+import Reverber from "./TrackFx/Reverber";
 import Delay from "./Fx/Delay";
 import { MixerMachineContext } from "./../App";
 import type { FeedbackDelay, Reverb } from "tone";
 
 type Props = {
+  trackIndex: number;
   disabled: boolean;
-  currentTrackFx: {
-    reverb1: Reverb;
-    reverb2: Reverb;
-    delay1: FeedbackDelay;
-    delay2: FeedbackDelay;
-  };
+  currentTrackFx: string[];
   fx: React.MutableRefObject<{
-    reverb1: Reverb;
-    reverb2: Reverb;
-    delay1: FeedbackDelay;
-    delay2: FeedbackDelay;
+    reverb: Reverb;
+    delay: FeedbackDelay;
   }>;
 };
 
@@ -29,50 +23,57 @@ const defaults = {
   height: 200,
 };
 
-const disabled = false;
-
-function TrackPanel({ currentTrackFx, fx, disabled }: Props) {
+function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
   const { send } = MixerMachineContext.useActorRef();
 
   return (
     <div>
       <Rnd className="fx-panel" default={defaults} cancel="input">
+        hello
         <CloseButton
           id="bus-panel-1"
           onClick={() => {
             send({
-              type: "TOGGLE_BUS_PANEL",
-              trackIndex: 0,
+              type: "TOGGLE_TRACK_PANEL",
+              trackIndex,
             });
           }}
         >
           X
         </CloseButton>
-
+        {/* <Reverber
+          key={`track${0}reverb${0}`}
+          reverb={fx.current.reverb}
+          trackIndex={trackIndex}
+        /> */}
         {array(2).map((_, i) => {
-          switch (currentTrackFx[`bus1fx${i + 1}`]) {
-            case "reverb1":
-              return (
+          let ubu;
+          console.log("currentTrackFx", Array.isArray(currentTrackFx));
+          switch (currentTrackFx[trackIndex][i]) {
+            // switch ("reverb") {
+            case "reverb":
+              ubu = (
                 <Reverber
-                  key={`bus1reverb${i}`}
-                  reverb={fx.current.reverb1}
-                  busIndex={0}
-                  fxIndex={0}
+                  key={`track${trackIndex}reverb${i}`}
+                  reverb={fx.current.reverb}
+                  trackIndex={trackIndex}
                 />
               );
-            case "delay1":
-              return (
+              break;
+            case "delay":
+              ubu = (
                 <Delay
-                  key={`bus1delay${i}`}
-                  delay={fx.current.delay1}
+                  key={`track${trackIndex}delay${i}`}
+                  delay={fx.current.delay}
                   busIndex={0}
                   fxIndex={0}
                 />
               );
+              break;
             default:
               break;
           }
-          return null;
+          return ubu;
         })}
       </Rnd>
     </div>

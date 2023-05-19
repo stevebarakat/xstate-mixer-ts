@@ -84,6 +84,7 @@ export const mixerMachine = createMachine(
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
       SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
       SAVE_BUS_PANELS_SIZE: { actions: "saveBusPanelsSize" },
+      TOGGLE_TRACK_PANEL: { actions: "toggleTrackPanel" },
     },
     states: {
       loading: { on: { LOADED: "stopped" } },
@@ -163,7 +164,8 @@ export const mixerMachine = createMachine(
         | { type: "PAUSE" }
         | { type: "PLAY" }
         | { type: "SAVE_BUS_PANELS_POSITION" }
-        | { type: "SAVE_BUS_PANELS_SIZE" },
+        | { type: "SAVE_BUS_PANELS_SIZE" }
+        | { type: "TOGGLE_TRACK_PANEL" },
     },
     predictableActionArguments: true,
     preserveActionOrder: true,
@@ -273,22 +275,13 @@ export const mixerMachine = createMachine(
         const currentTracksString = localStorage.getItem("currentTracks");
         const currentTracks =
           currentTracksString && JSON.parse(currentTracksString);
-        // console.log(
-        //   "currentTracks[trackIndex].fx[fxIndex]",
-        //   currentTracks[trackIndex].fx[fxIndex]
-        // );
         const id = target.id.at(-1);
-        console.log("currentTracks", currentTracks);
         const tempTrackFx = context.currentTrackFx;
         tempTrackFx[trackIndex][id] = target.value;
         currentTracks[trackIndex].fx[id] = target.value;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
-        );
-        console.log(
-          "currentTracks[trackIndex].fx[fxIndex]",
-          currentTracks[trackIndex].fx[fxIndex]
         );
         return [assign({ currentTrackFx: tempTrackFx })];
       }),
@@ -399,6 +392,19 @@ export const mixerMachine = createMachine(
       ),
 
       toggleBusPanel: pure((context, { busIndex }) => {
+        const tempBusPanelsOpen = context.busPanelsOpen;
+        tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
+        localStorage.setItem(
+          "currentMix",
+          JSON.stringify({
+            ...currentMix,
+            busPanelsOpen: tempBusPanelsOpen,
+          })
+        );
+        return [assign({ busPanelsOpen: tempBusPanelsOpen })];
+      }),
+
+      toggleTrackPanel: pure((context, { trackIndex }) => {
         const tempBusPanelsOpen = context.busPanelsOpen;
         tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
         localStorage.setItem(

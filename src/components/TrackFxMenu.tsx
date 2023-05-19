@@ -37,8 +37,6 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
           channel.disconnect();
           channel.connect(reverb.current);
 
-          console.log("e.currentTarget.value", e.currentTarget.value);
-
           send({
             type: "SET_TRACK_FX",
             target: e.currentTarget,
@@ -67,11 +65,7 @@ function TrackFxMenu({ trackIndex, channel }: Props) {
       }
     });
   }
-  // console.log("currentTrackFx", currentTrackFx);
-  console.log(
-    "state.context.currentTrackFx[trackIndex][fxIndex]",
-    state.context.currentTrackFx[trackIndex][0]
-  );
+
   return (
     <>
       {fx(2).map((_, fxIndex) => (

@@ -37,6 +37,7 @@ export interface Typegen0 {
     toggleBusPanel: "TOGGLE_BUS_PANEL";
     toggleMute: "TOGGLE_MUTE";
     toggleSolo: "TOGGLE_SOLO";
+    toggleTrackPanel: "TOGGLE_TRACK_PANEL";
   };
   eventsCausingDelays: {};
   eventsCausingGuards: {};

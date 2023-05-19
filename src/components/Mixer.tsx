@@ -1,7 +1,10 @@
+import { useRef } from "react";
+import { Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import useBusFx from "../hooks/useBusFx";
 import Transport from "./Transport";
 import BusPanels from "./Bus/BusPanels";
+import TrackPanel from "./TrackPanel";
 import Loader from "./Loader";
 import SongInfo from "./SongInfo";
 import ChannelStrip from "./ChannelStrip";
@@ -15,6 +18,7 @@ type Props = {
 };
 
 export const Mixer = ({ song }: Props) => {
+  const [state, send] = MixerMachineContext.useActor();
   const isLoading = MixerMachineContext.useSelector((state) =>
     state.matches("loading")
   );
@@ -22,6 +26,11 @@ export const Mixer = ({ song }: Props) => {
   const channels = useChannelStrip({ tracks });
 
   const [busChannels, busFx, currentBusFx, disabled] = useBusFx();
+
+  const fx = useRef({
+    reverb: new Reverb().toDestination(),
+    delay: new FeedbackDelay().toDestination(),
+  });
 
   return isLoading ? (
     <Loader song={song} />
@@ -35,12 +44,20 @@ export const Mixer = ({ song }: Props) => {
       />
       <div className="channels">
         {tracks.map((track, i) => (
-          <ChannelStrip
-            key={track.path}
-            trackName={track.name}
-            trackIndex={i}
-            channels={channels.current}
-          />
+          <>
+            <TrackPanel
+              trackIndex={i}
+              disabled={disabled}
+              currentTrackFx={state.context.currentTrackFx}
+              fx={fx}
+            />
+            <ChannelStrip
+              key={track.path}
+              trackName={track.name}
+              trackIndex={i}
+              channels={channels.current}
+            />
+          </>
         ))}
         {busChannels.current.map((_: void, i: number) => (
           <BusChannel
