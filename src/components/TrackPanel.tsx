@@ -29,7 +29,6 @@ function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
   return (
     <div>
       <Rnd className="fx-panel" default={defaults} cancel="input">
-        hello
         <CloseButton
           id="bus-panel-1"
           onClick={() => {
@@ -41,16 +40,15 @@ function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
         >
           X
         </CloseButton>
-        {/* <Reverber
-          key={`track${0}reverb${0}`}
-          reverb={fx.current.reverb}
-          trackIndex={trackIndex}
-        /> */}
+
         {array(2).map((_, i) => {
           let ubu;
           console.log("currentTrackFx", Array.isArray(currentTrackFx));
           switch (currentTrackFx[trackIndex][i]) {
             // switch ("reverb") {
+            case "nofx":
+              ubu = null;
+              break;
             case "reverb":
               ubu = (
                 <Reverber
@@ -65,8 +63,7 @@ function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {
                 <Delay
                   key={`track${trackIndex}delay${i}`}
                   delay={fx.current.delay}
-                  busIndex={0}
-                  fxIndex={0}
+                  trackIndex={trackIndex}
                 />
               );
               break;
