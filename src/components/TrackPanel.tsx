@@ -20,7 +20,7 @@ const defaults = {
   x: 0,
   y: 0,
   width: 320,
-  height: 200,
+  height: "auto",
 };
 
 function TrackPanel({ trackIndex, currentTrackFx, fx, disabled }: Props) {

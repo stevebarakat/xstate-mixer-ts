@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, Fragment } from "react";
 import { Reverb, FeedbackDelay } from "tone";
 import useChannelStrip from "../hooks/useChannelStrip";
 import useBusFx from "../hooks/useBusFx";
@@ -53,7 +53,7 @@ export const Mixer = ({ song }: Props) => {
           );
 
           return (
-            <>
+            <Fragment key={track.id}>
               {!disabled && (
                 <TrackPanel
                   trackIndex={i}
@@ -63,12 +63,11 @@ export const Mixer = ({ song }: Props) => {
                 />
               )}
               <ChannelStrip
-                key={track.path}
                 trackName={track.name}
                 trackIndex={i}
                 channels={channels.current}
               />
-            </>
+            </Fragment>
           );
         })}
         {busChannels.current.map((_: void, i: number) => (
