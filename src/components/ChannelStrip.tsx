@@ -33,8 +33,6 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const [panel, setPanel] = useState<JSX.Element | null>(null);
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
-    console.log("e.target.value", e.currentTarget.value);
-
     switch (e.currentTarget.value) {
       case "nofx":
         channel.disconnect();

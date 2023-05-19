@@ -87,6 +87,7 @@ export const mixerMachine = createMachine(
       CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
       CHANGE_TRACK_REVERBS_DECAY: { actions: "changeTrackReverbsDecay" },
       BYPASS_DELAY: { actions: "bypassDelay" },
+      BYPASS_TRACK_DELAY: { actions: "bypassTrackDelay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_TRACK_DELAYS_MIX: { actions: "changeTrackDelaysMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
@@ -172,6 +173,7 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_REVERBS_DECAY" }
         | { type: "CHANGE_TRACK_REVERBS_DECAY" }
         | { type: "BYPASS_DELAY" }
+        | { type: "BYPASS_TRACK_DELAY" }
         | { type: "CHANGE_DELAYS_MIX" }
         | { type: "CHANGE_DELAYS_TIME" }
         | { type: "CHANGE_TRACK_DELAYS_TIME" }
@@ -335,7 +337,6 @@ export const mixerMachine = createMachine(
       }),
 
       bypassTrackReverb: pure((context, { checked, reverb, trackIndex }) => {
-        console.log("reverb", reverb);
         const tempReverbsBypass = context.trackFxData[trackIndex].reverbsBypass;
         tempReverbsBypass[trackIndex] = checked;
         currentTracks[trackIndex].trackFxData.reverbsBypass[trackIndex] =
@@ -347,6 +348,20 @@ export const mixerMachine = createMachine(
         }
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ reverbsBypass: tempReverbsBypass })];
+      }),
+
+      bypassTrackDelay: pure((context, { checked, delay, trackIndex }) => {
+        const tempDelaysBypass = context.trackFxData[trackIndex].delaysBypass;
+        tempDelaysBypass[trackIndex] = checked;
+        currentTracks[trackIndex].trackFxData.delaysBypass[trackIndex] =
+          checked;
+        if (checked) {
+          delay.disconnect();
+        } else {
+          delay.connect(Destination);
+        }
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ delaysBypass: tempDelaysBypass })];
       }),
 
       changeReverbsMix: pure(
