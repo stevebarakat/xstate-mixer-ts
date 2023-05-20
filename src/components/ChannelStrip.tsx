@@ -152,28 +152,29 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   return (
-    <div className="channel">
-      <>
-        {getTrackPanels()}
-        {fx(2).map((_, fxIndex) => (
-          <select
-            key={fxIndex}
-            id={`track${trackIndex}fx${fxIndex}`}
-            onChange={saveTrackFx}
-            value={currentTrackFx[trackIndex][fxIndex]}
-          >
-            <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
-            <option value={"reverb"}>Reverb</option>
-            <option value={"delay"}>Delay</option>
-            <option value={"pitchShift"}>Pitch Shift</option>
-          </select>
-        ))}
-      </>
-      <Sends trackIndex={trackIndex} channels={channels} />
-      <Pan trackIndex={trackIndex} channel={channel} />
-      <Fader trackIndex={trackIndex} channel={channel} />
-      <SoloMute trackIndex={trackIndex} channel={channel} />
-      <TrackLabel trackName={track.name} />
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      {fx(2).map((_, fxIndex) => (
+        <select
+          key={fxIndex}
+          id={`track${trackIndex}fx${fxIndex}`}
+          className="fx-select"
+          onChange={saveTrackFx}
+          value={currentTrackFx[trackIndex][fxIndex]}
+        >
+          <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
+          <option value={"reverb"}>Reverb</option>
+          <option value={"delay"}>Delay</option>
+          <option value={"pitchShift"}>Pitch Shift</option>
+        </select>
+      ))}
+      <div className="channel">
+        <>{getTrackPanels()}</>
+        <Sends trackIndex={trackIndex} channels={channels} />
+        <Pan trackIndex={trackIndex} channel={channel} />
+        <Fader trackIndex={trackIndex} channel={channel} />
+        <SoloMute trackIndex={trackIndex} channel={channel} />
+        <TrackLabel trackName={track.name} />
+      </div>
     </div>
   );
 }

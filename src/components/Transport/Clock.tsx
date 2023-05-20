@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { Transport as t } from "tone";
 import { formatMilliseconds } from "../../utils";
 import type { Song } from "../../types/global";
+import "./style.css";
 
 type Props = {
   song: Song;
