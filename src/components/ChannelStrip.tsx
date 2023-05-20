@@ -29,8 +29,8 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  const [, send] = MixerMachineContext.useActor();
-  // const { send } = MixerMachineContext.useActorRef();
+  // const [, send] = MixerMachineContext.useActor();
+  const { send } = MixerMachineContext.useActorRef();
 
   const currentTrackFx = MixerMachineContext.useSelector(
     (state) => state.context.currentTrackFx
@@ -118,7 +118,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           onDragStop={(_, d) => {
             send({
               type: "SAVE_TRACK_PANEL_POSITION",
-              trackIndex: 0,
+              trackIndex,
               position: { x: d.x, y: d.y },
             });
           }}
@@ -127,7 +127,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           onResizeStop={(_, __, ref) => {
             send({
               type: "SAVE_TRACK_PANEL_SIZE",
-              trackIndex: 0,
+              trackIndex,
               size: { width: ref.style.width, height: ref.style.height },
             });
           }}
@@ -138,7 +138,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
             onClick={() => {
               send({
                 type: "TOGGLE_TRACK_PANEL",
-                trackIndex: { trackIndex },
+                trackIndex,
               });
             }}
           >

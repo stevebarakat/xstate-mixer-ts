@@ -649,16 +649,16 @@ export const mixerMachine = createMachine(
         return [assign({ busPanelsSize: tempBusPanelsSize })];
       }),
 
-      saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
-        currentTracks[trackIndex].position = position;
+      saveTrackPanelPosition: pure((_, { trackIndex, position }) => {
+        currentTracks[trackIndex].trackPanelPosition = position;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
         );
       }),
 
-      saveTrackPanelSize: pure((context, { trackIndex, size }) => {
-        currentTracks[trackIndex].size = size;
+      saveTrackPanelSize: pure((_, { trackIndex, size }) => {
+        currentTracks[trackIndex].trackPanelSize = size;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])
