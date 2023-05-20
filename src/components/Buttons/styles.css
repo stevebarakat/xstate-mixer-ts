@@ -39,7 +39,6 @@
 .chan-strip-btn {
   width: 100%;
   height: fit-content;
-  /* margin-bottom: 8px; */
   display: flex;
   justify-content: space-between;
   gap: 8px;

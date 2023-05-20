@@ -61,15 +61,14 @@
 .channels > div:last-of-type {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--primary-color);
+  /* border: 1px solid var(--primary-color); */
   border-radius: 12px;
   margin-left: 8px;
   padding: 0;
 }
 
-.channels > div:nth-last-of-type(2),
-.channels > div:nth-last-of-type(3) {
-  border: 1px dashed var(--primary-color);
+.channel:nth-last-of-type(1) {
+  /* border: 1px dashed var(--primary-color); */
 }
 
 .channels > div:last-of-type input[type="range"] {
@@ -78,7 +77,7 @@
 
 .channels > div:nth-last-of-type(2),
 .channels > div:nth-last-of-type(3) {
-  background: black;
+  /* background: black; */
 }
 
 .track-label {
@@ -105,11 +104,11 @@
 }
 
 .fx-select {
+  text-align: center;
   width: 100%;
-  padding: 4px 8px;
+  padding: 8px 4px;
   background: none;
   border: none;
-  margin-bottom: 4px;
   color: var(--primary-color);
   max-width: 120px;
   border-radius: 8px;

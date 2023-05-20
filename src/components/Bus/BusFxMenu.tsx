@@ -1,19 +1,39 @@
 import { MixerMachineContext } from "../../App";
 import { array as fx } from "../../utils";
+import ChannelButton from "../Buttons/ChannelButton";
 
 type Props = {
   busIndex: number;
+  disabled: boolean;
 };
 
-function BusFxMenu({ busIndex }: Props) {
+function BusFxMenu({ busIndex, disabled }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
   return (
     <>
+      <ChannelButton
+        className="fx-select"
+        id={`bus-panel-${busIndex}`}
+        onClick={() => {
+          send({
+            type: "TOGGLE_BUS_PANEL",
+            busIndex,
+          });
+        }}
+      >
+        {disabled[`panel${busIndex + 1}` as keyof typeof disabled]
+          ? "No"
+          : state.context.busPanelsOpen[busIndex]
+          ? "Close"
+          : "Open"}
+        FX
+      </ChannelButton>
       {fx(2).map((_, fxIndex) => (
         <select
           key={fxIndex}
           id={`bus${busIndex}fx${fxIndex}`}
+          className="fx-select"
           onChange={(e: React.FormEvent<HTMLSelectElement>): void => {
             send({
               type: "SET_BUS_FX",

@@ -11,6 +11,14 @@
   height: fit-content;
 }
 
+.center {
+  text-align: center;
+  align-items: center;
+}
+
+.gap2 {
+  gap: 2px;
+}
 .gap4 {
   gap: 4px;
 }

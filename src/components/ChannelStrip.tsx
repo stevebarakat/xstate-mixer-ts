@@ -152,7 +152,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
+    <div className="flex-y gap2">
       {fx(2).map((_, fxIndex) => (
         <select
           key={fxIndex}
