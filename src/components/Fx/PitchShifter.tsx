@@ -5,14 +5,9 @@ import type { PitchShift } from "tone";
 type Props = {
   pitchShift: PitchShift;
   trackIndex: number;
-  fxIndex: number;
 };
 
-export default function PitchShifter({
-  pitchShift,
-  trackIndex,
-  fxIndex,
-}: Props) {
+export default function PitchShifter({ pitchShift, trackIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
   const disabled =
@@ -35,7 +30,6 @@ export default function PitchShifter({
                 checked: e.currentTarget.checked,
                 pitchShift,
                 trackIndex,
-                fxIndex,
               });
             }}
             checked={
@@ -66,7 +60,6 @@ export default function PitchShifter({
               value: parseFloat(e.currentTarget.value),
               pitchShift,
               trackIndex,
-              fxIndex,
             });
           }}
         />
@@ -90,7 +83,6 @@ export default function PitchShifter({
               value: parseFloat(e.currentTarget.value),
               pitchShift,
               trackIndex,
-              fxIndex,
             });
           }}
         />
