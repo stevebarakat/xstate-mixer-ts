@@ -54,9 +54,9 @@ export const mixerMachine = createMachine(
       busPanelsOpen: currentMix.busPanelsOpen,
       busPanelsPosition: currentMix.busPanelsPosition,
       busPanelsSize: currentMix.busPanelsSize,
-      trackPanelsOpen: currentTracks.trackPanelsOpen,
-      trackPanelsPosition: currentTracks.trackPanelsPosition,
-      trackPanelsSize: currentTracks.trackPanelsSize,
+      trackPanelOpen: currentTracks.trackPanelOpen,
+      trackPanelPosition: currentTracks.trackPanelPosition,
+      trackPanelSize: currentTracks.trackPanelSize,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
@@ -102,7 +102,8 @@ export const mixerMachine = createMachine(
       BYPASS_TRACK_PITCHSHIFT: { actions: "bypassTrackPitchShift" },
       SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
       SAVE_BUS_PANELS_SIZE: { actions: "saveBusPanelsSize" },
-      TOGGLE_TRACK_PANEL: { actions: "toggleTrackPanel" },
+      SAVE_TRACK_PANEL_POSITION: { actions: "saveTrackPanelPosition" },
+      SAVE_TRACK_PANEL_SIZE: { actions: "saveTrackPanelSize" },
     },
     states: {
       loading: { on: { LOADED: "stopped" } },
@@ -116,6 +117,10 @@ export const mixerMachine = createMachine(
                 target: "active",
                 actions: "toggleBusPanel",
               },
+              TOGGLE_TRACK_PANEL: {
+                target: "active",
+                actions: "toggleTrackPanel",
+              },
             },
           },
           active: {
@@ -123,6 +128,10 @@ export const mixerMachine = createMachine(
               TOGGLE_BUS_PANEL: {
                 target: "inactive",
                 actions: "toggleBusPanel",
+              },
+              TOGGLE_TRACK_PANEL: {
+                target: "inactive",
+                actions: "toggleTrackPanel",
               },
             },
           },
@@ -140,6 +149,10 @@ export const mixerMachine = createMachine(
                 target: "active",
                 actions: "toggleBusPanel",
               },
+              TOGGLE_TRACK_PANEL: {
+                target: "active",
+                actions: "toggleTrackPanel",
+              },
             },
           },
           active: {
@@ -147,6 +160,10 @@ export const mixerMachine = createMachine(
               TOGGLE_BUS_PANEL: {
                 target: "inactive",
                 actions: "toggleBusPanel",
+              },
+              TOGGLE_TRACK_PANEL: {
+                target: "inactive",
+                actions: "toggleTrackPanel",
               },
             },
           },
@@ -192,6 +209,8 @@ export const mixerMachine = createMachine(
         | { type: "PAUSE" }
         | { type: "PLAY" }
         | { type: "SAVE_BUS_PANELS_POSITION" }
+        | { type: "SAVE_TRACK_PANEL_POSITION" }
+        | { type: "SAVE_TRACK_PANEL_SIZE" }
         | { type: "SAVE_BUS_PANELS_SIZE" }
         | { type: "CHANGE_TRACK_DELAYS_MIX" }
         | { type: "TOGGLE_TRACK_PANEL" },
@@ -593,17 +612,15 @@ export const mixerMachine = createMachine(
         return [assign({ busPanelsOpen: tempBusPanelsOpen })];
       }),
 
-      toggleTrackPanel: pure((context, { trackIndex }) => {
-        const tempBusPanelsOpen = context.busPanelsOpen;
-        tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
+      toggleTrackPanel: assign((context, { trackIndex }) => {
+        console.log("hello!");
+        console.log("currentTracks", currentTracks);
+        context.trackPanelOpen = !currentTracks[trackIndex].trackPanelOpen;
+        currentTracks[trackIndex].trackPanelOpen = context.trackPanelOpen;
         localStorage.setItem(
-          "currentMix",
-          JSON.stringify({
-            ...currentMix,
-            busPanelsOpen: tempBusPanelsOpen,
-          })
+          "currentTracks",
+          JSON.stringify([...currentTracks])
         );
-        return [assign({ busPanelsOpen: tempBusPanelsOpen })];
       }),
 
       saveBusPanelsPosition: pure((context, { busIndex, position }) => {
@@ -630,6 +647,22 @@ export const mixerMachine = createMachine(
           })
         );
         return [assign({ busPanelsSize: tempBusPanelsSize })];
+      }),
+
+      saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
+        currentTracks[trackIndex].position = position;
+        localStorage.setItem(
+          "currentTracks",
+          JSON.stringify([...currentTracks])
+        );
+      }),
+
+      saveTrackPanelSize: pure((context, { trackIndex, size }) => {
+        currentTracks[trackIndex].size = size;
+        localStorage.setItem(
+          "currentTracks",
+          JSON.stringify([...currentTracks])
+        );
       }),
     },
   }

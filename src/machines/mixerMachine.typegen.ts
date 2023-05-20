@@ -43,6 +43,8 @@ export interface Typegen0 {
     rewind: "REWIND";
     saveBusPanelsPosition: "SAVE_BUS_PANELS_POSITION";
     saveBusPanelsSize: "SAVE_BUS_PANELS_SIZE";
+    saveTrackPanelPosition: "SAVE_TRACK_PANEL_POSITION";
+    saveTrackPanelSize: "SAVE_TRACK_PANEL_SIZE";
     setBusFx: "SET_BUS_FX";
     setTrackFx: "SET_TRACK_FX";
     toggleBusPanel: "TOGGLE_BUS_PANEL";

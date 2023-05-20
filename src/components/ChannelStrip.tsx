@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { Reverb, FeedbackDelay, PitchShift, Destination } from "tone";
 import TrackReverber from "./Fx/TrackReverber";
 import TrackDelay from "./Fx/TrackDelay";
+import CloseButton from "./Buttons/CloseButton";
 import PitchShifter from "./Fx/PitchShifter";
 import Pan from "./Pan";
 import SoloMute from "./SoloMute";
@@ -28,7 +29,25 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  const [state, send] = MixerMachineContext.useActor();
+  const [, send] = MixerMachineContext.useActor();
+  // const { send } = MixerMachineContext.useActorRef();
+
+  const currentTrackFx = MixerMachineContext.useSelector(
+    (state) => state.context.currentTrackFx
+  );
+
+  // const tpOpen = MixerMachineContext.useSelector(
+  //   (state) => state.context.trackPanelOpen[trackIndex]
+  // );
+
+  const tpPos = MixerMachineContext.useSelector(
+    (state) => state.context.trackPanelPosition
+  );
+
+  const tpSize = MixerMachineContext.useSelector(
+    (state) => state.context.trackPanelSize
+  );
+
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
@@ -37,7 +56,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const [panel1, setPanel1] = useState<JSX.Element | null>(null);
   const [panel2, setPanel2] = useState<JSX.Element | null>(null);
 
-  function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
+  function saveTrackFx(e: React.FormEvent<HTMLSelectElement>) {
     send({
       type: "SET_TRACK_FX",
       trackIndex,
@@ -93,7 +112,38 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       return null;
     } else {
       return (
-        <Rnd className="fx-panel" default={defaults} cancel="input">
+        <Rnd
+          className="fx-panel"
+          position={tpPos}
+          onDragStop={(_, d) => {
+            send({
+              type: "SAVE_TRACK_PANEL_POSITION",
+              trackIndex: 0,
+              position: { x: d.x, y: d.y },
+            });
+          }}
+          size={tpSize}
+          minWidth="200px"
+          onResizeStop={(_, __, ref) => {
+            send({
+              type: "SAVE_TRACK_PANEL_SIZE",
+              trackIndex: 0,
+              size: { width: ref.style.width, height: ref.style.height },
+            });
+          }}
+          cancel="input"
+        >
+          <CloseButton
+            id="bus-panel-1"
+            onClick={() => {
+              send({
+                type: "TOGGLE_TRACK_PANEL",
+                trackIndex: { trackIndex },
+              });
+            }}
+          >
+            X
+          </CloseButton>
           {panel1}
           {panel2}
         </Rnd>
@@ -109,8 +159,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           <select
             key={fxIndex}
             id={`track${trackIndex}fx${fxIndex}`}
-            onChange={setTrackFx}
-            value={state.context.currentTrackFx[trackIndex][fxIndex]}
+            onChange={saveTrackFx}
+            value={currentTrackFx[trackIndex][fxIndex]}
           >
             <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
             <option value={"reverb"}>Reverb</option>
