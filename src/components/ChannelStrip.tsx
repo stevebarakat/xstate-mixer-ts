@@ -39,10 +39,10 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   // const tpOpen = MixerMachineContext.useSelector(
   //   (state) => state.context.trackPanelOpen[trackIndex]
   // );
+  const currentTracksString = localStorage.getItem("currentTracks");
+  const currentTracks = currentTracksString && JSON.parse(currentTracksString);
 
-  const tpPos = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelPosition
-  );
+  const tpPos = currentTracks[trackIndex].trackPanelPosition;
 
   const tpSize = MixerMachineContext.useSelector(
     (state) => state.context.trackPanelSize
@@ -57,6 +57,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const [panel2, setPanel2] = useState<JSX.Element | null>(null);
 
   function saveTrackFx(e: React.FormEvent<HTMLSelectElement>) {
+    console.log("tpSize", tpSize);
+    console.log("tpPos", tpPos);
     send({
       type: "SET_TRACK_FX",
       trackIndex,

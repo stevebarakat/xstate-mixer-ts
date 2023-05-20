@@ -649,7 +649,8 @@ export const mixerMachine = createMachine(
         return [assign({ busPanelsSize: tempBusPanelsSize })];
       }),
 
-      saveTrackPanelPosition: pure((_, { trackIndex, position }) => {
+      saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
+        context.trackPanelPosition = position;
         currentTracks[trackIndex].trackPanelPosition = position;
         localStorage.setItem(
           "currentTracks",
@@ -657,7 +658,8 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      saveTrackPanelSize: pure((_, { trackIndex, size }) => {
+      saveTrackPanelSize: pure((context, { trackIndex, size }) => {
+        context.trackPanelSize = size;
         currentTracks[trackIndex].trackPanelSize = size;
         localStorage.setItem(
           "currentTracks",
