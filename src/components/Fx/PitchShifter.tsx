@@ -1,44 +1,41 @@
 import { MixerMachineContext } from "../../App";
 import { powerIcon } from "../../assets/icons";
-import type { Reverb } from "tone";
+import type { PitchShift } from "tone";
 
 type Props = {
-  reverb: Reverb;
-  trackIndex: number;
+  pitchShift: PitchShift;
+  busIndex: number;
+  fxIndex: number;
 };
 
-export default function TrackReverber({ reverb, trackIndex }: Props) {
+export default function PitchShifter({ pitchShift, busIndex, fxIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  console.log("state.context", state.context);
-  const disabled =
-    state.context.trackFxData[trackIndex].reverbsBypass[trackIndex];
+  const disabled = state.context.busFxData.delaysBypass[busIndex];
 
   return (
     <div>
       <div className="flex gap12">
-        <h3>Reverb</h3>
+        <h3>Delay</h3>
         <div className="power-button">
           <input
-            id={`bus${trackIndex}reverbBypass`}
+            id={`bus${busIndex}delayBypass`}
             type="checkbox"
-            className="power-btn"
-            value={
-              state.context.trackFxData[trackIndex].reverbsBypass[trackIndex]
-            }
+            value={state.context.busFxData.delaysBypass[busIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
-                type: "BYPASS_TRACK_REVERB",
+                type: "BYPASS_TRACK_PITCHSHIFT",
                 checked: e.currentTarget.checked,
-                reverb,
-                trackIndex,
+                pitchShift,
+                busIndex,
+                fxIndex,
               });
             }}
             checked={
-              state.context.trackFxData[trackIndex].reverbsBypass[trackIndex]
+              state.context.busFxData.pitchShiftBypass[busIndex][fxIndex]
             }
           />
-          <label htmlFor={`bus${trackIndex}reverbBypass`}>{powerIcon}</label>
+          <label htmlFor={`bus${busIndex}delayBypass`}>{powerIcon}</label>
         </div>
       </div>
       <div className="flex-y">
@@ -46,62 +43,63 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
         <input
           type="range"
           className="simple-range"
-          name="mix"
+          id="mix"
           min={0}
           max={1}
           step={0.01}
-          value={state.context.trackFxData[trackIndex].reverbsMix[trackIndex]}
           disabled={disabled}
+          value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_MIX",
+              type: "CHANGE_DELAYS_MIX",
               value: parseFloat(e.currentTarget.value),
-              reverb,
-              trackIndex,
+              delay,
+              busIndex,
+              fxIndex,
             });
           }}
         />
       </div>
       <div className="flex-y">
-        <label htmlFor="pre-delay">Pre Delay:</label>
+        <label htmlFor="delay-time">Delay Time:</label>
         <input
           type="range"
           className="simple-range"
-          name="pre-delay"
+          id="delay-time"
           min={0}
           max={1}
           step={0.01}
-          value={
-            state.context.trackFxData[trackIndex].reverbsPreDelay[trackIndex]
-          }
           disabled={disabled}
+          value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_PREDELAY",
+              type: "CHANGE_DELAYS_TIME",
               value: parseFloat(e.currentTarget.value),
-              reverb,
-              trackIndex,
+              delay,
+              busIndex,
+              fxIndex,
             });
           }}
         />
       </div>
       <div className="flex-y">
-        <label htmlFor="decay">Decay:</label>
+        <label htmlFor="feedback">Feedback:</label>
         <input
           type="range"
           className="simple-range"
-          name="decay"
-          min={0.1}
-          max={20}
-          step={0.1}
-          value={state.context.trackFxData[trackIndex].reverbsDecay[trackIndex]}
+          name="feedback"
+          min={0}
+          max={1}
+          step={0.01}
           disabled={disabled}
+          value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_DECAY",
+              type: "CHANGE_DELAYS_FEEDBACK",
               value: parseFloat(e.currentTarget.value),
-              reverb,
-              trackIndex,
+              delay,
+              busIndex,
+              fxIndex,
             });
           }}
         />

@@ -13,6 +13,7 @@ import type { TrackSettings } from "../types/global";
 
 const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
+console.log("currentMix", currentMix);
 const initialVolumes = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.volume
 );
