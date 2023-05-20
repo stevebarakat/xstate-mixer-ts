@@ -10,7 +10,6 @@ type Props = {
 export default function TrackReverber({ reverb, trackIndex }: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  console.log("state.context", state.context);
   const disabled =
     state.context.trackFxData[trackIndex].reverbsBypass[trackIndex];
 

@@ -19,7 +19,6 @@ type Props = {
 };
 
 function BusPanels({ busFx, currentBusFx, disabled }: Props) {
-  console.log("currentBusFx", currentBusFx);
   return (
     <>
       <BusPanel1 disabled={disabled} fx={busFx} currentBusFx={currentBusFx} />

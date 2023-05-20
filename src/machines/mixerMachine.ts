@@ -13,7 +13,6 @@ import type { TrackSettings } from "../types/global";
 
 const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
-console.log("currentMix", currentMix);
 const initialVolumes = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.volume
 );
@@ -299,7 +298,6 @@ export const mixerMachine = createMachine(
       }),
 
       setTrackFx: pure((context, { target, trackIndex }) => {
-        console.log("HHHHHHEEEELLLOOOO!!!");
         const currentTracksString = localStorage.getItem("currentTracks");
         const currentTracks =
           currentTracksString && JSON.parse(currentTracksString);
@@ -437,7 +435,6 @@ export const mixerMachine = createMachine(
         const currentTracks =
           currentTracksString && JSON.parse(currentTracksString);
         reverb.wet.value = value;
-        console.log("reverb.mix", reverb.wet.value);
         const tempReverbsMix = context.trackFxData[trackIndex].reverbsMix;
         tempReverbsMix[trackIndex] = value;
         currentTracks[trackIndex].trackFxData.reverbsMix[trackIndex] = value;
@@ -451,7 +448,6 @@ export const mixerMachine = createMachine(
           const currentTracks =
             currentTracksString && JSON.parse(currentTracksString);
           reverb.preDelay = value;
-          console.log("reverb.preDealy", reverb.preDelay);
           const tempReverbsPreDelay =
             context.trackFxData[trackIndex].reverbsPreDelay;
           tempReverbsPreDelay[trackIndex] = value;
@@ -468,7 +464,6 @@ export const mixerMachine = createMachine(
           const currentTracks =
             currentTracksString && JSON.parse(currentTracksString);
           reverb.decay = value;
-          console.log("reverb.decay", reverb.decay);
           const tempReverbsDecay = context.trackFxData[trackIndex].reverbsDecay;
           tempReverbsDecay[trackIndex] = value;
           currentTracks[trackIndex].trackFxData.reverbsDecay[trackIndex] =
