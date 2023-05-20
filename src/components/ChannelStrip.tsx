@@ -30,35 +30,42 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
 
-  const [panel, setPanel] = useState<JSX.Element | null>(null);
+  const [panel1, setPanel1] = useState<JSX.Element | null>(null);
+  const [panel2, setPanel2] = useState<JSX.Element | null>(null);
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
+    const id = parseInt(e.currentTarget.id.at(-1), 10);
     switch (e.currentTarget.value) {
       case "nofx":
         channel.disconnect();
         channel.connect(Destination);
-        setPanel(null);
+        id === 0 ? setPanel1(null) : setPanel2(null);
         break;
 
       case "reverb":
         channel.disconnect();
         channel.connect(reverb.current).toDestination();
-        setPanel(
-          <Rnd className="fx-panel" default={defaults} cancel="input">
-            <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
-          </Rnd>
-        );
+        console.log("e.currentTarget.id.at(-1)", e.currentTarget.id.at(-1));
+        id === 0
+          ? setPanel1(
+              <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
+            )
+          : setPanel2(
+              <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
+            );
         break;
 
       case "delay":
         channel.disconnect();
         channel.connect(delay.current).toDestination();
 
-        setPanel(
-          <Rnd className="fx-panel" default={defaults} cancel="input">
-            <TrackDelay delay={delay.current} trackIndex={trackIndex} />
-          </Rnd>
-        );
+        id === 0
+          ? setPanel1(
+              <TrackDelay delay={delay.current} trackIndex={trackIndex} />
+            )
+          : setPanel2(
+              <TrackDelay delay={delay.current} trackIndex={trackIndex} />
+            );
         break;
 
       default:
@@ -69,7 +76,10 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   return (
     <div className="channel">
       <>
-        {panel}
+        <Rnd className="fx-panel" default={defaults} cancel="input">
+          {panel1}
+          {panel2}
+        </Rnd>
         {fx(2).map((_, fxIndex) => (
           <select
             key={fxIndex}
