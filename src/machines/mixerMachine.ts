@@ -91,6 +91,7 @@ export const mixerMachine = createMachine(
       BYPASS_TRACK_DELAY: { actions: "bypassTrackDelay" },
       CHANGE_DELAYS_MIX: { actions: "changeDelaysMix" },
       CHANGE_TRACK_DELAYS_MIX: { actions: "changeTrackDelaysMix" },
+      CHANGE_TRACK_PITCHSHIFT_MIX: { actions: "changeTrackPitchShiftMix" },
       CHANGE_DELAYS_TIME: { actions: "changeDelaysTime" },
       CHANGE_TRACK_DELAYS_TIME: { actions: "changeTrackDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
@@ -170,6 +171,7 @@ export const mixerMachine = createMachine(
         | { type: "BYPASS_TRACK_REVERB" }
         | { type: "CHANGE_REVERBS_MIX" }
         | { type: "CHANGE_TRACK_REVERBS_MIX" }
+        | { type: "CHANGE_TRACK_PITCHSHIFT_MIX" }
         | { type: "CHANGE_REVERBS_PREDELAY" }
         | { type: "CHANGE_TRACK_REVERBS_PREDELAY" }
         | { type: "CHANGE_REVERBS_DECAY" }
@@ -381,6 +383,22 @@ export const mixerMachine = createMachine(
           }
           localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
           return [assign({ pitchShiftsBypass: tempPitchShiftsBypass })];
+        }
+      ),
+
+      changeTrackPitchShiftMix: pure(
+        (context, { value, pitchShift, trackIndex }) => {
+          const currentTracksString = localStorage.getItem("currentTracks");
+          const currentTracks =
+            currentTracksString && JSON.parse(currentTracksString);
+          pitchShift.wet.value = value;
+          const tempPitchShiftsMix =
+            context.trackFxData[trackIndex].pitchShiftsMix;
+          tempPitchShiftsMix[trackIndex] = value;
+          currentTracks[trackIndex].trackFxData.pitchShiftsMix[trackIndex] =
+            value;
+          localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+          return [assign({ pitchShiftsMix: tempPitchShiftsMix })];
         }
       ),
 
