@@ -68,7 +68,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   console.log("panel1", panel1);
   console.log("panel2", panel2);
 
-  const ubu = () => {
+  function getTrackPanels() {
     if (!panel1 && !panel2) {
       return null;
     } else {
@@ -79,12 +79,12 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         </Rnd>
       );
     }
-  };
+  }
 
   return (
     <div className="channel">
       <>
-        {ubu()}
+        {getTrackPanels()}
         {fx(2).map((_, fxIndex) => (
           <select
             key={fxIndex}

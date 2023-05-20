@@ -26,7 +26,7 @@ function BusFxMenu({ busIndex }: Props) {
             state.context.currentBusFx[`bus${busIndex + 1}fx${fxIndex + 1}`]
           }
         >
-          <option value={`nofx${busIndex + 1}`}>{`FX ${fxIndex + 1}`}</option>
+          <option value={`nofx`}>{`FX ${fxIndex + 1}`}</option>
           <option value={`reverb${busIndex + 1}`}>Reverb</option>
           <option value={`delay${busIndex + 1}`}>Delay</option>
         </select>
