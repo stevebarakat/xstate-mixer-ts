@@ -31,6 +31,7 @@ export interface Typegen0 {
     changeTrackDelaysMix: "CHANGE_TRACK_DELAYS_MIX";
     changeTrackDelaysTime: "CHANGE_TRACK_DELAYS_TIME";
     changeTrackPitchShiftMix: "CHANGE_TRACK_PITCHSHIFT_MIX";
+    changeTrackPitchShiftPitch: "CHANGE_TRACK_PITCHSHIFT_PITCH";
     changeTrackReverbsDecay: "CHANGE_TRACK_REVERBS_DECAY";
     changeTrackReverbsMix: "CHANGE_TRACK_REVERBS_MIX";
     changeTrackReverbsPredelay: "CHANGE_TRACK_REVERBS_PREDELAY";

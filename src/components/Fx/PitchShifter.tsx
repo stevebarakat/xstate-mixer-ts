@@ -71,6 +71,30 @@ export default function PitchShifter({
           }}
         />
       </div>
+      <div className="flex-y">
+        <label htmlFor="mix">Pitch:</label>
+        <input
+          type="range"
+          className="simple-range"
+          name="pitch"
+          min={-48}
+          max={48}
+          step={1}
+          disabled={disabled}
+          value={
+            state.context.trackFxData[trackIndex].pitchShiftsPitch[trackIndex]
+          }
+          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+            send({
+              type: "CHANGE_TRACK_PITCHSHIFT_PITCH",
+              value: parseFloat(e.currentTarget.value),
+              pitchShift,
+              trackIndex,
+              fxIndex,
+            });
+          }}
+        />
+      </div>
     </div>
   );
 }
