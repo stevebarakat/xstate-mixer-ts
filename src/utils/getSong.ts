@@ -43,26 +43,6 @@ export const defaultCurrentMix = {
   },
 };
 
-// export const defaultCurrentTracks = {
-//   name: null,
-//   path: null,
-//   volume: -32,
-//   pan: 0,
-//   mute: false,
-//   solo: false,
-//   fx: ["nofx", "nofx"],
-//   trackFxData: {
-//     reverbsBypass: [false, false, false, false],
-//     reverbsMix: [0.5, 0.5, 0.5, 0.5],
-//     reverbsPreDelay: [0.5, 0.5, 0.5, 0.5],
-//     reverbsDecay: [0.5, 0.5, 0.5, 0.5],
-//     delaysBypass: [false, false, false, false],
-//     delaysMix: [0.5, 0.5, 0.5, 0.5],
-//     delaysTime: [0.5, 0.5, 0.5, 0.5],
-//     delaysFeedback: [0.5, 0.5, 0.5, 0.5],
-//   },
-// };
-
 export function getSong(defaultSong: Song) {
   const defaultSongString = JSON.stringify(defaultSong);
   const songString = localStorage.getItem("song");
@@ -76,6 +56,9 @@ export function getSong(defaultSong: Song) {
     mute: false,
     solo: false,
     fx: ["nofx", "nofx"],
+    trackPanelOpen: true,
+    trackPanelPosition: { x: 0, y: 0 },
+    trackPanelSize: { width: "325px", height: "auto" },
     trackFxData: {
       reverbsBypass: [false, false, false, false],
       reverbsMix: [0.5, 0.5, 0.5, 0.5],
