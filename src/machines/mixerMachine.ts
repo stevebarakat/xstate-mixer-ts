@@ -95,6 +95,7 @@ export const mixerMachine = createMachine(
       CHANGE_TRACK_DELAYS_TIME: { actions: "changeTrackDelaysTime" },
       CHANGE_DELAYS_FEEDBACK: { actions: "changeDelaysFeedback" },
       CHANGE_TRACK_DELAYS_FEEDBACK: { actions: "changeTrackDelaysFeedback" },
+      BYPASS_TRACK_PITCHSHIFT: { actions: "bypassTrackPitchShift" },
       SAVE_BUS_PANELS_POSITION: { actions: "saveBusPanelsPosition" },
       SAVE_BUS_PANELS_SIZE: { actions: "saveBusPanelsSize" },
       TOGGLE_TRACK_PANEL: { actions: "toggleTrackPanel" },
@@ -175,6 +176,7 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_TRACK_REVERBS_DECAY" }
         | { type: "BYPASS_DELAY" }
         | { type: "BYPASS_TRACK_DELAY" }
+        | { type: "BYPASS_TRACK_PITCHSHIFT" }
         | { type: "CHANGE_DELAYS_MIX" }
         | { type: "CHANGE_DELAYS_TIME" }
         | { type: "CHANGE_TRACK_DELAYS_TIME" }
@@ -364,6 +366,23 @@ export const mixerMachine = createMachine(
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ delaysBypass: tempDelaysBypass })];
       }),
+
+      bypassTrackPitchShift: pure(
+        (context, { checked, pitchShift, trackIndex }) => {
+          const tempPitchShiftsBypass =
+            context.trackFxData[trackIndex].pitchShiftsBypass;
+          tempPitchShiftsBypass[trackIndex] = checked;
+          currentTracks[trackIndex].trackFxData.pitchShiftsBypass[trackIndex] =
+            checked;
+          if (checked) {
+            pitchShift.disconnect();
+          } else {
+            pitchShift.connect(Destination);
+          }
+          localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+          return [assign({ pitchShiftsBypass: tempPitchShiftsBypass })];
+        }
+      ),
 
       changeReverbsMix: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {

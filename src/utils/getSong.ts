@@ -85,6 +85,8 @@ export function getSong(defaultSong: Song) {
       delaysMix: [0.5, 0.5, 0.5, 0.5],
       delaysTime: [0.5, 0.5, 0.5, 0.5],
       delaysFeedback: [0.5, 0.5, 0.5, 0.5],
+      pitchShiftsBypass: [false, false, false, false],
+      pitchShiftsMix: [0.5, 0.5, 0.5, 0.5],
     },
   }));
 

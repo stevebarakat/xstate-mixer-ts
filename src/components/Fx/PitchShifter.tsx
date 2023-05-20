@@ -4,38 +4,47 @@ import type { PitchShift } from "tone";
 
 type Props = {
   pitchShift: PitchShift;
-  busIndex: number;
+  trackIndex: number;
   fxIndex: number;
 };
 
-export default function PitchShifter({ pitchShift, busIndex, fxIndex }: Props) {
+export default function PitchShifter({
+  pitchShift,
+  trackIndex,
+  fxIndex,
+}: Props) {
   const [state, send] = MixerMachineContext.useActor();
 
-  const disabled = state.context.busFxData.delaysBypass[busIndex];
+  const disabled =
+    state.context.trackFxData[trackIndex].delaysBypass[trackIndex];
 
   return (
     <div>
       <div className="flex gap12">
-        <h3>Delay</h3>
+        <h3>Pitch Shift</h3>
         <div className="power-button">
           <input
-            id={`bus${busIndex}delayBypass`}
+            id={`bus${trackIndex}delayBypass`}
             type="checkbox"
-            value={state.context.busFxData.delaysBypass[busIndex]}
+            value={
+              state.context.trackFxData[trackIndex].delaysBypass[trackIndex]
+            }
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_TRACK_PITCHSHIFT",
                 checked: e.currentTarget.checked,
                 pitchShift,
-                busIndex,
+                trackIndex,
                 fxIndex,
               });
             }}
             checked={
-              state.context.busFxData.pitchShiftBypass[busIndex][fxIndex]
+              state.context.trackFxData[trackIndex].pitchShiftsBypass[
+                trackIndex
+              ]
             }
           />
-          <label htmlFor={`bus${busIndex}delayBypass`}>{powerIcon}</label>
+          <label htmlFor={`bus${trackIndex}delayBypass`}>{powerIcon}</label>
         </div>
       </div>
       <div className="flex-y">
@@ -48,57 +57,15 @@ export default function PitchShifter({ pitchShift, busIndex, fxIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
+          value={
+            state.context.trackFxData[trackIndex].pitchShiftsMix[trackIndex]
+          }
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_DELAYS_MIX",
+              type: "CHANGE_TRACK_PITCHSHIFT_MIX",
               value: parseFloat(e.currentTarget.value),
-              delay,
-              busIndex,
-              fxIndex,
-            });
-          }}
-        />
-      </div>
-      <div className="flex-y">
-        <label htmlFor="delay-time">Delay Time:</label>
-        <input
-          type="range"
-          className="simple-range"
-          id="delay-time"
-          min={0}
-          max={1}
-          step={0.01}
-          disabled={disabled}
-          value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
-          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
-            send({
-              type: "CHANGE_DELAYS_TIME",
-              value: parseFloat(e.currentTarget.value),
-              delay,
-              busIndex,
-              fxIndex,
-            });
-          }}
-        />
-      </div>
-      <div className="flex-y">
-        <label htmlFor="feedback">Feedback:</label>
-        <input
-          type="range"
-          className="simple-range"
-          name="feedback"
-          min={0}
-          max={1}
-          step={0.01}
-          disabled={disabled}
-          value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
-          onChange={(e: React.FormEvent<HTMLInputElement>): void => {
-            send({
-              type: "CHANGE_DELAYS_FEEDBACK",
-              value: parseFloat(e.currentTarget.value),
-              delay,
-              busIndex,
+              pitchShift,
+              trackIndex,
               fxIndex,
             });
           }}

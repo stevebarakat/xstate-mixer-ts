@@ -16,6 +16,7 @@ export interface Typegen0 {
     bypassDelay: "BYPASS_DELAY";
     bypassReverb: "BYPASS_REVERB";
     bypassTrackDelay: "BYPASS_TRACK_DELAY";
+    bypassTrackPitchShift: "BYPASS_TRACK_PITCHSHIFT";
     bypassTrackReverb: "BYPASS_TRACK_REVERB";
     changeBusVolume: "CHANGE_BUS_VOLUME";
     changeDelaysFeedback: "CHANGE_DELAYS_FEEDBACK";

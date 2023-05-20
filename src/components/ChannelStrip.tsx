@@ -1,7 +1,8 @@
 import { useRef, useState } from "react";
-import { Reverb, FeedbackDelay, Destination } from "tone";
+import { Reverb, FeedbackDelay, PitchShift, Destination } from "tone";
 import TrackReverber from "./Fx/TrackReverber";
 import TrackDelay from "./Fx/TrackDelay";
+import PitchShifter from "./Fx/PitchShifter";
 import Pan from "./Pan";
 import SoloMute from "./SoloMute";
 import Sends from "./Sends";
@@ -29,6 +30,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
+  const pitchShift = useRef<PitchShift>(new PitchShift().toDestination());
 
   const [panel1, setPanel1] = useState<JSX.Element | null>(null);
   const [panel2, setPanel2] = useState<JSX.Element | null>(null);
@@ -45,7 +47,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       case "reverb":
         channel.disconnect();
         channel.connect(reverb.current).toDestination();
-        console.log("e.currentTarget.id.at(-1)", e.currentTarget.id.at(-1));
+
         id === 0
           ? setPanel1(<TrackReverber reverb={reverb.current} trackIndex={0} />)
           : setPanel2(<TrackReverber reverb={reverb.current} trackIndex={1} />);
@@ -58,6 +60,19 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         id === 0
           ? setPanel1(<TrackDelay delay={delay.current} trackIndex={0} />)
           : setPanel2(<TrackDelay delay={delay.current} trackIndex={1} />);
+        break;
+
+      case "pitchShift":
+        channel.disconnect();
+        channel.connect(pitchShift.current).toDestination();
+
+        id === 0
+          ? setPanel1(
+              <PitchShifter pitchShift={pitchShift.current} trackIndex={0} />
+            )
+          : setPanel2(
+              <PitchShifter pitchShift={pitchShift.current} trackIndex={1} />
+            );
         break;
 
       default:
@@ -95,6 +110,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
             <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
             <option value={"reverb"}>Reverb</option>
             <option value={"delay"}>Delay</option>
+            <option value={"pitchShift"}>Pitch Shift</option>
           </select>
         ))}
       </>
