@@ -47,12 +47,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.connect(reverb.current).toDestination();
         console.log("e.currentTarget.id.at(-1)", e.currentTarget.id.at(-1));
         id === 0
-          ? setPanel1(
-              <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
-            )
-          : setPanel2(
-              <TrackReverber reverb={reverb.current} trackIndex={trackIndex} />
-            );
+          ? setPanel1(<TrackReverber reverb={reverb.current} trackIndex={0} />)
+          : setPanel2(<TrackReverber reverb={reverb.current} trackIndex={1} />);
         break;
 
       case "delay":
@@ -60,12 +56,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.connect(delay.current).toDestination();
 
         id === 0
-          ? setPanel1(
-              <TrackDelay delay={delay.current} trackIndex={trackIndex} />
-            )
-          : setPanel2(
-              <TrackDelay delay={delay.current} trackIndex={trackIndex} />
-            );
+          ? setPanel1(<TrackDelay delay={delay.current} trackIndex={0} />)
+          : setPanel2(<TrackDelay delay={delay.current} trackIndex={1} />);
         break;
 
       default:
