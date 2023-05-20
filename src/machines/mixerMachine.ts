@@ -299,9 +299,10 @@ export const mixerMachine = createMachine(
       }),
 
       setTrackFx: pure((context, { target, trackIndex }) => {
-        // const currentTracksString = localStorage.getItem("currentTracks");
-        // const currentTracks =
-        //   currentTracksString && JSON.parse(currentTracksString);
+        console.log("HHHHHHEEEELLLOOOO!!!");
+        const currentTracksString = localStorage.getItem("currentTracks");
+        const currentTracks =
+          currentTracksString && JSON.parse(currentTracksString);
         const id = target.id.at(-1);
         const tempTrackFx = context.currentTrackFx;
         tempTrackFx[trackIndex][id] = target.value;

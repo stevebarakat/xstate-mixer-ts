@@ -102,7 +102,7 @@ export function getSong(defaultSong: Song) {
   const currentMixString = localStorage.getItem("currentMix");
   let currentMix = currentMixString && JSON.parse(currentMixString);
   const currentTracksString = localStorage.getItem("currentTracks");
-  let currentTracks = defaultCurrentTracks;
+  let currentTracks = currentTracksString && JSON.parse(currentTracksString);
 
   if (!currentMix) {
     currentMix = defaultCurrentMix;

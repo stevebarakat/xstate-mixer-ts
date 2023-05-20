@@ -12,6 +12,7 @@ import type { Track } from "../types/global";
 import type { Channel } from "tone";
 import { array as fx } from "../utils";
 import { Rnd } from "react-rnd";
+import { MixerMachineContext } from "../App";
 
 const defaults = {
   x: 0,
@@ -27,6 +28,7 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
+  const [state, send] = MixerMachineContext.useActor();
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
@@ -36,12 +38,18 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const [panel2, setPanel2] = useState<JSX.Element | null>(null);
 
   function setTrackFx(e: React.FormEvent<HTMLSelectElement>) {
+    send({
+      type: "SET_TRACK_FX",
+      trackIndex,
+      target: e.currentTarget,
+    });
     const id = parseInt(e.currentTarget.id.at(-1), 10);
     switch (e.currentTarget.value) {
       case "nofx":
         channel.disconnect();
         channel.connect(Destination);
         id === 0 ? setPanel1(null) : setPanel2(null);
+
         break;
 
       case "reverb":
@@ -80,9 +88,6 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
     }
   }
 
-  console.log("panel1", panel1);
-  console.log("panel2", panel2);
-
   function getTrackPanels() {
     if (!panel1 && !panel2) {
       return null;
@@ -105,7 +110,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
             key={fxIndex}
             id={`track${trackIndex}fx${fxIndex}`}
             onChange={setTrackFx}
-            // value={state.context.currentTrackFx[trackIndex][fxIndex]}
+            value={state.context.currentTrackFx[trackIndex][fxIndex]}
           >
             <option value={"nofx"}>{`FX ${fxIndex + 1}`}</option>
             <option value={"reverb"}>Reverb</option>
