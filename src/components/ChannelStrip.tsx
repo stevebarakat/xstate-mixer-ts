@@ -12,15 +12,8 @@ import TrackLabel from "./TrackLabel";
 import type { Track } from "../types/global";
 import type { Channel } from "tone";
 import { array as fx } from "../utils";
-import { Rnd } from "react-rnd";
+import { Rnd as TrackFxPanel } from "react-rnd";
 import { MixerMachineContext } from "../App";
-
-const defaults = {
-  x: 0,
-  y: 0,
-  width: 320,
-  height: "auto",
-};
 
 type Props = {
   track: Track;
@@ -36,31 +29,29 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
     (state) => state.context.currentTrackFx
   );
 
-  // const tpOpen = MixerMachineContext.useSelector(
-  //   (state) => state.context.trackPanelOpen[trackIndex]
-  // );
-  const currentTracksString = localStorage.getItem("currentTracks");
-  const currentTracks = currentTracksString && JSON.parse(currentTracksString);
+  const trackPanelActive = MixerMachineContext.useSelector(
+    (state) => state.context.trackPanelOpen
+  );
 
-  const tpPos = MixerMachineContext.useSelector(
+  const trackPanelPosition = MixerMachineContext.useSelector(
     (state) => state.context.trackPanelPosition
   );
 
-  const tpSize = MixerMachineContext.useSelector(
+  const trackPanelSize = MixerMachineContext.useSelector(
     (state) => state.context.trackPanelSize
   );
 
-  console.log("state.context", state.context);
-  console.log("tpPos", tpPos);
-  console.log("tpSize", tpSize);
+  console.log("trackPanelPosition", trackPanelPosition);
+  console.log("trackPanelSize", trackPanelSize);
+  console.log("trackPanelActive", trackPanelActive);
 
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
   const delay = useRef<FeedbackDelay>(new FeedbackDelay().toDestination());
   const pitchShift = useRef<PitchShift>(new PitchShift().toDestination());
 
-  const [panel1, setPanel1] = useState<JSX.Element | null>(null);
-  const [panel2, setPanel2] = useState<JSX.Element | null>(null);
+  const [fx1, setFx1] = useState<JSX.Element | null>(null);
+  const [fx2, setFx2] = useState<JSX.Element | null>(null);
 
   function saveTrackFx(e: React.FormEvent<HTMLSelectElement>) {
     send({
@@ -73,7 +64,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       case "nofx":
         channel.disconnect();
         channel.connect(Destination);
-        id === 0 ? setPanel1(null) : setPanel2(null);
+        id === 0 ? setFx1(null) : setFx2(null);
 
         break;
 
@@ -82,8 +73,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.connect(reverb.current).toDestination();
 
         id === 0
-          ? setPanel1(<TrackReverber reverb={reverb.current} trackIndex={0} />)
-          : setPanel2(<TrackReverber reverb={reverb.current} trackIndex={1} />);
+          ? setFx1(<TrackReverber reverb={reverb.current} trackIndex={0} />)
+          : setFx2(<TrackReverber reverb={reverb.current} trackIndex={1} />);
         break;
 
       case "delay":
@@ -91,8 +82,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.connect(delay.current).toDestination();
 
         id === 0
-          ? setPanel1(<TrackDelay delay={delay.current} trackIndex={0} />)
-          : setPanel2(<TrackDelay delay={delay.current} trackIndex={1} />);
+          ? setFx1(<TrackDelay delay={delay.current} trackIndex={0} />)
+          : setFx2(<TrackDelay delay={delay.current} trackIndex={1} />);
         break;
 
       case "pitchShift":
@@ -100,10 +91,10 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         channel.connect(pitchShift.current).toDestination();
 
         id === 0
-          ? setPanel1(
+          ? setFx1(
               <PitchShifter pitchShift={pitchShift.current} trackIndex={0} />
             )
-          : setPanel2(
+          : setFx2(
               <PitchShifter pitchShift={pitchShift.current} trackIndex={1} />
             );
         break;
@@ -114,13 +105,13 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   function getTrackPanels() {
-    if (!panel1 && !panel2) {
+    if (!fx1 && !fx2) {
       return null;
     } else {
       return (
-        <Rnd
+        <TrackFxPanel
           className="fx-panel"
-          position={tpPos}
+          position={trackPanelPosition}
           onDragStop={(_, d) => {
             send({
               type: "SAVE_TRACK_PANEL_POSITION",
@@ -128,7 +119,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
               position: { x: d.x, y: d.y },
             });
           }}
-          size={tpSize}
+          size={trackPanelSize}
           minWidth="200px"
           onResizeStop={(_, __, ref) => {
             send({
@@ -150,9 +141,9 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           >
             X
           </CloseButton>
-          {panel1}
-          {panel2}
-        </Rnd>
+          {fx1}
+          {fx2}
+        </TrackFxPanel>
       );
     }
   }
