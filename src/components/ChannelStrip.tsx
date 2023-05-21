@@ -29,8 +29,8 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  // const [, send] = MixerMachineContext.useActor();
-  const { send } = MixerMachineContext.useActorRef();
+  const [state, send] = MixerMachineContext.useActor();
+  // const { send } = MixerMachineContext.useActorRef();
 
   const currentTrackFx = MixerMachineContext.useSelector(
     (state) => state.context.currentTrackFx
@@ -42,11 +42,17 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const currentTracksString = localStorage.getItem("currentTracks");
   const currentTracks = currentTracksString && JSON.parse(currentTracksString);
 
-  const tpPos = currentTracks[trackIndex].trackPanelPosition;
+  const tpPos = MixerMachineContext.useSelector(
+    (state) => state.context.trackPanelPosition
+  );
 
   const tpSize = MixerMachineContext.useSelector(
     (state) => state.context.trackPanelSize
   );
+
+  console.log("state.context", state.context);
+  console.log("tpPos", tpPos);
+  console.log("tpSize", tpSize);
 
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
@@ -57,8 +63,6 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   const [panel2, setPanel2] = useState<JSX.Element | null>(null);
 
   function saveTrackFx(e: React.FormEvent<HTMLSelectElement>) {
-    console.log("tpSize", tpSize);
-    console.log("tpPos", tpPos);
     send({
       type: "SET_TRACK_FX",
       trackIndex,
