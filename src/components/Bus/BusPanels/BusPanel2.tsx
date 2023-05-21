@@ -1,5 +1,5 @@
 import { array } from "../../../utils";
-import { Rnd } from "react-rnd";
+import { Rnd as BusFxPanel } from "react-rnd";
 import CloseButton from "../../Buttons/CloseButton";
 import Reverber from "../../Fx/Reverber";
 import Delay from "../../Fx/Delay";
@@ -26,21 +26,21 @@ function BusPanel2({ currentBusFx, fx, disabled }: Props) {
   const { send } = MixerMachineContext.useActorRef();
 
   const bpOpen1 = MixerMachineContext.useSelector(
-    (state) => state.context.busPanelsOpen[1]
+    (state) => state.context.busPanelActive[1]
   );
 
   const bpPos1 = MixerMachineContext.useSelector(
-    (state) => state.context.busPanelsPosition[1]
+    (state) => state.context.busPanelPosition[1]
   );
 
   const bpSize1 = MixerMachineContext.useSelector(
-    (state) => state.context.busPanelsSize[1]
+    (state) => state.context.busPanelSize[1]
   );
 
   return (
     <div>
       {bpOpen1 && !disabled.panel2 && (
-        <Rnd
+        <BusFxPanel
           className="fx-panel"
           position={bpPos1}
           onDragStop={(_, d) => {
@@ -98,7 +98,7 @@ function BusPanel2({ currentBusFx, fx, disabled }: Props) {
             }
             return null;
           })}
-        </Rnd>
+        </BusFxPanel>
       )}
     </div>
   );

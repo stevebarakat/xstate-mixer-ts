@@ -22,15 +22,15 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  const [state, send] = MixerMachineContext.useActor();
-  // const { send } = MixerMachineContext.useActorRef();
+  // const [state, send] = MixerMachineContext.useActor();
+  const { send } = MixerMachineContext.useActorRef();
 
   const currentTrackFx = MixerMachineContext.useSelector(
     (state) => state.context.currentTrackFx
   );
 
   const trackPanelActive = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelOpen
+    (state) => state.context.trackPanelActive
   );
 
   const trackPanelPosition = MixerMachineContext.useSelector(

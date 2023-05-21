@@ -24,7 +24,7 @@ function BusFxMenu({ busIndex, disabled }: Props) {
       >
         {disabled[`panel${busIndex + 1}` as keyof typeof disabled]
           ? "No"
-          : state.context.busPanelsOpen[busIndex]
+          : state.context.busPanelActive[busIndex]
           ? "Close"
           : "Open"}
         FX

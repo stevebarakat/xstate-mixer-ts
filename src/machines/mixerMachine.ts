@@ -11,11 +11,6 @@ import { getSong } from "../utils/getSong";
 import { roxanne } from "../songs";
 import type { TrackSettings } from "../types/global";
 
-interface Context {
-  something: boolean;
-  skip: boolean;
-}
-
 const actx = getAudioContext();
 const [song, currentMix, currentTracks] = getSong(roxanne);
 const initialVolumes = currentTracks.map(
@@ -42,15 +37,9 @@ export const mixerMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EA2AIwAWAHQBOYeIBMggBwB2AKwAaEAE9EAWgViAzIP7DK-aUoC+5tWky5CAdQCSAOQAiVWkhBMW7Ljz4EYSUlUTlxOWE9ZTVNBC1ouVFBM0trDGwcADEsjx4fNg5uL0DpPWlRJUo9cRMzWO1E5NSrEBtMgGEACQBBZwBxAgB9ADUAeQAZAFUAWQI8rwK-YtBA8P5k-gVxfkVVDW1BJUFRKX5KcWiLVvbcbr7BoZmel1HJ2fmafOZC-xLEORKMSUQSCBTyGIHeJ6c6iMw1OrXdK2HD3AbDABCUyIb2mcwWDB+ywC2mEKVOZOMpn2cT05UqCOpaTaGVwJFIQyxOKyAA0Cd4iUUeHEtNJtpVKAo5Cl9mtdpUxXoospmbdUb10UMAAp9flLIX-BBySWnJQGepQvRyDYKJVXVWsnCkMb9foTYZESZjPWCv6rAFKDb8cQyCE07TSSinMxSmUOlHO13up5TUifTyE3wG-1GvShYSRK4NBARSqxlrIzIYgCaOqIOMIIwIeAxPqzfqhovFVXLsoB8qUiuVSJZKLRj0bzYxOJmjj5X0WvpWvEaUtE1OLgnEJ2t4L28c6GonBCbLZxWsIrgIEx61bbv2XgS0xj0FLNMuLwg2NWC5pHavHYZJzPIYrw6W972JQ1n1BN8-2LHR9EMKkK1HKtax6etQOvCCF0zB9hQjbtJWlC05SSQdbWHA87iPYYrxvasZznSDs07MVxAlXs1HIhUqPtG5HUA7DGJxUhHHxPCBXbZcRQ4rjSL7I0ByHATK1oh56JwpihiyAgCFcDEeg6ABpViOzk4juJXZSKNUlVBNsUQABtGAAQwgVBOCgHAJjGHor3cKT9Q7QJjCjaRIv4QMLRFFIkgUYN31Q25RHoZy3PULyfJ1bF02+GSSSCbc4TDBDTAkQQQRi-9WTSjKsu80QvLcgBjdgADcwBwIgeibTlsW1PprxxMYtQIZxzMfRA9EoMRBzNWoNyhMkkjKObdgc9T6sy7LRDazrut6-quSG5wRqGMaJqmorZG-WaSI-KFZB3ShHpSurYFYRh6HoSAcC1RibsNQxOPKYRZD2cqKm3aqmUc7BRC+n6-ogZrOAO1Aup6vrMUGnVzomUbxsm4Kl0IhAlQ2Y0vyhmzEpOapjhqmike+37IH29qsaO3GBvPYaicukngdAOIXrCN7rMCfh+FfSgymo5lOEYCA4B4W4CoI6DQmNWWUPDeJ5J7RTWdcjzsq1qCc2MXW5ekRSEK3CopdNhGsB2xqoCttiwoqLc6SUS5ITiBQoxDSGtrQj30t2pqWu5rqfdCxAA+SLcRERYs6RONTo89vbMaTxdCsNWpkkuPNg8NyN81Dfd3bZlHIGT6agjBMItjKqEUn0V240b5GObRhPDtboqQkZvMjmW2kv0l2mo9SofUa5seS+1m3os7vcQ8QCXjXe65LCAA */
     id: "mixer",
-    schema: {
-      context: {} as Context,
-    },
     initial: "loading",
     tsTypes: {} as import("./mixerMachine.typegen").Typegen0,
     context: {
-      start: song.start,
-      end: song.end,
-      currentTime: t.seconds,
       mainVolume: currentMix.mainVolume,
       busVolumes: initialBusVolumes,
       volume: initialVolumes,
@@ -59,10 +48,10 @@ export const mixerMachine = createMachine(
       mute: initialMutes,
       currentTrackFx: initialTrackFx,
       currentBusFx: currentMix.currentBusFx,
-      busPanelsOpen: currentMix.busPanelsOpen,
-      busPanelsPosition: currentMix.busPanelsPosition,
-      busPanelsSize: currentMix.busPanelsSize,
-      trackPanelOpen: currentTracks.trackPanelOpen,
+      busPanelActive: currentMix.busPanelActive,
+      busPanelPosition: currentMix.busPanelPosition,
+      busPanelSize: currentMix.busPanelSize,
+      trackPanelActive: currentTracks.trackPanelActive,
       trackPanelPosition: currentTracks.trackPanelPosition,
       trackPanelSize: currentTracks.trackPanelSize,
       busFxData: {
@@ -404,9 +393,6 @@ export const mixerMachine = createMachine(
 
       changeTrackPitchShiftMix: pure(
         (context, { value, pitchShift, trackIndex }) => {
-          // const currentTracksString = localStorage.getItem("currentTracks");
-          // const currentTracks =
-          //   currentTracksString && JSON.parse(currentTracksString);
           pitchShift.wet.value = value;
           const tempPitchShiftsMix =
             context.trackFxData[trackIndex].pitchShiftsMix;
@@ -420,9 +406,6 @@ export const mixerMachine = createMachine(
 
       changeTrackPitchShiftPitch: pure(
         (context, { value, pitchShift, trackIndex }) => {
-          // const currentTracksString = localStorage.getItem("currentTracks");
-          // const currentTracks =
-          //   currentTracksString && JSON.parse(currentTracksString);
           pitchShift.pitch = value;
           const tempPitchShiftsPitch =
             context.trackFxData[trackIndex].pitchShiftsPitch;
@@ -446,9 +429,6 @@ export const mixerMachine = createMachine(
       ),
 
       changeTrackReverbsMix: pure((context, { value, reverb, trackIndex }) => {
-        // const currentTracksString = localStorage.getItem("currentTracks");
-        // const currentTracks =
-        //   currentTracksString && JSON.parse(currentTracksString);
         reverb.wet.value = value;
         const tempReverbsMix = context.trackFxData[trackIndex].reverbsMix;
         tempReverbsMix[trackIndex] = value;
@@ -459,9 +439,6 @@ export const mixerMachine = createMachine(
 
       changeTrackReverbsPredelay: pure(
         (context, { value, reverb, trackIndex }) => {
-          // const currentTracksString = localStorage.getItem("currentTracks");
-          // const currentTracks =
-          //   currentTracksString && JSON.parse(currentTracksString);
           reverb.preDelay = value;
           const tempReverbsPreDelay =
             context.trackFxData[trackIndex].reverbsPreDelay;
@@ -475,9 +452,6 @@ export const mixerMachine = createMachine(
 
       changeTrackReverbsDecay: pure(
         (context, { value, reverb, trackIndex }) => {
-          // const currentTracksString = localStorage.getItem("currentTracks");
-          // const currentTracks =
-          //   currentTracksString && JSON.parse(currentTracksString);
           reverb.decay = value;
           const tempReverbsDecay = context.trackFxData[trackIndex].reverbsDecay;
           tempReverbsDecay[trackIndex] = value;
@@ -553,9 +527,6 @@ export const mixerMachine = createMachine(
       ),
 
       changeTrackDelaysMix: pure((context, { value, delay, trackIndex }) => {
-        // const currentTracksString = localStorage.getItem("currentTracks");
-        // const currentTracks =
-        //   currentTracksString && JSON.parse(currentTracksString);
         delay.wet.value = value;
         const tempDelaysMix = context.trackFxData[trackIndex].delaysMix;
         tempDelaysMix[trackIndex] = value;
@@ -565,9 +536,6 @@ export const mixerMachine = createMachine(
       }),
 
       changeTrackDelaysTime: pure((context, { value, delay, trackIndex }) => {
-        // const currentTracksString = localStorage.getItem("currentTracks");
-        // const currentTracks =
-        //   currentTracksString && JSON.parse(currentTracksString);
         delay.delayTime.value = value;
         const tempDelaysTime = context.trackFxData[trackIndex].delaysTime;
         tempDelaysTime[trackIndex] = value;
@@ -578,9 +546,6 @@ export const mixerMachine = createMachine(
 
       changeTrackDelaysFeedback: pure(
         (context, { value, delay, trackIndex }) => {
-          // const currentTracksString = localStorage.getItem("currentTracks");
-          // const currentTracks =
-          //   currentTracksString && JSON.parse(currentTracksString);
           delay.feedback.value = value;
           const tempDelaysFeedback =
             context.trackFxData[trackIndex].delaysFeedback;
@@ -593,47 +558,47 @@ export const mixerMachine = createMachine(
       ),
 
       toggleBusPanel: pure((context, { busIndex }) => {
-        const tempBusPanelsOpen = context.busPanelsOpen;
+        const tempBusPanelsOpen = context.busPanelActive;
         tempBusPanelsOpen[busIndex] = !tempBusPanelsOpen[busIndex];
         localStorage.setItem(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busPanelsOpen: tempBusPanelsOpen,
+            busPanelActive: tempBusPanelsOpen,
           })
         );
-        return [assign({ busPanelsOpen: tempBusPanelsOpen })];
+        return [assign({ busPanelActive: tempBusPanelsOpen })];
       }),
 
       saveBusPanelsPosition: pure((context, { busIndex, position }) => {
-        const tempBusPanelsPosition = context.busPanelsPosition;
+        const tempBusPanelsPosition = context.busPanelPosition;
         tempBusPanelsPosition[busIndex] = position;
         localStorage.setItem(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busPanelsPosition: tempBusPanelsPosition,
+            busPanelPosition: tempBusPanelsPosition,
           })
         );
-        return [assign({ busPanelsPosition: tempBusPanelsPosition })];
+        return [assign({ busPanelPosition: tempBusPanelsPosition })];
       }),
 
       saveBusPanelsSize: pure((context, { busIndex, size }) => {
-        const tempBusPanelsSize = context.busPanelsSize;
+        const tempBusPanelsSize = context.busPanelSize;
         tempBusPanelsSize[busIndex] = size;
         localStorage.setItem(
           "currentMix",
           JSON.stringify({
             ...currentMix,
-            busPanelsSize: tempBusPanelsSize,
+            busPanelSize: tempBusPanelsSize,
           })
         );
-        return [assign({ busPanelsSize: tempBusPanelsSize })];
+        return [assign({ busPanelSize: tempBusPanelsSize })];
       }),
 
       toggleTrackPanel: assign((context, { trackIndex }) => {
-        context.trackPanelOpen = !currentTracks[trackIndex].trackPanelOpen;
-        currentTracks[trackIndex].trackPanelOpen = context.trackPanelOpen;
+        context.trackPanelActive = !currentTracks[trackIndex].trackPanelActive;
+        currentTracks[trackIndex].trackPanelActive = context.trackPanelActive;
         localStorage.setItem(
           "currentTracks",
           JSON.stringify([...currentTracks])

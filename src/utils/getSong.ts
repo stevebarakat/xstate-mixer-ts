@@ -10,9 +10,9 @@ export const defaultCurrentMix = {
     bus2fx2: "nofx",
   },
   currentTrackFx: ["nofx", "nofx"],
-  busPanelsOpen: [true, true],
-  busPanelsPosition: { x: 0, y: 0 },
-  busPanelsSize: { width: "325px", height: "auto" },
+  busPanelActive: [true, true],
+  busPanelPosition: { x: 0, y: 0 },
+  busPanelSize: { width: "325px", height: "auto" },
   busFxData: {
     reverbsBypass: [false, false],
     reverbsMix: [
@@ -56,7 +56,7 @@ export function getSong(defaultSong: Song) {
     mute: false,
     solo: false,
     fx: ["nofx", "nofx"],
-    trackPanelOpen: true,
+    trackPanelActive: true,
     trackPanelPosition: { x: 0, y: 0 },
     trackPanelSize: { width: "325px", height: "auto" },
     trackFxData: {
