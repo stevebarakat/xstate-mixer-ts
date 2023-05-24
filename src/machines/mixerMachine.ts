@@ -1,5 +1,5 @@
 import { createMachine, assign } from "xstate";
-import { pure } from "xstate/lib/actions";
+import { pure } from "xstate";
 import {
   start as initializeAudio,
   getContext as getAudioContext,
@@ -67,7 +67,7 @@ export const mixerMachine = createMachine(
       trackFxData: initialTrackFxData,
     },
     on: {
-      RESET: { actions: "reset", target: "stopped" },
+      RESET: { actions: "reset", target: ".stopped" },
       REWIND: { actions: "rewind" },
       FF: { actions: "fastForward" },
       CHANGE_TRACK_VOLUME: { actions: "changeTrackVolume" },
@@ -212,7 +212,6 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_TRACK_DELAY_MIX" }
         | { type: "TOGGLE_TRACK_PANEL" },
     },
-    predictableActionArguments: true,
     preserveActionOrder: true,
   },
 
