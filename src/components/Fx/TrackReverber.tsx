@@ -19,7 +19,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
         <h3>Reverb</h3>
         <div className="power-button">
           <input
-            id={`bus${trackIndex}reverbBypass`}
+            id={`track${trackIndex}reverbBypass`}
             type="checkbox"
             className="power-btn"
             value={
@@ -37,7 +37,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
               state.context.trackFxData[trackIndex].reverbsBypass[trackIndex]
             }
           />
-          <label htmlFor={`bus${trackIndex}reverbBypass`}>{powerIcon}</label>
+          <label htmlFor={`track${trackIndex}reverbBypass`}>{powerIcon}</label>
         </div>
       </div>
       <div className="flex-y">
