@@ -29,9 +29,6 @@ const initialSolos = currentTracks.map(
 const initialTrackFx = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.fx
 );
-const initialTrackFxData = currentTracks.map(
-  (currentTrack: TrackSettings) => currentTrack.trackFxData
-);
 
 const initialTrackPanelActive = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.trackPanelActive
@@ -45,7 +42,49 @@ const initialTrackPanelSize = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.trackPanelSize
 );
 
-console.log("initialTrackFxData", initialTrackFxData);
+const initialReverbsBypass = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.reverbsBypass
+);
+
+const initialReverbsMix = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.reverbsMix
+);
+
+const initialRevebsPreDelay = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.reverbsPreDelay
+);
+
+const initialReverbsDecay = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.reverbsDecay
+);
+
+const initialDelaysBypass = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.delaysBypass
+);
+
+const initialDelaysMix = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.delaysMix
+);
+
+const initialDelaysTime = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.delaysTime
+);
+
+const initialDelaysFeedback = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.delaysFeedback
+);
+
+const initialPitchShiftsBypass = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.pitchShiftsBypass
+);
+
+const initialPitchShiftsMix = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.pitchShiftsMix
+);
+
+const initialPitchShiftsPitch = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.pitchShiftsPitch
+);
 
 export const mixerMachine = createMachine(
   {
