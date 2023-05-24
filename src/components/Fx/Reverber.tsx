@@ -25,7 +25,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
             value={state.context.busFxData.reverbsBypass[busIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
-                type: "BYPASS_REVERB",
+                type: "BYPASS_BUS_REVERB",
                 checked: e.currentTarget.checked,
                 reverb,
                 busIndex,
@@ -50,7 +50,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_MIX",
+              type: "CHANGE_BUS_REVERB_MIX",
               value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,
@@ -72,7 +72,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_PREDELAY",
+              type: "CHANGE_BUS_REVERB_PREDELAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,
@@ -94,7 +94,7 @@ export default function Reverber({ reverb, busIndex, fxIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_REVERBS_DECAY",
+              type: "CHANGE_BUS_REVERB_DECAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               busIndex,

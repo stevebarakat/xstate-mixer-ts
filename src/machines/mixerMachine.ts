@@ -70,7 +70,7 @@ export const mixerMachine = createMachine(
       RESET: { actions: "reset", target: "stopped" },
       REWIND: { actions: "rewind" },
       FF: { actions: "fastForward" },
-      CHANGE_VOLUME: { actions: "changeVolume" },
+      CHANGE_TRACK_VOLUME: { actions: "changeTrackVolume" },
       CHANGE_MAIN_VOLUME: { actions: "changeMainVolume" },
       CHANGE_BUS_VOLUME: { actions: "changeBusVolume" },
       SET_BUS_FX: { actions: "setBusFx" },
@@ -78,13 +78,13 @@ export const mixerMachine = createMachine(
       CHANGE_PAN: { actions: "changePan" },
       TOGGLE_SOLO: { actions: "toggleSolo" },
       TOGGLE_MUTE: { actions: "toggleMute" },
-      BYPASS_REVERB: { actions: "bypassReverb" },
+      BYPASS_BUS_REVERB: { actions: "bypassBusReverb" },
       BYPASS_TRACK_REVERB: { actions: "bypassTrackReverb" },
-      CHANGE_REVERBS_MIX: { actions: "changeReverbsMix" },
+      CHANGE_BUS_REVERB_MIX: { actions: "changeBusReverbMix" },
       CHANGE_TRACK_REVERBS_MIX: { actions: "changeTrackReverbsMix" },
-      CHANGE_REVERBS_PREDELAY: { actions: "changeReverbsPredelay" },
+      CHANGE_BUS_REVERB_PREDELAY: { actions: "changeBusReverbPredelay" },
       CHANGE_TRACK_REVERBS_PREDELAY: { actions: "changeTrackReverbsPredelay" },
-      CHANGE_REVERBS_DECAY: { actions: "changeReverbsDecay" },
+      CHANGE_BUS_REVERB_DECAY: { actions: "changeBusReverbDecay" },
       CHANGE_TRACK_REVERBS_DECAY: { actions: "changeTrackReverbsDecay" },
       CHANGE_TRACK_PITCHSHIFT_PITCH: { actions: "changeTrackPitchShiftPitch" },
       BYPASS_DELAY: { actions: "bypassDelay" },
@@ -175,7 +175,7 @@ export const mixerMachine = createMachine(
         | { type: "RESET" }
         | { type: "REWIND" }
         | { type: "FF" }
-        | { type: "CHANGE_VOLUME" }
+        | { type: "CHANGE_TRACK_VOLUME" }
         | { type: "CHANGE_MAIN_VOLUME" }
         | { type: "CHANGE_BUS_VOLUME" }
         | { type: "SET_BUS_FX" }
@@ -184,14 +184,14 @@ export const mixerMachine = createMachine(
         | { type: "CHANGE_PAN" }
         | { type: "TOGGLE_SOLO" }
         | { type: "TOGGLE_MUTE" }
-        | { type: "BYPASS_REVERB" }
+        | { type: "BYPASS_BUS_REVERB" }
         | { type: "BYPASS_TRACK_REVERB" }
-        | { type: "CHANGE_REVERBS_MIX" }
+        | { type: "CHANGE_BUS_REVERB_MIX" }
         | { type: "CHANGE_TRACK_REVERBS_MIX" }
         | { type: "CHANGE_TRACK_PITCHSHIFT_MIX" }
-        | { type: "CHANGE_REVERBS_PREDELAY" }
+        | { type: "CHANGE_BUS_REVERB_PREDELAY" }
         | { type: "CHANGE_TRACK_REVERBS_PREDELAY" }
-        | { type: "CHANGE_REVERBS_DECAY" }
+        | { type: "CHANGE_BUS_REVERB_DECAY" }
         | { type: "CHANGE_TRACK_REVERBS_DECAY" }
         | { type: "BYPASS_DELAY" }
         | { type: "BYPASS_TRACK_DELAY" }
@@ -259,7 +259,7 @@ export const mixerMachine = createMachine(
         return [assign({ busVolumes: tempBusVols }), volume];
       }),
 
-      changeVolume: pure((context, { value, trackIndex, channel }) => {
+      changeTrackVolume: pure((context, { value, trackIndex, channel }) => {
         const scaled = dBToPercent(scale(parseFloat(value)));
         const channelVolume = () => {
           channel.volume.value = scaled;
@@ -333,7 +333,7 @@ export const mixerMachine = createMachine(
         );
       }),
 
-      bypassReverb: pure((context, { checked, reverb, busIndex }) => {
+      bypassBusReverb: pure((context, { checked, reverb, busIndex }) => {
         const tempReverbsBypass = context.busFxData.reverbsBypass;
         tempReverbsBypass[busIndex] = checked;
         currentMix.busFxData.reverbsBypass[busIndex] = checked;
@@ -417,7 +417,7 @@ export const mixerMachine = createMachine(
         }
       ),
 
-      changeReverbsMix: pure(
+      changeBusReverbMix: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {
           reverb.wet.value = value;
           const tempReverbsMix = context.busFxData.reverbsMix;
@@ -462,7 +462,7 @@ export const mixerMachine = createMachine(
         }
       ),
 
-      changeReverbsPredelay: pure(
+      changeBusReverbPredelay: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {
           reverb.preDelay = value;
           const tempReverbsPreDelay = context.busFxData.reverbsPreDelay;
@@ -473,7 +473,7 @@ export const mixerMachine = createMachine(
         }
       ),
 
-      changeReverbsDecay: pure(
+      changeBusReverbDecay: pure(
         (context, { value, reverb, busIndex, fxIndex }) => {
           reverb.decay = value;
           const tempReverbsDecay = context.busFxData.reverbsDecay;
