@@ -1,4 +1,3 @@
-import { shallowEqual } from "@xstate/react";
 import { MixerMachineContext } from "../../App";
 import { powerIcon } from "../../assets/icons";
 import type { Reverb } from "tone";

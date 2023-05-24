@@ -410,10 +410,9 @@ export const mixerMachine = createMachine(
       }),
 
       bypassTrackReverb: pure((context, { checked, reverb, trackIndex }) => {
-        const tempReverbsBypass = context.trackFxData[trackIndex].reverbsBypass;
+        const tempReverbsBypass = context.reverbsBypass;
         tempReverbsBypass[trackIndex] = checked;
-        currentTracks[trackIndex].trackFxData.reverbsBypass[trackIndex] =
-          checked;
+        currentTracks[trackIndex].reverbsBypass = checked;
         if (checked) {
           reverb.disconnect();
         } else {
@@ -424,10 +423,9 @@ export const mixerMachine = createMachine(
       }),
 
       bypassTrackDelay: pure((context, { checked, delay, trackIndex }) => {
-        const tempDelaysBypass = context.trackFxData[trackIndex].delaysBypass;
+        const tempDelaysBypass = context.delaysBypass;
         tempDelaysBypass[trackIndex] = checked;
-        currentTracks[trackIndex].trackFxData.delaysBypass[trackIndex] =
-          checked;
+        currentTracks[trackIndex].delaysBypass = checked;
         if (checked) {
           delay.disconnect();
         } else {
@@ -439,11 +437,9 @@ export const mixerMachine = createMachine(
 
       bypassTrackPitchShift: pure(
         (context, { checked, pitchShift, trackIndex }) => {
-          const tempPitchShiftsBypass =
-            context.trackFxData[trackIndex].pitchShiftsBypass;
+          const tempPitchShiftsBypass = context.pitchShiftsBypass;
           tempPitchShiftsBypass[trackIndex] = checked;
-          currentTracks[trackIndex].trackFxData.pitchShiftsBypass[trackIndex] =
-            checked;
+          currentTracks[trackIndex].pitchShiftsBypass = checked;
           if (checked) {
             pitchShift.disconnect();
           } else {
@@ -457,11 +453,9 @@ export const mixerMachine = createMachine(
       changeTrackPitchShiftMix: pure(
         (context, { value, pitchShift, trackIndex }) => {
           pitchShift.wet.value = value;
-          const tempPitchShiftsMix =
-            context.trackFxData[trackIndex].pitchShiftsMix;
+          const tempPitchShiftsMix = context.pitchShiftsMix;
           tempPitchShiftsMix[trackIndex] = value;
-          currentTracks[trackIndex].trackFxData.pitchShiftsMix[trackIndex] =
-            value;
+          currentTracks[trackIndex].pitchShiftsMix = value;
           localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
           return [assign({ pitchShiftsMix: tempPitchShiftsMix })];
         }
@@ -470,11 +464,9 @@ export const mixerMachine = createMachine(
       changeTrackPitchShiftPitch: pure(
         (context, { value, pitchShift, trackIndex }) => {
           pitchShift.pitch = value;
-          const tempPitchShiftsPitch =
-            context.trackFxData[trackIndex].pitchShiftsPitch;
+          const tempPitchShiftsPitch = context.pitchShiftsPitch;
           tempPitchShiftsPitch[trackIndex] = value;
-          currentTracks[trackIndex].trackFxData.pitchShiftsPitch[trackIndex] =
-            value;
+          currentTracks[trackIndex].pitchShiftsPitch = value;
           localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
           return [assign({ pitchShiftsPitch: tempPitchShiftsPitch })];
         }
@@ -592,18 +584,18 @@ export const mixerMachine = createMachine(
 
       changeTrackDelayMix: pure((context, { value, delay, trackIndex }) => {
         delay.wet.value = value;
-        const tempDelaysMix = context.trackFxData[trackIndex].delaysMix;
+        const tempDelaysMix = context.delaysMix;
         tempDelaysMix[trackIndex] = value;
-        currentTracks[trackIndex].trackFxData.delaysMix[trackIndex] = value;
+        currentTracks[trackIndex].delaysMix = value;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ delaysMix: tempDelaysMix })];
       }),
 
       changeTrackDelayTime: pure((context, { value, delay, trackIndex }) => {
         delay.delayTime.value = value;
-        const tempDelaysTime = context.trackFxData[trackIndex].delaysTime;
+        const tempDelaysTime = context.delaysTime;
         tempDelaysTime[trackIndex] = value;
-        currentTracks[trackIndex].trackFxData.delaysTime[trackIndex] = value;
+        currentTracks[trackIndex].delaysTime = value;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ delaysTime: tempDelaysTime })];
       }),
@@ -611,11 +603,9 @@ export const mixerMachine = createMachine(
       changeTrackDelayFeedback: pure(
         (context, { value, delay, trackIndex }) => {
           delay.feedback.value = value;
-          const tempDelaysFeedback =
-            context.trackFxData[trackIndex].delaysFeedback;
+          const tempDelaysFeedback = context.delaysFeedback;
           tempDelaysFeedback[trackIndex] = value;
-          currentTracks[trackIndex].trackFxData.delaysFeedback[trackIndex] =
-            value;
+          currentTracks[trackIndex].delaysFeedback = value;
           localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
           return [assign({ delaysFeedback: tempDelaysFeedback })];
         }

@@ -8,10 +8,10 @@ type Props = {
 };
 
 export default function TrackDelay({ delay, trackIndex }: Props) {
-  const [state, send] = MixerMachineContext.useActor();
+  const [state] = MixerMachineContext.useActor();
+  const { send } = MixerMachineContext.useActorRef();
 
-  const disabled =
-    state.context.trackFxData[trackIndex].delaysBypass[trackIndex];
+  const disabled = state.context.delaysBypass[trackIndex];
 
   return (
     <div>
@@ -21,9 +21,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           <input
             id={`bus${trackIndex}delayBypass`}
             type="checkbox"
-            value={
-              state.context.trackFxData[trackIndex].delaysBypass[trackIndex]
-            }
+            value={state.context.delaysBypass[trackIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
                 type: "BYPASS_TRACK_DELAY",
@@ -32,9 +30,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
                 trackIndex,
               });
             }}
-            checked={
-              state.context.trackFxData[trackIndex].delaysBypass[trackIndex]
-            }
+            checked={state.context.delaysBypass[trackIndex]}
           />
           <label htmlFor={`bus${trackIndex}delayBypass`}>{powerIcon}</label>
         </div>
@@ -49,7 +45,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.trackFxData[trackIndex].delaysMix[trackIndex]}
+          value={state.context.delaysMix[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_TRACK_DELAY_MIX",
@@ -70,7 +66,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={state.context.trackFxData[trackIndex].delaysTime[trackIndex]}
+          value={state.context.delaysTime[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_TRACK_DELAY_TIME",
@@ -91,9 +87,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           max={1}
           step={0.01}
           disabled={disabled}
-          value={
-            state.context.trackFxData[trackIndex].delaysFeedback[trackIndex]
-          }
+          value={state.context.delaysFeedback[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
               type: "CHANGE_TRACK_DELAY_FEEDBACK",
