@@ -6,7 +6,7 @@ import Transport from "./Transport";
 import BusPanels from "./Bus/BusPanels";
 import Loader from "./Loader";
 import SongInfo from "./SongInfo";
-import ChannelStrip from "./ChannelStrip2";
+import ChannelStrip from "./ChannelStrip";
 import Main from "./Main";
 import BusChannel from "./Bus/BusChannel";
 import { MixerMachineContext } from "../App";
