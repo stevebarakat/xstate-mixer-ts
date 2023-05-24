@@ -37,12 +37,6 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
     (state) => state.context.trackPanelData
   );
 
-  const trackPanelSize = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelData[trackIndex].size
-  );
-
-  // console.log("trackPanelPosition", trackPanelPosition);
-  console.log("trackPanelSize", trackPanelSize);
   console.log("trackPanelActive", trackPanelActive);
 
   const channel = channels[trackIndex];
@@ -105,9 +99,10 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   console.log(
-    "trackPanelData[trackIndex].position[trackIndex]",
-    trackPanelData[trackIndex].position[trackIndex]
+    "trackPanelData[trackIndex].size[trackIndex]",
+    trackPanelData[trackIndex].size[trackIndex]
   );
+
   function getTrackPanels() {
     if (!fx1 && !fx2) {
       return null;
@@ -123,7 +118,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
               position: { x: d.x, y: d.y },
             });
           }}
-          size={trackPanelSize}
+          size={trackPanelData[trackIndex].size[trackIndex]}
           minWidth="200px"
           onResizeStop={(_, __, ref) => {
             send({

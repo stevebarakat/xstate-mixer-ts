@@ -637,12 +637,11 @@ export const mixerMachine = createMachine(
       }),
 
       saveTrackPanelSize: pure((context, { trackIndex, size }) => {
-        context.trackPanelSize = size;
-        currentTracks[trackIndex].trackPanelSize = size;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
+        const tempTrackPanelData = context.trackPanelData;
+        tempTrackPanelData[trackIndex].size[trackIndex] = size;
+        currentTracks[trackIndex].trackPanelData[trackIndex] = size;
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ trackPanelData: tempTrackPanelData })];
       }),
     },
   }
