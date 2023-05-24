@@ -23,16 +23,24 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  // const [state, send] = MixerMachineContext.useActor();
+  const [state] = MixerMachineContext.useActor();
   const { send } = MixerMachineContext.useActorRef();
 
   const currentTrackFx = MixerMachineContext.useSelector(
     (state) => state.context.currentTrackFx
   );
 
-  const trackPanelData = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelData
-  );
+  // const trackPanelActive = MixerMachineContext.useSelector(
+  //   (state) => state.context.trackPanelActive
+  // );
+
+  // const trackPanelPosition = MixerMachineContext.useSelector(
+  //   (state) => state.context.trackPanelPosition
+  // );
+
+  // const trackPanelSize = MixerMachineContext.useSelector(
+  //   (state) => state.context.trackPanelSize
+  // );
 
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
@@ -94,8 +102,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   console.log(
-    "trackPanelData[trackIndex].active[trackIndex]",
-    trackPanelData[trackIndex].active[trackIndex]
+    "trackPanelPosition",
+    state.context.trackPanelPosition[trackIndex]
   );
 
   function getTrackPanels() {
@@ -105,7 +113,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       return (
         <TrackFxPanel
           className="fx-panel"
-          position={trackPanelData[trackIndex].position[trackIndex]}
+          position={state.context.trackPanelPosition[trackIndex]}
           onDragStop={(_, d) => {
             send({
               type: "SAVE_TRACK_PANEL_POSITION",
@@ -113,7 +121,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
               position: { x: d.x, y: d.y },
             });
           }}
-          size={trackPanelData[trackIndex].size[trackIndex]}
+          size={state.context.trackPanelSize[trackIndex]}
           minWidth="200px"
           onResizeStop={(_, __, ref) => {
             send({
@@ -152,7 +160,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           });
         }}
       >
-        {trackPanelData[trackIndex].active[trackIndex] ? "Close" : "Open"}
+        {state.context.trackPanelActive[trackIndex] ? "Close" : "Open"}
         FX
       </ChannelButton>
       {fx(2).map((_, fxIndex) => (
@@ -170,7 +178,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         </select>
       ))}
       <div className="channel">
-        <>{trackPanelData[trackIndex].active[trackIndex] && getTrackPanels()}</>
+        <>{state.context.trackPanelActive[trackIndex] && getTrackPanels()}</>
         <Sends trackIndex={trackIndex} channels={channels} />
         <Pan trackIndex={trackIndex} channel={channel} />
         <Fader trackIndex={trackIndex} channel={channel} />

@@ -56,24 +56,24 @@ export function getSong(defaultSong: Song) {
     mute: false,
     solo: false,
     fx: ["nofx", "nofx"],
-    // trackPanelActive: true,
-    // trackPanelPosition: { x: 0, y: 0 },
-    // trackPanelSize: { width: "325px", height: "auto" },
-    trackPanelData: {
-      active: [true, true, true, true],
-      position: [
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-        { x: 0, y: 0 },
-      ],
-      size: [
-        { width: "325px", height: "auto" },
-        { width: "325px", height: "auto" },
-        { width: "325px", height: "auto" },
-        { width: "325px", height: "auto" },
-      ],
-    },
+    trackPanelActive: true,
+    trackPanelPosition: { x: 0, y: 0 },
+    trackPanelSize: { width: "325px", height: "auto" },
+    // trackPanelData: {
+    //   active: [true, true, true, true],
+    //   position: [
+    //     { x: 0, y: 0 },
+    //     { x: 0, y: 0 },
+    //     { x: 0, y: 0 },
+    //     { x: 0, y: 0 },
+    //   ],
+    //   size: [
+    //     { width: "325px", height: "auto" },
+    //     { width: "325px", height: "auto" },
+    //     { width: "325px", height: "auto" },
+    //     { width: "325px", height: "auto" },
+    //   ],
+    // },
     trackFxData: {
       reverbsBypass: [false, false, false, false],
       reverbsMix: [0.5, 0.5, 0.5, 0.5],

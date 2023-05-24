@@ -33,11 +33,17 @@ const initialTrackFxData = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.trackFxData
 );
 
-const initialTrackPanelData = currentTracks.map(
-  (currentTrack: TrackSettings) => currentTrack.trackPanelData
+const initialTrackPanelActive = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackPanelActive
 );
 
-console.log("initialTrackPanelData", initialTrackPanelData);
+const initialTrackPanelPosition = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackPanelPosition
+);
+
+const initialTrackPanelSize = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackPanelSize
+);
 
 console.log("initialTrackFxData", initialTrackFxData);
 
@@ -70,7 +76,9 @@ export const mixerMachine = createMachine(
         delaysFeedback: currentMix.busFxData.delaysFeedback,
       },
       trackFxData: initialTrackFxData,
-      trackPanelData: initialTrackPanelData,
+      trackPanelActive: initialTrackPanelActive,
+      trackPanelPosition: initialTrackPanelPosition,
+      trackPanelSize: initialTrackPanelSize,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -617,11 +625,12 @@ export const mixerMachine = createMachine(
       }),
 
       saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
-        const tempTrackPanelData = context.trackPanelData;
-        tempTrackPanelData[trackIndex].position[trackIndex] = position;
-        currentTracks[trackIndex].trackPanelData[trackIndex] = position;
+        const tempTrackPanelPosition = context.trackPanelPosition;
+        console.log("tempTrackPanelPosition", tempTrackPanelPosition);
+        tempTrackPanelPosition[trackIndex] = position;
+        currentTracks[trackIndex].trackPanelPosition = position;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        return [assign({ trackPanelData: tempTrackPanelData })];
+        return [assign({ trackPanelPosition: tempTrackPanelPosition })];
       }),
 
       saveTrackPanelSize: pure((context, { trackIndex, size }) => {
@@ -633,13 +642,13 @@ export const mixerMachine = createMachine(
       }),
 
       toggleTrackPanel: pure((context, { trackIndex }) => {
-        const tempTrackPanelData = context.trackPanelData;
-        tempTrackPanelData[trackIndex].active[trackIndex] =
-          !tempTrackPanelData[trackIndex].active[trackIndex];
-        currentTracks[trackIndex].trackPanelData[trackIndex] =
-          !tempTrackPanelData[trackIndex].active[trackIndex];
+        const tempTrackPanelActive = context.trackPanelActive;
+        tempTrackPanelActive[trackIndex].active[trackIndex] =
+          !tempTrackPanelActive[trackIndex].active[trackIndex];
+        currentTracks[trackIndex].trackPanelActive[trackIndex] =
+          !tempTrackPanelActive[trackIndex].active[trackIndex];
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
-        return [assign({ trackPanelData: tempTrackPanelData })];
+        return [assign({ trackPanelActive: tempTrackPanelActive })];
       }),
     },
   }
