@@ -59,9 +59,6 @@ export const mixerMachine = createMachine(
       busPanelActive: currentMix.busPanelActive,
       busPanelPosition: currentMix.busPanelPosition,
       busPanelSize: currentMix.busPanelSize,
-      // trackPanelActive: currentTracks.trackPanelActive,
-      // trackPanelPosition: currentTracks.trackPanelPosition,
-      // trackPanelSize: currentTracks.trackPanelSize,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
