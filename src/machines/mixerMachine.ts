@@ -493,9 +493,9 @@ export const mixerMachine = createMachine(
 
       changeTrackReverbMix: pure((context, { value, reverb, trackIndex }) => {
         reverb.wet.value = value;
-        const tempReverbsMix = context.trackFxData[trackIndex].reverbsMix;
+        const tempReverbsMix = context.reverbsMix;
         tempReverbsMix[trackIndex] = value;
-        currentTracks[trackIndex].trackFxData.reverbsMix[trackIndex] = value;
+        currentTracks[trackIndex].reverbsMix = value;
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ reverbsMix: tempReverbsMix })];
       }),
