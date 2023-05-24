@@ -29,15 +29,9 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
     (state) => state.context.currentTrackFx
   );
 
-  const trackPanelActive = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelData[trackIndex].active
-  );
-
   const trackPanelData = MixerMachineContext.useSelector(
     (state) => state.context.trackPanelData
   );
-
-  console.log("trackPanelActive", trackPanelActive);
 
   const channel = channels[trackIndex];
   const reverb = useRef<Reverb>(new Reverb(8).toDestination());
@@ -99,8 +93,8 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
   }
 
   console.log(
-    "trackPanelData[trackIndex].size[trackIndex]",
-    trackPanelData[trackIndex].size[trackIndex]
+    "trackPanelData[trackIndex].active[trackIndex]",
+    trackPanelData[trackIndex].active[trackIndex]
   );
 
   function getTrackPanels() {
@@ -164,7 +158,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
         </select>
       ))}
       <div className="channel">
-        <>{getTrackPanels()}</>
+        <>{trackPanelData[trackIndex].active[trackIndex] && getTrackPanels()}</>
         <Sends trackIndex={trackIndex} channels={channels} />
         <Pan trackIndex={trackIndex} channel={channel} />
         <Fader trackIndex={trackIndex} channel={channel} />

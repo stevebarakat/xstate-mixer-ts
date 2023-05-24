@@ -606,15 +606,6 @@ export const mixerMachine = createMachine(
         return [assign({ busPanelSize: tempBusPanelsSize })];
       }),
 
-      toggleTrackPanel: assign((context, { trackIndex }) => {
-        context.trackPanelActive = !currentTracks[trackIndex].trackPanelActive;
-        currentTracks[trackIndex].trackPanelActive = context.trackPanelActive;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
-      }),
-
       setTrackFx: pure((context, { trackIndex, target }) => {
         const id = target.id.at(-1);
         context.currentTrackFx[trackIndex][id] = target.value;
@@ -640,6 +631,16 @@ export const mixerMachine = createMachine(
         const tempTrackPanelData = context.trackPanelData;
         tempTrackPanelData[trackIndex].size[trackIndex] = size;
         currentTracks[trackIndex].trackPanelData[trackIndex] = size;
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ trackPanelData: tempTrackPanelData })];
+      }),
+
+      toggleTrackPanel: pure((context, { trackIndex }) => {
+        const tempTrackPanelData = context.trackPanelData;
+        tempTrackPanelData[trackIndex].active[trackIndex] =
+          !tempTrackPanelData[trackIndex].active[trackIndex];
+        currentTracks[trackIndex].trackPanelData[trackIndex] =
+          !tempTrackPanelData[trackIndex].active[trackIndex];
         localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
         return [assign({ trackPanelData: tempTrackPanelData })];
       }),
