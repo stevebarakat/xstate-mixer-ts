@@ -22,26 +22,26 @@ type Props = {
 };
 
 function ChannelStrip({ track, trackIndex, channels }: Props) {
-  // const [state, send] = MixerMachineContext.useActor();
-  const { send } = MixerMachineContext.useActorRef();
+  const [state, send] = MixerMachineContext.useActor();
+  // const { send } = MixerMachineContext.useActorRef();
 
   const currentTrackFx = MixerMachineContext.useSelector(
     (state) => state.context.currentTrackFx
   );
 
   const trackPanelActive = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelActive
+    (state) => state.context.trackPanelData[trackIndex].active
   );
 
-  const trackPanelPosition = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelPosition
+  const trackPanelData = MixerMachineContext.useSelector(
+    (state) => state.context.trackPanelData
   );
 
   const trackPanelSize = MixerMachineContext.useSelector(
-    (state) => state.context.trackPanelSize
+    (state) => state.context.trackPanelData[trackIndex].size
   );
 
-  console.log("trackPanelPosition", trackPanelPosition);
+  // console.log("trackPanelPosition", trackPanelPosition);
   console.log("trackPanelSize", trackPanelSize);
   console.log("trackPanelActive", trackPanelActive);
 
@@ -104,6 +104,10 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
     }
   }
 
+  console.log(
+    "trackPanelData[trackIndex].position[trackIndex]",
+    trackPanelData[trackIndex].position[trackIndex]
+  );
   function getTrackPanels() {
     if (!fx1 && !fx2) {
       return null;
@@ -111,7 +115,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
       return (
         <TrackFxPanel
           className="fx-panel"
-          position={trackPanelPosition}
+          position={trackPanelData[trackIndex].position[trackIndex]}
           onDragStop={(_, d) => {
             send({
               type: "SAVE_TRACK_PANEL_POSITION",

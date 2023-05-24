@@ -32,7 +32,15 @@ const initialTrackFx = currentTracks.map(
 const initialTrackFxData = currentTracks.map(
   (currentTrack: TrackSettings) => currentTrack.trackFxData
 );
+
+const initialTrackPanelData = currentTracks.map(
+  (currentTrack: TrackSettings) => currentTrack.trackPanelData
+);
+
+console.log("initialTrackPanelData", initialTrackPanelData);
+
 console.log("initialTrackFxData", initialTrackFxData);
+
 export const mixerMachine = createMachine(
   {
     /** @xstate-layout N4IgpgJg5mDOIC5QFsCWAPMAnAxAJQFEBlAgFQG0AGAXUVAAcB7WVAF1UYDs6R1EA2AIwAWAHQBOYeIBMggBwB2AKwAaEAE9EAWgViAzIP7DK-aUoC+5tWky5CAdQCSAOQAiVWkhBMW7Ljz4EYSUlUTlxOWE9ZTVNBC1ouVFBM0trDGwcADEsjx4fNg5uL0DpPWlRJUo9cRMzWO1E5NSrEBtMgGEACQBBZwBxAgB9ADUAeQAZAFUAWQI8rwK-YtBA8P5k-gVxfkVVDW1BJUFRKX5KcWiLVvbcbr7BoZmel1HJ2fmafOZC-xLEORKMSUQSCBTyGIHeJ6c6iMw1OrXdK2HD3AbDABCUyIb2mcwWDB+ywC2mEKVOZOMpn2cT05UqCOpaTaGVwJFIQyxOKyAA0Cd4iUUeHEtNJtpVKAo5Cl9mtdpUxXoospmbdUb10UMAAp9flLIX-BBySWnJQGepQvRyDYKJVXVWsnCkMb9foTYZESZjPWCv6rAFKDb8cQyCE07TSSinMxSmUOlHO13up5TUifTyE3wG-1GvShYSRK4NBARSqxlrIzIYgCaOqIOMIIwIeAxPqzfqhovFVXLsoB8qUiuVSJZKLRj0bzYxOJmjj5X0WvpWvEaUtE1OLgnEJ2t4L28c6GonBCbLZxWsIrgIEx61bbv2XgS0xj0FLNMuLwg2NWC5pHavHYZJzPIYrw6W972JQ1n1BN8-2LHR9EMKkK1HKtax6etQOvCCF0zB9hQjbtJWlC05SSQdbWHA87iPYYrxvasZznSDs07MVxAlXs1HIhUqPtG5HUA7DGJxUhHHxPCBXbZcRQ4rjSL7I0ByHATK1oh56JwpihiyAgCFcDEeg6ABpViOzk4juJXZSKNUlVBNsUQABtGAAQwgVBOCgHAJjGHor3cKT9Q7QJjCjaRIv4QMLRFFIkgUYN31Q25RHoZy3PULyfJ1bF02+GSSSCbc4TDBDTAkQQQRi-9WTSjKsu80QvLcgBjdgADcwBwIgeibTlsW1PprxxMYtQIZxzMfRA9EoMRBzNWoNyhMkkjKObdgc9T6sy7LRDazrut6-quSG5wRqGMaJqmorZG-WaSI-KFZB3ShHpSurYFYRh6HoSAcC1RibsNQxOPKYRZD2cqKm3aqmUc7BRC+n6-ogZrOAO1Aup6vrMUGnVzomUbxsm4Kl0IhAlQ2Y0vyhmzEpOapjhqmike+37IH29qsaO3GBvPYaicukngdAOIXrCN7rMCfh+FfSgymo5lOEYCA4B4W4CoI6DQmNWWUPDeJ5J7RTWdcjzsq1qCc2MXW5ekRSEK3CopdNhGsB2xqoCttiwoqLc6SUS5ITiBQoxDSGtrQj30t2pqWu5rqfdCxAA+SLcRERYs6RONTo89vbMaTxdCsNWpkkuPNg8NyN81Dfd3bZlHIGT6agjBMItjKqEUn0V240b5GObRhPDtboqQkZvMjmW2kv0l2mo9SofUa5seS+1m3os7vcQ8QCXjXe65LCAA */
@@ -51,9 +59,9 @@ export const mixerMachine = createMachine(
       busPanelActive: currentMix.busPanelActive,
       busPanelPosition: currentMix.busPanelPosition,
       busPanelSize: currentMix.busPanelSize,
-      trackPanelActive: currentTracks.trackPanelActive,
-      trackPanelPosition: currentTracks.trackPanelPosition,
-      trackPanelSize: currentTracks.trackPanelSize,
+      // trackPanelActive: currentTracks.trackPanelActive,
+      // trackPanelPosition: currentTracks.trackPanelPosition,
+      // trackPanelSize: currentTracks.trackPanelSize,
       busFxData: {
         reverbsBypass: currentMix.busFxData.reverbsBypass,
         reverbsMix: currentMix.busFxData.reverbsMix,
@@ -65,6 +73,7 @@ export const mixerMachine = createMachine(
         delaysFeedback: currentMix.busFxData.delaysFeedback,
       },
       trackFxData: initialTrackFxData,
+      trackPanelData: initialTrackPanelData,
     },
     on: {
       RESET: { actions: "reset", target: "stopped" },
@@ -620,12 +629,11 @@ export const mixerMachine = createMachine(
       }),
 
       saveTrackPanelPosition: pure((context, { trackIndex, position }) => {
-        context.trackPanelPosition = position;
-        currentTracks[trackIndex].trackPanelPosition = position;
-        localStorage.setItem(
-          "currentTracks",
-          JSON.stringify([...currentTracks])
-        );
+        const tempTrackPanelData = context.trackPanelData;
+        tempTrackPanelData[trackIndex].position[trackIndex] = position;
+        currentTracks[trackIndex].trackPanelData[trackIndex] = position;
+        localStorage.setItem("currentTracks", JSON.stringify(currentTracks));
+        return [assign({ trackPanelData: tempTrackPanelData })];
       }),
 
       saveTrackPanelSize: pure((context, { trackIndex, size }) => {
