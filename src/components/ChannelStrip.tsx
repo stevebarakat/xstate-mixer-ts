@@ -131,7 +131,7 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           cancel="input"
         >
           <CloseButton
-            id="bus-panel-1"
+            id="track-panel-1"
             onClick={() => {
               send({
                 type: "TOGGLE_TRACK_PANEL",

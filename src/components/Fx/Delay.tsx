@@ -24,7 +24,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
             value={state.context.busFxData.delaysBypass[busIndex]}
             onChange={(e: React.FormEvent<HTMLInputElement>): void => {
               send({
-                type: "BYPASS_DELAY",
+                type: "BYPASS_BUS_DELAY",
                 checked: e.currentTarget.checked,
                 delay,
                 busIndex,
@@ -49,7 +49,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           value={state.context.busFxData.delaysMix[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_DELAYS_MIX",
+              type: "CHANGE_BUS_DELAY_MIX",
               value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,
@@ -71,7 +71,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           value={state.context.busFxData.delaysTime[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_DELAYS_TIME",
+              type: "CHANGE_BUS_DELAY_TIME",
               value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,
@@ -93,7 +93,7 @@ export default function Delay({ delay, busIndex, fxIndex }: Props) {
           value={state.context.busFxData.delaysFeedback[busIndex][fxIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_DELAYS_FEEDBACK",
+              type: "CHANGE_BUS_DELAY_FEEDBACK",
               value: parseFloat(e.currentTarget.value),
               delay,
               busIndex,

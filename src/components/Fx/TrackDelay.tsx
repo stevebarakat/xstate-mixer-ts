@@ -52,7 +52,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           value={state.context.trackFxData[trackIndex].delaysMix[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_DELAYS_MIX",
+              type: "CHANGE_TRACK_DELAY_MIX",
               value: parseFloat(e.currentTarget.value),
               delay,
               trackIndex,
@@ -73,7 +73,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           value={state.context.trackFxData[trackIndex].delaysTime[trackIndex]}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_DELAYS_TIME",
+              type: "CHANGE_TRACK_DELAY_TIME",
               value: parseFloat(e.currentTarget.value),
               delay,
               trackIndex,
@@ -96,7 +96,7 @@ export default function TrackDelay({ delay, trackIndex }: Props) {
           }
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_DELAYS_FEEDBACK",
+              type: "CHANGE_TRACK_DELAY_FEEDBACK",
               value: parseFloat(e.currentTarget.value),
               delay,
               trackIndex,

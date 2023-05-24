@@ -53,7 +53,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_MIX",
+              type: "CHANGE_TRACK_REVERB_MIX",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
@@ -76,7 +76,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_PREDELAY",
+              type: "CHANGE_TRACK_REVERB_PREDELAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
@@ -97,7 +97,7 @@ export default function TrackReverber({ reverb, trackIndex }: Props) {
           disabled={disabled}
           onChange={(e: React.FormEvent<HTMLInputElement>): void => {
             send({
-              type: "CHANGE_TRACK_REVERBS_DECAY",
+              type: "CHANGE_TRACK_REVERB_DECAY",
               value: parseFloat(e.currentTarget.value),
               reverb,
               trackIndex,
