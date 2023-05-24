@@ -3,6 +3,7 @@ import { Reverb, FeedbackDelay, PitchShift, Destination } from "tone";
 import TrackReverber from "./Fx/TrackReverber";
 import TrackDelay from "./Fx/TrackDelay";
 import CloseButton from "./Buttons/CloseButton";
+import ChannelButton from "./Buttons/ChannelButton";
 import PitchShifter from "./Fx/PitchShifter";
 import Pan from "./Pan";
 import SoloMute from "./SoloMute";
@@ -124,7 +125,6 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
           cancel="input"
         >
           <CloseButton
-            id="track-panel-1"
             onClick={() => {
               send({
                 type: "TOGGLE_TRACK_PANEL",
@@ -143,6 +143,18 @@ function ChannelStrip({ track, trackIndex, channels }: Props) {
 
   return (
     <div className="flex-y gap2">
+      <ChannelButton
+        className="fx-select"
+        onClick={() => {
+          send({
+            type: "TOGGLE_TRACK_PANEL",
+            trackIndex,
+          });
+        }}
+      >
+        {trackPanelData[trackIndex].active[trackIndex] ? "Close" : "Open"}
+        FX
+      </ChannelButton>
       {fx(2).map((_, fxIndex) => (
         <select
           key={fxIndex}
